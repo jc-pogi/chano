@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_contents %}
+<div class="container my-4">
+    <!-- Header with Product title and Search bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="m-0">Stock Management</h1>
+        <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
+    </div>
+
+    <!-- Caption -->
+    <caption class="mb-3">Editing the inventory</caption><br><br>
+
+
+    <div class="inventoryTable">
+        {% include "productTable.html" with table_id="inventoryProductTable" %}
+    </div>
+
+
+    <div class="editTable">
+       
+    </div>
+
+    <!-- JavaScript for filtering both tables -->
+    <script>
+        document.getElementById("searchInput").addEventListener("input", function() {
+            let filter = this.value.toLowerCase();
+
+            // Filter Inventory Table
+            document.querySelectorAll("#inventoryProductTable tbody tr").forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+            });
+
+            // Filter Edit Table
+            document.querySelectorAll("#editProductTable tbody tr").forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+
+{% endblock %}
