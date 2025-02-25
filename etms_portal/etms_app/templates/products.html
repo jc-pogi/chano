@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_contents %}
+<div class="container my-4">
+    <!-- Header with Product title and Search bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="m-0">Products</h1>
+        <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
+    </div>
+
+    <!-- Caption -->
+    <caption class="mb-3">Complete list of products with their specifications and current availability.</caption><br><br>
+
+    <!-- Product Table -->
+    <div class="product-table">
+        {% include "productTable.html" with table_id="productTable" %}
+    </div>
+
+</div>
+
+<!-- JavaScript for filtering -->
+<script>
+    document.getElementById("searchInput").addEventListener("input", function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#productTable tbody tr");
+
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+        });
+    });
+</script>
+{% endblock %}

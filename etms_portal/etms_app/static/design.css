@@ -1,0 +1,41 @@
+/* Style the container of the inventory table */
+.inventoryTable {
+    max-height: 300px; /* Set height to make it scrollable if needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Add a border around the table */
+    padding: 10px; /* Add some padding */
+    background-color: #f8f9fa; /* Light background for visibility */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+/* Style the table itself */
+.inventoryTable table {
+    width: 100%;
+    border-collapse: collapse; /* Remove spacing between table cells */
+}
+
+/* Style table header */
+.inventoryTable th {
+    background-color: #007bff; /* Header background color */
+    color: white; /* Header text color */
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style table rows */
+.inventoryTable td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd; /* Line between rows */
+}
+
+/* Zebra striping for rows */
+.inventoryTable tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+/* Hover effect for table rows */
+.inventoryTable tr:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
