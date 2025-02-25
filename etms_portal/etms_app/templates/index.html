@@ -10,6 +10,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'design.css' %}">
 
     <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+      }
+      
       /* Header styling */
       .header-bar {
         background-color: #E7ECEF;
@@ -39,12 +47,25 @@
         z-index: 1050;
       }
 
+      .sidebar .nav-link {
+        color: #8B8C89;
+        font-size: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+      }
+
+      .sidebar .nav-link.active, .sidebar .nav-link:hover {
+        background-color: #274c77;
+        color: white;
+      }
+
       /* Main content styling */
       .main-content {
         margin-top: 80px;
         padding: 20px;
         width: 100%;
       }
+
 
       /* Show sidebar */
       .sidebar.show {
@@ -71,22 +92,23 @@
           <a class="nav-link {% if current_tab == 'dashboard' %}active{% endif %}" href="/dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
+
           <a class="nav-link" data-bs-toggle="collapse" href="#inventoryMenu">Inventory</a>
-          <div class="collapse" id="inventoryMenu">
+          <div class="collapse {% if current_tab == 'sm' or current_tab == 'products' %}show{% endif %}" id="inventoryMenu">
             <ul class="nav flex-column ps-3">
-              <li><a class="nav-link" href="/products">Products</a></li>
-              <li><a class="nav-link" href="/sm">Stock Management</a></li>
+              <li><a class="nav-link {% if current_tab == 'products' %}active{% endif %}" href="/products">Products</a></li>
+              <li><a class="nav-link {% if current_tab == 'sm' %}active{% endif %}" href="/sm">Stock Management</a></li>
             </ul>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/transactions">Transactions</a>
+          <a class="nav-link {% if current_tab == 'transactions' %}active{% endif %}" href="/transactions">Transactions</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/revenue">Revenue</a>
+          <a class="nav-link {% if current_tab == 'revenue' %}active{% endif %}" href="/revenue">Revenue</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/accounts">Accounts</a>
+          <a class="nav-link {% if current_tab == 'accounts' %}active{% endif %}" href="/accounts">Accounts</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/login" style="color: #8B8C89;">Logout</a>
