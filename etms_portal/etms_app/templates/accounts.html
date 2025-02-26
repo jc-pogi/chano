@@ -1,8 +1,92 @@
-<!DOCTYPE html>
 {% extends "index.html" %}
 {% load static %}
 
 {% block main_contents %}
-    <h1>Accounts</h1>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4>Manage Accounts</h4>
+                <form id="accountForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control">
+                    </div>
+                    <button type="button" class="btn custom-btn" onclick="addAccount()">Add</button>
+                    <button type="button" class="btn custom-btn" onclick="deleteAccount()">Delete</button>
+                    <button type="button" class="btn custom-btn" onclick="updateAccount()">Update</button>
+                </form>
+            </div>
+        </div>
+        <!-- Table Section -->
+        <div class="col-md-8">
+            <div class="card p-3">
+                <h4>Accounts List</h4>
+                <input type="text" id="search" class="form-control mb-3" placeholder="Search..." onkeyup="searchAccounts()">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Password</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTable">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .custom-btn {
+        background-color: #274C77;
+        color: white;
+        border: none;
+    }
+    .custom-btn:hover {
+        background-color: #E7ECEF;
+        color: #274C77;
+    }
+</style>
+<script>
+    let accounts = [];
+    function addAccount() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username && password) {
+            accounts.push({ username, password });
+            updateTable();
+        }
+    }
+    function deleteAccount() {
+        const username = document.getElementById('username').value;
+        accounts = accounts.filter(acc => acc.username !== username);
+        updateTable();
+    }
+    function updateAccount() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        accounts = accounts.map(acc => acc.username === username ? { username, password } : acc);
+        updateTable();
+    }
+    function updateTable() {
+        const table = document.getElementById('accountTable');
+        table.innerHTML = '';
+        accounts.forEach(acc => {
+            table.innerHTML += `<tr><td>${acc.username}</td><td>${acc.password}</td></tr>`;
+        });
+    }
+    function searchAccounts() {
+        const query = document.getElementById('search').value.toLowerCase();
+        document.querySelectorAll('#accountTable tr').forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
+        });
+    }
+</script>
 {% endblock %}
-    
