@@ -4,17 +4,96 @@
 
 {% block main_contents %}
     
-<div class="jumbotron">
-    <div class="container">
-        <img src="{% static '/db-logo.png' %}" class="rounded float-start" alt="db" height="300px" width="300px" style="margin-right: 20px;">
-        <h1 class="display-4">Hello Riders</h1>
-        <p style="text-align: justify; margin-top: 40px;"> Elytra Technology is developed to address the needs specializing in selling helmets. 
-            We aim to give high quality services for our clients to ensure coherent integration of important features that consolidate business operations. 
-            Incorporating stocks, transactions, and revenue features in the software provides efficiency, reduces manual workload. </p>
+<div class="container mt-4">
+    <!-- Introduction Section -->
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <img src="{% static '/db-logo.png' %}" class="rounded float-start" alt="db" height="250px" width="250px">
+        </div>
+        <div class="col-md-8">
+            <h1 class="display-5">Hello Riders</h1>
+            <p style="text-align: justify; font-size: 14px;"> 
+                Elytra Technology is developed to address the needs specializing in selling helmets. 
+                We aim to give high-quality services for our clients to ensure coherent integration of important features 
+                that consolidate business operations. Incorporating stocks, transactions, and revenue features in the software 
+                provides efficiency, reduces manual workload.
+            </p>
+        </div>
     </div>
-    
+
+    <!-- Centered Dashboard Layout -->
+    <div class="row mt-4 justify-content-center text-center">
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 120px;">
+                <h6>Total Products:</h6>
+                <h3>82</h3>  <!-- Needs editing for real-time data -->
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 120px;">
+                <h6>Low Stock Alert</h6>
+                <h3>2</h3> <!-- Needs editing for real-time data -->
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 120px;">
+                <h6>Today's Sales</h6>
+                <h3>XX</h3> <!-- Needs editing for real-time data -->
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 120px;">
+                <h6>Top-Selling Product</h6>
+                <h3>XX</h3> <!-- Needs editing for real-time data -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Product Slideshow -->
+    <div class="row mt-4 mb-4">
+        <div class="col-12">
+            <div class="card p-3 shadow-sm text-center">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" style="height: 300px;"> <!-- Set height to keep uniformity -->
+                        <div class="carousel-item active">
+                            <img src="{% static '/p1.jpg' %}" class="d-block w-100 h-100" alt="slideshow 1" style="object-fit: cover;">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static '/p2.jpg' %}" class="d-block w-100 h-100" alt="slideshow 2" style="object-fit: cover;">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static '/p3.jpg' %}" class="d-block w-100 h-100" alt="slideshow 3" style="object-fit: cover;">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#productCarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#productCarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Transactions & Low Stock -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 140px;">
+                <h6>Recent Transactions:</h6> <!-- Needs editing for real-time data -->
+                <p style="font-size: 14px;"><strong>Helmet 1</strong> - 3000</p>
+                <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card p-3 shadow-sm" style="min-height: 140px;">
+                <h6>Low Stock:</h6> <!-- Needs editing for real-time data -->
+                <p style="font-size: 14px;"><strong>Helmet 1</strong></p>
+                <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
+            </div>
+        </div>
+    </div>
 </div>
 
-
 {% endblock %}
-    
