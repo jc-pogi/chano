@@ -10,25 +10,157 @@
         <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
     </div>
 
-    <!-- Caption -->
-    <caption class="mb-3">Complete list of products with their specifications and current availability.</caption><br><br>
+    <!-- Style for Filter Button -->
+    <style>
+        .filter-btn {
+            background-color: white;
+            color: #6096BA;
+            border: 1px solid #6096BA;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .filter-btn:hover {
+            background-color: #6096BA;
+            color: white;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: black;
+        }
+    </style>
+
+    <!-- Filter Button -->
+    <div style="display: flex; justify-content: flex-end; padding: 10px;">
+        <button type="button" class="btn filter-btn" onclick="openFilterModal()">Filter</button>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeFilterModal()">&times;</span>
+            <h2>Filter Options</h2>
+
+            <form id="filterForm">
+                <!-- Price Range -->
+                <div class="mb-3">
+                    <label for="minPrice">Price Range:</label>
+                    <input type="number" id="minPrice" placeholder="Min Price" class="form-control">
+                    <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mt-2">
+                </div>
+
+                <!-- Brand -->
+                <div class="mb-3">
+                    <label for="brand">Brand:</label>
+                    <select id="brand" class="form-control">
+                        <option value="">All Brands</option>
+                        <option value="BrandA">Brand A</option>
+                        <option value="BrandB">Brand B</option>
+                        <option value="BrandC">Brand C</option>
+                    </select>
+                </div>
+
+                <!-- Color -->
+                <div class="mb-3">
+                    <label for="color">Color:</label>
+                    <select id="color" class="form-control">
+                        <option value="">All Colors</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Black">Black</option>
+                    </select>
+                </div>
+
+                <!-- Size -->
+                <div class="mb-3">
+                    <label for="size">Size:</label>
+                    <select id="size" class="form-control">
+                        <option value="">All Sizes</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filter</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Product Table -->
     <div class="product-table">
         {% include "productTable.html" with table_id="productTable" %}
     </div>
-
 </div>
 
-<!-- JavaScript for filtering -->
+<!-- JavaScript for filtering and modal -->
 <script>
-    document.getElementById("searchInput").addEventListener("input", function() {
-        let filter = this.value.toLowerCase();
+    // Open Modal
+    function openFilterModal() {
+        document.getElementById("filterModal").style.display = "block";
+    }
+
+    // Close Modal
+    function closeFilterModal() {
+        document.getElementById("filterModal").style.display = "none";
+    }
+
+    // Apply Filters
+    function applyFilters() {
+        let minPrice = parseFloat(document.getElementById("minPrice").value) || 0;
+        let maxPrice = parseFloat(document.getElementById("maxPrice").value) || Infinity;
+        let brand = document.getElementById("brand").value.toLowerCase();
+        let color = document.getElementById("color").value.toLowerCase();
+        let size = document.getElementById("size").value.toLowerCase();
+
         let rows = document.querySelectorAll("#productTable tbody tr");
 
         rows.forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+            let price = parseFloat(row.getAttribute("data-price")) || 0;
+            let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
+            let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
+            let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
+
+            let matchesPrice = price >= minPrice && price <= maxPrice;
+            let matchesBrand = !brand || rowBrand.includes(brand);
+            let matchesColor = !color || rowColor.includes(color);
+            let matchesSize = !size || rowSize.includes(size);
+
+            row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize ? "" : "none";
         });
-    });
+
+        closeFilterModal();
+    }
 </script>
 {% endblock %}
