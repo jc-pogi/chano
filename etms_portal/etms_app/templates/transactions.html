@@ -3,6 +3,73 @@
 {% load static %}
 
 {% block main_contents %}
-    <h1>Transactions</h1>
+<div class="container my-4">
+    <!-- Transactions Header -->
+    <h1 class="mb-3">Transactions</h1>
+
+    <!-- Row container for form and table -->
+    <div class="row">
+        <!-- Left Side: Form (Smaller) with Padding -->
+        <div class="col-md-3 pe-4">  <!-- Added pe-4 for spacing -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="product_id" class="form-label">Product ID:</label>
+                        <input type="text" id="product_id" name="product_id" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="brand" class="form-label">Brand:</label>
+                        <input type="text" id="brand" name="brand" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="model" class="form-label">Model:</label>
+                        <input type="text" id="model" name="model" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="size" class="form-label">Size:</label>
+                        <input type="text" id="size" name="size" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="color" class="form-label">Color:</label>
+                        <input type="text" id="color" name="color" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" style="max-width: 150px;" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="text" id="price" name="price" class="form-control" style="max-width: 150px;" required>
+                </div>
+            </form>
+
+            <!-- Buttons (arranged in a grid) -->
+            <div class="row g-2 mt-3">
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Add Item</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Remove Item</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Void</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Clear</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Print Receipt</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Pay</button></div>
+            </div>
+        </div>
+
+        <!-- Right Side: Product Table (Bigger) -->
+        <div class="col-md-9">
+            <div class="product-table">
+                {% include "productTable.html" with table_id="productTable" %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-    

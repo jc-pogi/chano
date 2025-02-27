@@ -4,40 +4,127 @@
 
 {% block main_contents %}
 <div class="container my-4">
-    <!-- Header with Product title and Search bar -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="m-0">Stock Management</h1>
         <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
     </div>
 
-    <!-- Caption -->
-    <caption class="mb-3">Editing the inventory</caption><br><br>
+    <!-- Row container for form and table -->
+    <div class="row">
+        <!-- Left Side: Form (Smaller) with Padding -->
+        <div class="col-md-3 pe-4">  <!-- Added pe-4 for spacing -->
+            <form method="POST">
+                {% csrf_token %}
 
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="product_id" class="form-label">Product ID:</label>
+                        <input type="text" id="product_id" name="product_id" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="brand" class="form-label">Brand:</label>
+                        <input type="text" id="brand" name="brand" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                </div>
 
-    <div class="inventoryTable">
-        {% include "productTable.html" with table_id="inventoryProductTable" %}
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="model" class="form-label">Model:</label>
+                        <input type="text" id="model" name="model" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="size" class="form-label">Size:</label>
+                        <input type="text" id="size" name="size" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="color" class="form-label">Color:</label>
+                        <input type="text" id="color" name="color" class="form-control" style="max-width: 150px;" required>
+                    </div>
+                    <div class="col">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" style="max-width: 150px;" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="text" id="price" name="price" class="form-control" style="max-width: 150px;" required>
+                </div>
+            </form>
+
+            <!-- Buttons (arranged in a grid) -->
+            <div class="row g-2 mt-3">
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Add</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Edit</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Delete</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Clear</button></div>
+                <div class="col-12"><button type="button" class="btn btn-outline-dark w-100">Print Inventory Record</button></div>
+            </div>
+        </div>
+
+        <!-- Right Side: Product Table (Bigger) -->
+        <div class="col-md-9">
+            <div class="product-table">
+                {% include "productTable.html" with table_id="productTable" %}
+            </div>
+        </div>
     </div>
 
+</div>
 
-    <div class="editTable">
-       
-    </div>
+<!-- JavaScript for filtering -->
+<script>
+    document.getElementById("searchInput").addEventListener("input", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#productTable tbody tr");
 
-    <!-- JavaScript for filtering both tables -->
-    <script>
-        document.getElementById("searchInput").addEventListener("input", function() {
-            let filter = this.value.toLowerCase();
-
-            // Filter Inventory Table
-            document.querySelectorAll("#inventoryProductTable tbody tr").forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
-            });
-
-            // Filter Edit Table
-            document.querySelectorAll("#editProductTable tbody tr").forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
-            });
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
         });
-    </script>
+    });
 
+    // Apply Filters when button is clicked
+    document.getElementById("applyFilters").addEventListener("click", function () {
+        const brandFilter = document.getElementById("brandFilter").value.toLowerCase();
+        const priceFilter = document.getElementById("priceFilter").value;
+        const categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+
+        const rows = document.querySelectorAll("#productTable tbody tr");
+
+        rows.forEach(row => {
+            const brand = row.querySelector(".product-brand")?.innerText.toLowerCase() || "";
+            const price = parseFloat(row.querySelector(".product-price")?.innerText) || 0;
+            const category = row.querySelector(".product-category")?.innerText.toLowerCase() || "";
+
+            let show = true;
+
+            // Brand filter
+            if (brandFilter && !brand.includes(brandFilter)) {
+                show = false;
+            }
+
+            // Price range filter
+            if (priceFilter) {
+                const [min, max] = priceFilter.split("-").map(Number);
+                if (min && max && (price < min || price > max)) {
+                    show = false;
+                }
+            }
+
+            // Category filter
+            if (categoryFilter && category !== categoryFilter) {
+                show = false;
+            }
+
+            row.style.display = show ? "" : "none";
+        });
+
+        // Close modal after applying filters
+        const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+        filterModal.hide();
+    });
+</script>
 {% endblock %}
