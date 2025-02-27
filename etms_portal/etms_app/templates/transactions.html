@@ -3,6 +3,136 @@
 {% load static %}
 
 {% block main_contents %}
-    <h1>Transactions</h1>
+<div class="container my-4">
+    <!-- Transactions Header -->
+    <h1 class="mb-3">Transactions</h1>
+
+    <!-- Row container for form and table -->
+    <div class="row">
+        <!-- Left Side: Form (Smaller) -->
+        <div class="col-md-3 pe-3 me-3">
+            <form id="transactionForm">
+                {% csrf_token %}
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="product_id" class="form-label">Product ID:</label>
+                        <input type="text" id="product_id" name="product_id" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label for="brand" class="form-label">Brand:</label>
+                        <input type="text" id="brand" name="brand" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="model" class="form-label">Model:</label>
+                        <input type="text" id="model" name="model" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label for="size" class="form-label">Size:</label>
+                        <input type="text" id="size" name="size" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <label for="color" class="form-label">Color:</label>
+                        <input type="text" id="color" name="color" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="text" id="price" name="price" class="form-control" required>
+                </div>
+            </form>
+
+            <!-- Buttons -->
+            <div class="row g-2 mt-3">
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="addItem()">Add Item</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Remove Item</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Void</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Clear</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Print Receipt</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100">Pay</button></div>
+            </div>
+        </div>
+
+        <!-- Right Side: Product Table -->
+        <div class="col-md-8">
+            <div class="product-table">
+                {% include "productTable.html" with table_id="productTable" %}
+            </div>
+
+            <!-- New Table: Added Transactions -->
+            <div class="mt-4">
+                <h2>Added Items</h2>
+                <table class="table table-bordered" id="addedItemsTable">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Size</th>
+                            <th>Color</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Items will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Adding Items -->
+<script>
+    function addItem() {
+        let productID = document.getElementById("product_id").value;
+        let brand = document.getElementById("brand").value;
+        let model = document.getElementById("model").value;
+        let size = document.getElementById("size").value;
+        let color = document.getElementById("color").value;
+        let price = document.getElementById("price").value;
+        let quantity = document.getElementById("quantity").value;
+
+        if (!productID || !brand || !model || !size || !color || !price || !quantity) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        let table = document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0];
+        let newRow = table.insertRow();
+
+        let cell1 = newRow.insertCell(0);
+        let cell2 = newRow.insertCell(1);
+        let cell3 = newRow.insertCell(2);
+        let cell4 = newRow.insertCell(3);
+        let cell5 = newRow.insertCell(4);
+        let cell6 = newRow.insertCell(5);
+        let cell7 = newRow.insertCell(6);
+
+        cell1.innerHTML = productID;
+        cell2.innerHTML = brand;
+        cell3.innerHTML = model;
+        cell4.innerHTML = size;
+        cell5.innerHTML = color;
+        cell6.innerHTML = price;
+        cell7.innerHTML = quantity;
+
+        // Clear input fields after adding
+        document.getElementById("transactionForm").reset();
+    }
+</script>
+
 {% endblock %}
-    
+
