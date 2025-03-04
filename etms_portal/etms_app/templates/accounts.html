@@ -18,8 +18,8 @@
                         <input type="password" id="password" class="form-control">
                     </div>
                     <button type="button" class="btn custom-btn" onclick="addAccount()">Add</button>
-                    <button type="button" class="btn custom-btn" onclick="deleteAccount()">Delete</button>
                     <button type="button" class="btn custom-btn" onclick="updateAccount()">Update</button>
+                    <button type="button" class="btn custom-btn" onclick="showDeleteModal()">Delete</button>
                 </form>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card p-3">
                 <h4>Accounts List</h4>
                 <input type="text" id="search" class="form-control mb-3" placeholder="Search..." onkeyup="searchAccounts()">
-                <table class="table table-striped">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Username</th>
@@ -43,6 +43,23 @@
         </div>
     </div>
 </div>
+
+<!-- Deletion Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="close-container">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+        </div>
+        <i class="bi bi-exclamation-circle custom-icon"></i>
+        <h2>Are you sure?</h2>
+        <p>Do you really want to delete this account? This process cannot be undone.</p>
+        <div class="modal-buttons">
+            <button class="btn btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn btn-confirm" onclick="deleteAccount()">Delete</button>
+        </div>
+    </div>    
+</div>
+
 <style>
     .custom-btn {
         background-color: #274C77;
@@ -53,40 +70,174 @@
         background-color: #E7ECEF;
         color: #274C77;
     }
+    .selected-row {
+        background-color: #D3D3D3 !important;
+    }
+    tr:hover {
+        background-color: #D3D3D3;
+        cursor: pointer;
+    }
+
+    .custom-icon {
+        font-size: 80px; 
+        color: #d01717;
+    }
+    
+    .modal {    
+        display: none;
+        position: fixed;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 350px;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    .modal-icon {
+        width: 60px;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        margin-top: 10px;
+        margin-bottom: 15px; 
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 14px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .close-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .close:hover {
+        color: black;
+    }
+    
+    .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+    }
+
+    .btn-cancel {
+        background-color: white;
+        color: #000;
+        border: 1px solid #ccc;
+        padding: 10px 20px;
+        flex: 1;
+        font-size: 14px;
+    }
+
+    .btn-confirm {
+        background-color: #274C77;
+        color: white;
+        padding: 10px 20px;
+        flex: 1;
+        font-size: 14px;
+}
+
 </style>
+
 <script>
     let accounts = [];
+    let selectedAccount = null;
+
     function addAccount() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         if (username && password) {
             accounts.push({ username, password });
             updateTable();
+            clearForm();
         }
     }
-    function deleteAccount() {
-        const username = document.getElementById('username').value;
-        accounts = accounts.filter(acc => acc.username !== username);
-        updateTable();
+
+    function showDeleteModal() {
+        if (selectedAccount) {
+            document.getElementById('deleteModal').style.display = 'block';
+        }
     }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    function deleteAccount() {
+        if (selectedAccount) {
+            accounts = accounts.filter(acc => acc.username !== selectedAccount.username);
+            updateTable();
+            clearForm();
+            closeDeleteModal();
+        }
+    }
+
     function updateAccount() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        accounts = accounts.map(acc => acc.username === username ? { username, password } : acc);
-        updateTable();
+        if (selectedAccount && username && password) {
+            accounts = accounts.map(acc => acc.username === selectedAccount.username ? { username, password } : acc);
+            updateTable();
+            clearForm();
+        }
     }
+
     function updateTable() {
         const table = document.getElementById('accountTable');
         table.innerHTML = '';
         accounts.forEach(acc => {
-            table.innerHTML += `<tr><td>${acc.username}</td><td>${acc.password}</td></tr>`;
+            table.innerHTML += `<tr onclick="selectAccount('${acc.username}')" class="${selectedAccount && selectedAccount.username === acc.username ? 'selected-row' : ''}"><td>${acc.username}</td><td>${acc.password}</td></tr>`;
         });
     }
+
+    function selectAccount(username) {
+        selectedAccount = accounts.find(acc => acc.username === username);
+        document.getElementById('username').value = selectedAccount.username;
+        document.getElementById('password').value = selectedAccount.password;
+        updateTable();
+    }
+
     function searchAccounts() {
         const query = document.getElementById('search').value.toLowerCase();
         document.querySelectorAll('#accountTable tr').forEach(row => {
             row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
         });
     }
+
+    function clearForm() {
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        selectedAccount = null;
+        updateTable();
+    }
 </script>
+
 {% endblock %}
