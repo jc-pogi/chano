@@ -4,25 +4,25 @@
 
 {% block main_contents %}
 <div class="container my-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center">
         <h1 class="m-0">Products</h1>
     </div>
-<div class="container my-4 d-flex">
-    <!-- Sidebar Filter -->
-    <div class="container my-4 d-flex">
-        <!-- Sidebar Filter -->
-        <div class="filter-sidebar" style="width: 250px; padding: 15px; border-right: 1px solid #ddd;">
-            <h2>Filters</h2>
 
+    <div class="container my-0 d-flex">
+        <!-- Sidebar Filter (Separate Container) -->
+        <div class="filter-container" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 100vh;">
+            <h2 style="font-size: 25px; ">
+                <!--I will put icon here-->  Search Filters
+            </h2>
             <div class="mb-3">    
                 <label for="category">Category:</label>
-                <select id="category" onchange="applyFilters()">
+                <select id="category" class="form-control" onchange="applyFilters()">
                     <option value="">All</option>
                     <option value="helmet">Helmet</option>
                     <option value="top box">Top Box</option>
-                </select>
+                </select>   
             </div>
-            
+
             <!-- Price Range -->
             <div class="mb-3">
                 <label>Price Range:</label>
@@ -32,19 +32,19 @@
                     <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
                 </div>
             </div>
-    
+
             <!-- Brand -->
             <div class="mb-3">
                 <label for="brand">Brand:</label>
                 <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
             </div>
-    
+
             <!-- Color -->
             <div class="mb-3">
                 <label for="color">Color:</label>
                 <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
             </div>
-    
+
             <!-- Size -->
             <div class="mb-3">
                 <label>Size:</label>
@@ -78,13 +78,16 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Product Table -->
-        <div class="product-table flex-grow-1 ps-3">
+
+        <!-- Product Table (Separate Container) -->
+        <div class="product-container flex-grow-1 ps-3" style="background-color: #305579; padding: 20px; border-radius: 10px;">
             {% include "productTable.html" with table_id="productTable" %}
         </div>
     </div>
 </div>
+
+
+
 <script>
     function applyFilters() {
     let minPriceInput = document.getElementById("minPrice").value.trim();
