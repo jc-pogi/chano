@@ -1,41 +1,57 @@
-``
 <!DOCTYPE html>
 {% extends "index.html" %}
 {% load static %}
 
 {% block main_contents %}
-<div class="container my-4 d-flex">
-    <!-- Sidebar Filter -->
-    <div class="container my-4 d-flex">
-        <!-- Sidebar Filter -->
-        <div class="filter-sidebar" style="width: 250px; padding: 15px; border-right: 1px solid #ddd;">
-            <h2>Filters</h2>
-            
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="m-0">Products</h1>
+    </div>
+
+    <div class="container my-0 d-flex">
+        <!-- Sidebar Filter (Separate Container) -->
+        <div class="filter-container" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 100vh;">
+            <h2 style="font-size: 25px; ">
+                <!--I will put icon here-->  Search Filters
+            </h2>
+            <div class="mb-3">    
+                <label for="category">Category:</label>
+                <select id="category" class="form-control" onchange="applyFilters()">
+                    <option value="">All</option>
+                    <option value="helmet">Helmet</option>
+                    <option value="top box">Top Box</option>
+                </select>   
+            </div>
+
             <!-- Price Range -->
             <div class="mb-3">
                 <label>Price Range:</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 80px;" oninput="applyFilters()">
+                    <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
                     <span>—</span>
-                    <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 80px;" oninput="applyFilters()">
+                    <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
                 </div>
             </div>
-    
+
             <!-- Brand -->
             <div class="mb-3">
                 <label for="brand">Brand:</label>
-                <input type="text" id="brand" class="form-control" placeholder="Type brand..." oninput="applyFilters()">
+                <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
             </div>
-    
+
             <!-- Color -->
             <div class="mb-3">
                 <label for="color">Color:</label>
-                <input type="text" id="color" class="form-control" placeholder="Type color..." oninput="applyFilters()">
+                <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
             </div>
-    
+
             <!-- Size -->
             <div class="mb-3">
                 <label>Size:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Kids" id="sizeKids" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeKids">Kids</label>
+                </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="Standard" id="sizeStandard" onchange="applyFilters()">
                     <label class="form-check-label" for="sizeStandard">Standard</label>
@@ -62,43 +78,52 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Product Table -->
-        <div class="product-table flex-grow-1 ps-3">
+
+        <!-- Product Table (Separate Container) -->
+        <div class="product-container flex-grow-1 ps-3" style="background-color: #305579; padding: 20px; border-radius: 10px;">
             {% include "productTable.html" with table_id="productTable" %}
         </div>
     </div>
+</div>
+
+
 
 <script>
     function applyFilters() {
-        let minPriceInput = document.getElementById("minPrice").value.trim();
-        let maxPriceInput = document.getElementById("maxPrice").value.trim();
-        let minPrice = minPriceInput !== "" ? parseFloat(minPriceInput) : 0;
-        let maxPrice = maxPriceInput !== "" ? parseFloat(maxPriceInput) : Infinity;
-        let brand = document.getElementById("brand").value.toLowerCase();
-        let color = document.getElementById("color").value.toLowerCase();
-        let selectedSizes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
-            .filter(checkbox => checkbox.id !== 'inStock')
-            .map(checkbox => checkbox.value.toLowerCase());
-        let inStock = document.getElementById("inStock").checked;
+    let minPriceInput = document.getElementById("minPrice").value.trim();
+    let maxPriceInput = document.getElementById("maxPrice").value.trim();
+    let minPrice = minPriceInput !== "" ? parseFloat(minPriceInput) : 0;
+    let maxPrice = maxPriceInput !== "" ? parseFloat(maxPriceInput) : Infinity;
+    let brand = document.getElementById("brand").value.toLowerCase();
+    let color = document.getElementById("color").value.toLowerCase();
+    let selectedSizes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+        .filter(checkbox => checkbox.id !== 'inStock')
+        .map(checkbox => checkbox.value.toLowerCase());
+    let inStock = document.getElementById("inStock").checked;
+    
+    // Get selected category (Helmet or Top Box)
+    let category = document.getElementById("category").value.toLowerCase();
 
-        let rows = document.querySelectorAll("#productTable tbody tr");
-        rows.forEach(row => {
-            let price = parseFloat(row.getAttribute("data-price")) || 0;
-            let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
-            let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
-            let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
-            let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
+    let rows = document.querySelectorAll("#productTable tbody tr");
+    rows.forEach(row => {
+        let price = parseFloat(row.getAttribute("data-price")) || 0;
+        let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
+        let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
+        let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
+        let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
+        let rowCategory = row.getAttribute("data-type")?.toLowerCase() || "";
 
-            let matchesPrice = (minPrice <= price) && (price <= maxPrice);
-            let matchesBrand = !brand || rowBrand.includes(brand);
-            let matchesColor = !color || rowColor.includes(color);
-            let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
-            let matchesInStock = !inStock || rowInStock;
+        let matchesPrice = (minPrice <= price) && (price <= maxPrice);
+        let matchesBrand = !brand || rowBrand.includes(brand);
+        let matchesColor = !color || rowColor.includes(color);
+        let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
+        let matchesInStock = !inStock || rowInStock;
+        let matchesCategory = !category || rowCategory === category;
 
-            row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesInStock ? "" : "none";
-        });
-    }
+        row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesInStock && matchesCategory ? "" : "none";
+    });
+}
+
 
    
 
