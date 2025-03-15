@@ -75,7 +75,8 @@
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="addItem()">Add</button></div>
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="editItem()">Edit</button></div>
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="openDeleteModal()">Delete</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="printInventory()">Print Inventory</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="printInventory()">Print Inventory</button>
+                </div>
             </div>
         </div>
 
@@ -476,6 +477,55 @@ function closeDeleteModal() {
         // Close the modal
         closeDeleteModal();
     }
+
+    function printInventory() {
+    let printContents = document.querySelector(".product-table").outerHTML;
+    let originalTitle = document.title;
+
+    let printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>ElytraTech</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    border: 1px solid black;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                @media print {
+                    body {
+                        margin: 20px;
+                    }
+                    .no-print {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <h2>ElytraTech Inventory Report</h2>
+            ${printContents}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+
+
 
 
 

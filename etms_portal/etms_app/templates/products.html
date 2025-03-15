@@ -79,14 +79,27 @@
             </div>
         </div>
 
-        <!-- Product Table (Separate Container) -->
-        <div class="product-container flex-grow-1 ps-3" style="background-color: #305579; padding: 20px; border-radius: 10px;">
+        
+        <div class="product-container ps-3" style="background-color: #305579; padding: 20px; border-radius: 10px; margin: 20px auto; width: 78%; box-sizing: border-box;">
             {% include "productTable.html" with table_id="productTable" %}
         </div>
+        
+        
+        
+        
     </div>
 </div>
 
+<style>
+    #productTable {
+    margin: 0;
+    padding: 0;
+    width: 100%; /* Ensure table takes full width of the container */
+    box-sizing: border-box; /* Ensures padding doesn't affect the width */
+}
+    
 
+</style>
 
 <script>
     function applyFilters() {
