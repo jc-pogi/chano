@@ -19,33 +19,16 @@
         height: 100vh;
         display: flex;
       }
-      
-      /* Header styling */
-      .header-bar {
-        background-color: #E7ECEF;
-        padding: 10px 20px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-      }
 
       /* Sidebar styling */
       .sidebar {
         width: 250px;
         height: 100vh;
         position: fixed;
-        top: 60px;
         left: 0;
         background-color: #E7ECEF;
-        padding: 20px 10px;
+        padding: 5px 10px;
         overflow-y: auto;
-        transition: transform 0.3s ease;
-        transform: translateX(-100%);
         z-index: 1050;
       }
 
@@ -68,62 +51,52 @@
         width: 100%;
       }
 
-
-      /* Show sidebar */
-      .sidebar.show {
-        transform: translateX(0);
-      }
-
-      #toggleSidebar:hover {
-      background-color: #274c77;
-      border-color: #274c77;
-      color: white !important;
-  }
-
-  #toggleSidebar{
-    border-color: #274c77;
-  }
     </style>
   </head>
 
   
 
   <body>
-    <!-- Header Bar with Hamburger Button and Elytra Tech -->
-    <div class="header-bar">
-      <button class="btn btn-outline-primary" id="toggleSidebar" style="color: #274c77;">☰</button>
-      <span class="navbar-brand ms-2">
-        <img src="{% static '/headline-logo.png' %}" alt="headline" height="30px" width="33px">
-        Elytra Technology
-      </span>
-    </div>
-
-    <div class="sidebar d-flex flex-column" id="sidebar" style="height: 95vh; display: flex;">
+    <div class="sidebar d-flex flex-column" id="sidebar" style="height: 100vh; display: flex;">
       <ul class="nav flex-column flex-grow-1">
+
+       <!-- Header Bar Elytra Tech -->
+    <div class="" style="padding-bottom: 20px; padding-top: 15px; padding-left: 12px;" >
+        <img src="{% static '/headline-logo.png' %}" height="40px" width="43px">
+        Elytra Technology
+    </div> 
+
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'dashboard' %}active{% endif %}" href="/dashboard">
             <i class="bi bi-house-door" style="margin-right: 10px;"></i> Dashboard
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#inventoryMenu">
-            <i class="bi bi-box" style="margin-right: 10px;"></i> Inventory
-          </a>
-          <div class="collapse {% if current_tab == 'sm' or current_tab == 'products' %}show{% endif %}" id="inventoryMenu">
-            <ul class="nav flex-column ps-3" style="border-left: 2px solid #ccc; padding-left: 50px; margin-left: 20px;">
-              <li>
-                <a class="nav-link {% if current_tab == 'products' %}active{% endif %}" href="/products">
-                  <i class="bi bi-basket" style="margin-right: 10px;"></i> Products
-                </a>
-              </li>
-              <li>
-                <a class="nav-link {% if current_tab == 'sm' %}active{% endif %}" href="/sm">
-                  <i class="bi bi-archive" style="margin-right: 10px;"></i> Stocks
-                </a>
-              </li>
-            </ul>
-          </div>
-        </li>
+  <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#inventoryMenu" id="inventoryToggle">
+    <i class="bi bi-box" style="margin-right: 10px;"></i> Inventory
+    <i class="bi bi-chevron-down ms-auto" id="inventoryArrow"></i>
+  </a>
+  <div class="collapse {% if current_tab == 'sm' or current_tab == 'products' or current_tab == 'restock' %}show{% endif %}" id="inventoryMenu">
+    <ul class="nav flex-column ps-3" style="border-left: 2px solid #ccc; padding-left: 50px; margin-left: 20px;">
+      <li>
+        <a class="nav-link {% if current_tab == 'products' %}active{% endif %}" href="/products">
+          <i class="bi bi-basket" style="margin-right: 10px;"></i> Products
+        </a>
+      </li>
+      <li>
+        <a class="nav-link {% if current_tab == 'sm' %}active{% endif %}" href="/sm">
+          <i class="bi bi-archive" style="margin-right: 10px;"></i> Stocks
+        </a>
+      </li>
+      <li>
+        <a class="nav-link {% if current_tab == 'restock' %}active{% endif %}" href="/restock">
+          <i class="bi bi-box-arrow-in-down" style="margin-right: 10px;"></i> Restock
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
+        
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'transactions' %}active{% endif %}" href="/transactions">
             <i class="bi bi-receipt" style="margin-right: 10px;"></i> Transactions
@@ -169,5 +142,44 @@
         sidebar.classList.toggle("show");
       });
     </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const inventoryToggle = document.getElementById("inventoryToggle");
+    const inventoryArrow = document.getElementById("inventoryArrow");
+    const inventoryMenu = document.getElementById("inventoryMenu");
+
+    // Get the current tab
+    const currentTab = "{{ current_tab }}";
+
+    // Retrieve previous state from localStorage
+    const inventoryState = localStorage.getItem("inventoryState");
+    if (inventoryState === "shown") {
+        inventoryMenu.classList.add("show");
+        inventoryArrow.style.transform = "rotate(180deg)";
+    } else {
+        inventoryMenu.classList.remove("show");
+        inventoryArrow.style.transform = "rotate(0deg)";
+    }
+
+    // Flip the arrow instantly when clicked
+    inventoryToggle.addEventListener("click", function () {
+        const isExpanded = inventoryMenu.classList.contains("show");
+        inventoryArrow.style.transform = isExpanded ? "rotate(0deg)" : "rotate(180deg)";
+    });
+
+    // Listen to Bootstrap collapse events and store state
+    inventoryMenu.addEventListener("shown.bs.collapse", function () {
+        inventoryArrow.style.transform = "rotate(180deg)";
+        localStorage.setItem("inventoryState", "shown");
+    });
+
+    inventoryMenu.addEventListener("hidden.bs.collapse", function () {
+        inventoryArrow.style.transform = "rotate(0deg)";
+        localStorage.setItem("inventoryState", "hidden");
+    });
+});
+</script>
+
   </body>
 </html>
