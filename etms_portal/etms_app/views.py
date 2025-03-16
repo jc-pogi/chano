@@ -11,16 +11,24 @@ def dashboard(request):
 
 def products(request):
     return render(request, "products.html", context={"current_tab": "products"})
+
 def sm(request):
     return render(request, "sm.html", context={"current_tab": "sm"})
 
 
 def transactions(request):
     return render(request, "transactions.html", context={"current_tab": "transactions"})
+
+def restock(request):
+    return render(request, "restock.html", context={"current_tab": "restock"})
+
 def revenue(request):
     return render(request, "revenue.html", context={"current_tab": "revenue"})
+
 def accounts(request):
     return render(request, "accounts.html", context={"current_tab": "accounts"})
+
+
 
 
 def login_view(request):
