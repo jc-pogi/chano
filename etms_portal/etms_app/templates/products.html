@@ -3,94 +3,105 @@
 {% load static %}
 
 {% block main_contents %}
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Products</h1>
-    </div>
+<div class="container-fluid px-2 my-3">
+    <div class="card" style="border: none; background-color: transparent; border-radius: 8px;">
+        <div class="card-body px-3 pt-1">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Products</h1>
+            </div>
 
-    <div class="container my-0 d-flex w-100">
+    <div class="container my-0 d-flex w-100" style="gap: 20px;"> <!-- Added gap here -->
         <!-- Sidebar Filter (Separate Container) -->
-        <div class="filter-container me-3" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 0vh;">
-            <h2 style="font-size: 25px; ">
-                <i class="bi bi-filter"></i> Search Filters
-            </h2>
-            <div class="mb-3">    
-                <label for="category">Category:</label>
-                <select id="category" class="form-control" onchange="applyFilters()">
-                    <option value="">All</option>
-                    <option value="helmet">Helmet</option>
-                    <option value="top box">Top Box</option>
-                </select>   
+        <div class="card mb-4" style="border: none; border-radius: 8px; width: 250px;"> <!-- Fixed width for consistency -->
+            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-filter"></i> Search Filters
+                </h5>
             </div>
+    
+        <div class="filter-container me-3" style="width: 30vh; padding: 15px; min-height: 0vh;">
+                    
+                    <div class="mb-3">    
+                        <label for="category">Category:</label>
+                        <select id="category" class="form-control" onchange="applyFilters()">
+                            <option value="">All</option>
+                            <option value="helmet">Helmet</option>
+                            <option value="top box">Top Box</option>
+                        </select>   
+                    </div>
 
-            <!-- Price Range -->
-            <div class="mb-3">
-                <label>Price Range:</label>
-                <div class="d-flex align-items-center">
-                    <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
-                    <span>—</span>
-                    <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
-                </div>
-            </div>
+                    <!-- Price Range -->
+                    <div class="mb-3">
+                        <label>Price Range:</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
+                            <span>—</span>
+                            <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
+                        </div>
+                    </div>
 
-            <!-- Brand -->
-            <div class="mb-3">
-                <label for="brand">Brand:</label>
-                <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
-            </div>
+                    <!-- Brand -->
+                    <div class="mb-3">
+                        <label for="brand">Brand:</label>
+                        <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
+                    </div>
 
-            <!-- Color -->
-            <div class="mb-3">
-                <label for="color">Color:</label>
-                <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
-            </div>
+                    <!-- Color -->
+                    <div class="mb-3">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
+                    </div>
 
-            <!-- Size -->
-            <div class="mb-3">
-                <label>Size:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Kids" id="sizeKids" onchange="applyFilters()">
-                    <label class="form-check-label" for="sizeKids">Kids</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Standard" id="sizeStandard" onchange="applyFilters()">
-                    <label class="form-check-label" for="sizeStandard">Standard</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Medium" id="sizeMedium" onchange="applyFilters()">
-                    <label class="form-check-label" for="sizeMedium">Medium</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="Large" id="sizeLarge" onchange="applyFilters()">
-                    <label class="form-check-label" for="sizeLarge">Large</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="X Large" id="sizeXLarge" onchange="applyFilters()">
-                    <label class="form-check-label" for="sizeXLarge">X Large</label>
-                </div>
-            </div>
+                    <!-- Size -->
+                    <div class="mb-3">
+                        <label>Size:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Kids" id="sizeKids" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeKids">Kids</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Standard" id="sizeStandard" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeStandard">Standard</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Medium" id="sizeMedium" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeMedium">Medium</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Large" id="sizeLarge" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeLarge">Large</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="X Large" id="sizeXLarge" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeXLarge">X Large</label>
+                            
+                        </div> 
+                        </div>
+                     <label>Stocks:</label>   
+                     <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
+                            <label class="form-check-label" for="inStock">In Stock</label>   
+                    </div>
 
-            <!-- In Stock -->
-            <div class="mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
-                    <label class="form-check-label" for="inStock">In Stock</label>
                 </div>
-            </div>
-        </div>
+
+         </div>
+        
 
 
         
-        <div class="card mb-4 flex-grow-1" style="border: none; border-radius: 8px;">
-            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-                <h5 class="card-title mb-0">Product Catalog</h5>
-            </div>
-            <div class="card-body p-0 overflow-auto" style="max-height: 520px;">
-                <div class="product-table">
-                    {% include "productTable.html" with table_id="productTable" %}
-                </div>
+            <!-- Product Catalog -->
+    <div class="card mb-4 flex-grow-1" style="border: none; border-radius: 8px;">
+        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+            <h5 class="card-title mb-0">Product Catalog</h5>
+        </div>
+        <div class="card-body p-0 overflow-auto" style="max-height: 550px; border-radius: 0 0 8px 8px;">
+            <div class="product-table">
+                {% include "productTable.html" with table_id="productTable" %}
             </div>
         </div>
+    </div>
+</div>
         
         
         
@@ -99,6 +110,12 @@
 </div>
 
 <style>
+body {
+    background: linear-gradient(to right, #d9dde4, #7196b3); /* Subtle gradient */
+    height: 100%;
+    overflow: hidden;
+}
+
    #productTable {
     width: 100%;
     border-collapse: collapse;
@@ -136,14 +153,81 @@ table td, table th {
 }
 
 .filter-container {
-    background-color: #648cac;
+    background-color: #ffffff;
+    border-radius: 8px;
     margin-right: 20px;
-    width: 250px;
-    max-height: 565px; 
-    
+    flex: 1;
+    min-width: 250px;
+    max-width: 30%;
+    padding: 15px;
 }
 
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow: auto;
+}
 
+.card.mb-4.flex-grow-1 {
+    flex: 2;
+    min-width: 60%;
+}
+
+.card-body {
+    flex-grow: 1;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .filter-container, .card.mb-4.flex-grow-1 {
+        max-width: 100%;
+    }
+}
+
+/* Style text fields */
+.form-control {
+    border: 1px solid #000000; 
+    border-radius: 6px; /* Rounded corners */
+    transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #000000; /* Darker blue on focus */
+}
+
+/* Style checkboxes */
+.form-check-input {
+    border: 2px solid #000000;
+    border-radius: 4px; /* Slight rounding */
+}
+
+.form-check-input:checked {
+    background-color: #274C77;
+    border-color: #1B3A57;
+}
+
+.main-content {
+    flex-grow: 1;
+    max-height: calc(100vh - [header height]); /* Adjust header height accordingly */
+    overflow-y: auto;
+}
+
+.product-catalog {
+    max-height: 60vh; /* Adjust based on layout */
+    overflow-y: auto;
+}
+
+.main-content > * {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
 </style>
 
 <script>
@@ -181,10 +265,8 @@ table td, table th {
         row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesInStock && matchesCategory ? "" : "none";
     });
 }
-
-
-   
-
-
 </script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
