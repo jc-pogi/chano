@@ -5,14 +5,17 @@
 {% block main_contents %}
 <div class="container-fluid px-2 my-3">
     <div class="card" style="border: none; background-color: #ffffffe6; border-radius: 8px;">
-        <div class="card-body px-3 pt-1">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="card-body px-3 pt-1"> 
+            <div class="d-flex justify-content-between align-items-center mb-2">
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Transactions</h1>
-                <div>
-                    <h5 id="transactionDate" class="text-muted small" style="color: #8B8C89 !important;"></h5>
+            
+                <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
+                    <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
+                           placeholder="Search by Brand & Model" style="width: 310px;"> 
+                    <h5 id="transactionDate" class="text-muted small mb-0" style="color: #8B8C89 !important;">Date of Transaction: Monday, March 17, 2025</h5>
                 </div>
             </div>
-
+            
             <div class="row">
                 <!-- Left Panel: Form -->
                 <div class="col-md-4">
@@ -105,34 +108,35 @@
         </div>
     </div>
 
-    <!-- Added Items Table -->
-    <div class="card" style="border: none; border-radius: 8px;">
-        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-            <h5 class="card-title mb-0">Current Transaction</h5>
-        </div>
-        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
-            <table class="table table-hover mb-0" id="addedItemsTable">
-                <thead style="position: sticky; top: 0; background-color: #274C77; color: white;">
-                    <tr>
-                        <th>PID</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>Size</th>
-                        <th>Color</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Items will be added here -->
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
-            <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">PHP 0.00</span></span>
-        </div>
+       <!-- Added Items Table -->
+<div class="card" style="border: none; border-radius: 8px;">
+    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+        <h5 class="card-title mb-0">Current Transaction</h5>
     </div>
+    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-hover mb-0" id="addedItemsTable">
+            <thead style="position: sticky; top: 0; background-color: #274C77; color: white;">
+                <tr>
+                    <th>PID</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Items will be added here -->
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
+        <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">PHP 0.00</span></span>
+    </div>
+</div>
+
 
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
@@ -232,6 +236,25 @@
         document.getElementById("transactionDate").innerText = "Date of Transaction: " + formattedDate;
     }
 
+        // Search functionality
+        document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#productTable tbody tr");
+
+        rows.forEach(row => {
+            let pid = row.cells[0]?.textContent.toLowerCase() || "";
+            let brand = row.cells[1]?.textContent.toLowerCase() || "";
+            let model = row.cells[2]?.textContent.toLowerCase() || "";
+
+            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
+        });
+    
+        // Reapply highlighting after search
+        setTimeout(function() {
+         highlightLowQuantity();
+        }, 0);
+    });
+
     function addItem() {
         let quantity = document.getElementById("quantity").value;
 
@@ -259,6 +282,9 @@
         };
 
         document.getElementById("transactionForm").reset();
+
+         // Update the summary after adding an item
+        updateSummary();
     }
 
     function selectRow(row) {
@@ -281,6 +307,8 @@
         if (selectedRow) {
             selectedRow.remove();
             selectedRow = null;
+
+            updateSummary();
         } else {
             alert("Please select an item to remove.");
         }
@@ -294,6 +322,33 @@
     function clearFields() {
         document.getElementById("transactionForm").reset();
     }
+
+    function updateSummary() {
+        let totalItems = 0;
+        let totalAmount = 0;
+
+        // Select all rows in the table body
+        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+            const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
+            const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent) || 0;
+        
+            totalItems += quantity;
+            totalAmount += price * quantity;
+        });
+
+        // Update the footer display
+        document.getElementById("totalItems").textContent = totalItems;
+        document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toFixed(2)}`;
+    }
+
+    function updatePaymentModal() {
+        const totalAmountText = document.getElementById('totalAmountDisplay').innerText;
+        document.getElementById('totalAmount').innerText = totalAmountText;
+    }
+
+    // Automatically update the modal when the payment modal is opened
+    const paymentModal = document.getElementById('paymentModal');
+    paymentModal.addEventListener('show.bs.modal', updatePaymentModal);
 
     function processPayment() {
         let items = document.querySelectorAll("#addedItemsTable tbody tr");
@@ -322,50 +377,51 @@
     }
 
     function confirmPayment() {
-        let totalPrice = parseInt(document.getElementById("totalAmount").innerText.replace(/[^0-9]/g, ""));
-        let cash = parseFloat(document.getElementById("cashAmount").value);
+    // Correctly parse the total amount including decimals
+    let totalPrice = parseFloat(document.getElementById("totalAmount").innerText.replace(/[^0-9.]/g, ""));
+    let cash = parseFloat(document.getElementById("cashAmount").value);
 
-        if (isNaN(cash) || cash < totalPrice) { // Allow cash equal to totalPrice
-            alert("Cash amount must be equal to or greater than the total amount.");
-            return;
-        }
-
-        let change = cash - totalPrice;
-
-        // Store transaction data before clearing the table
-        let items = [];
-        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-            let rowData = [];
-            row.querySelectorAll("td").forEach(cell => {
-                rowData.push(cell.innerText);
-            });
-            items.push(rowData);
-        });
-
-        // Store for printing later
-        window.receiptData = {
-            transactionDate: document.getElementById("transactionDate").innerText,
-            totalPrice: totalPrice,
-            cash: cash,
-            change: change,
-            items: items
-        };
-
-        // Update receipt modal
-        document.getElementById("receiptTotal").innerText = `PHP ${totalPrice}`;
-        document.getElementById("receiptCash").innerText = `PHP ${cash}`;
-        document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
-
-        // Hide payment modal & show success modal
-        let paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
-        paymentModal.hide();
-
-        let successModal = new bootstrap.Modal(document.getElementById("paymentSuccessModal"));
-        successModal.show();
-
-        // Clear the transaction only after storing data
-        voidTransaction();
+    if (isNaN(cash) || cash < totalPrice) {
+        alert("Cash amount must be equal to or greater than the total amount.");
+        return;
     }
+
+    let change = cash - totalPrice;
+
+    // Store transaction data before clearing the table
+    let items = [];
+    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+        let rowData = [];
+        row.querySelectorAll("td").forEach(cell => {
+            rowData.push(cell.innerText);
+        });
+        items.push(rowData);
+    });
+
+    // Store for printing later - FIX: Add items to receiptData
+    window.receiptData = {
+        transactionDate: document.getElementById("transactionDate").innerText,
+        totalPrice: totalPrice,
+        cash: cash,
+        change: change,
+        items: items  // Add the items array to the receiptData object
+    };
+
+    // Update receipt modal
+    document.getElementById("receiptTotal").innerText = `PHP ${totalPrice.toFixed(2)}`;
+    document.getElementById("receiptCash").innerText = `PHP ${cash.toFixed(2)}`;
+    document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+
+    // Hide payment modal & show success modal
+    let paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
+    paymentModal.hide();
+
+    let successModal = new bootstrap.Modal(document.getElementById("paymentSuccessModal"));
+    successModal.show();
+
+    // Clear the transaction only after storing data
+    voidTransaction();
+}
 
     document.addEventListener("DOMContentLoaded", function () {
         // Update transaction date
@@ -407,7 +463,6 @@
 
     let { transactionDate, totalPrice, cash, change, items } = window.receiptData;
     
-    // Generate unique transaction ID (simplified version)
     const transactionId = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     const now = new Date();
     const timeString = now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
@@ -419,76 +474,79 @@
         <title>Receipt</title>
         <meta charset="UTF-8">
         <style>
-            @page {
-                size: 80mm auto;
-                margin: 0mm;
-            }
-            body {
-                font-family: 'Courier New', monospace;
-                margin: 0;
-                padding: 5px;
-                width: 80mm;
-                font-size: 12px;
+            @page { size: 90mm auto; margin: 0; }
+            body { 
+                font-family: 'Courier New', monospace; 
+                margin: 0; 
+                padding: 5px; 
+                width: 72mm; 
+                font-size: 12px; 
                 background-color: white;
+                box-sizing: border-box;
             }
-            .receipt {
+            .receipt { 
+                width: 100%; 
+                max-width: 72mm;
+            }
+            .header { 
+                text-align: center; 
+                margin-bottom: 8px; 
                 width: 100%;
             }
-            .header {
-                text-align: center;
-                margin-bottom: 8px;
+            .store-name { 
+                font-size: 16px; 
+                font-weight: bold; 
             }
-            .store-name {
-                font-size: 16px;
-                font-weight: bold;
+            .store-info { 
+                font-size: 11px; 
+                margin-bottom: 5px; 
             }
-            .store-info {
-                font-size: 11px;
+            .divider { 
+                border-top: 1px dashed black; 
+                margin: 5px 0; 
+                width: 100%;
+            }
+            .title { 
+                text-align: center; 
+                font-weight: bold; 
+                margin: 5px 0; 
+                width: 100%;
+            }
+            .transaction-info { 
+                display: flex; 
+                justify-content: space-between; 
+                font-size: 11px; 
                 margin-bottom: 5px;
+                width: 100%; 
             }
-            .divider {
-                border-top: 1px dashed black;
-                margin: 5px 0;
+            .item { 
+                margin-bottom: 5px; 
+                font-size: 11px; 
+                width: 100%;
             }
-            .title {
-                text-align: center;
-                font-weight: bold;
-                margin: 5px 0;
+            .item-detail { 
+                display: flex; 
+                justify-content: space-between; 
+                width: 100%;
             }
-            .transaction-info {
-                display: flex;
-                justify-content: space-between;
-                font-size: 11px;
-                margin-bottom: 5px;
+            .amounts { 
+                text-align: right; 
+                margin-top: 5px; 
+                width: 100%;
             }
-            .item {
-                margin-bottom: 5px;
-                font-size: 11px;
+            .total-line { 
+                font-weight: bold; 
+                margin-top: 5px; 
             }
-            .item-detail {
-                display: flex;
-                justify-content: space-between;
+            .footer { 
+                text-align: center; 
+                margin-top: 10px; 
+                font-size: 11px; 
+                width: 100%;
             }
-            .amounts {
-                text-align: right;
-                margin-top: 5px;
-            }
-            .total-line {
-                font-weight: bold;
-                margin-top: 5px;
-            }
-            .footer {
-                text-align: center;
-                margin-top: 10px;
-                font-size: 11px;
-            }
-            @media print {
-                body {
-                    width: 80mm;
-                }
-                .no-print {
-                    display: none;
-                }
+            @media print { 
+                body { width: 90mm; } 
+                .no-print { display: none; } 
             }
         </style>
     </head>
@@ -500,13 +558,9 @@
                 <div class="store-info">Bagumbayan, Ligao City, Albay</div>
                 <div class="store-info">09234567801</div>
             </div>
-            
             <div class="divider"></div>
-            
             <div class="title">CASH RECEIPT</div>
-            
             <div class="divider"></div>
-            
             <div class="transaction-info">
                 <span>Receipt #: ${transactionId}</span>
                 <span>${timeString}</span>
@@ -514,71 +568,56 @@
             <div class="transaction-info">
                 <span>${transactionDate.replace('Date of Transaction: ', '')}</span>
             </div>
-            
             <div class="divider"></div>
-            
             <div>`;
     
-    // Calculate the longest item name to align prices
-    let longestItem = 0;
-    items.forEach(item => {
-        const length = `${item[1]} ${item[2]} ${item[3]}`.length;
-        if (length > longestItem) longestItem = length;
-    });
+                items.forEach(item => {
+    const price = parseFloat(item[5].replace(/[^0-9.]/g, ""));
+    const quantity = parseInt(item[6]);
+    const itemTotal = price * quantity;
     
-    // Add items
-    items.forEach(item => {
-        const price = parseInt(item[5].replace(/[^0-9]/g, ""));
-        const quantity = parseInt(item[6]);
-        const itemTotal = price * quantity;
-        
-        receiptContent += `
-                <div class="item">
-                    <div>${item[1]} ${item[2]} (${item[3]}, ${item[4]})</div>
-                    <div class="item-detail">
-                        <span>${quantity} x PHP ${price}</span>
-                        <span>PHP ${itemTotal}</span>
-                    </div>
-                </div>`;
-    });
-    
+    // Display only brand and model (item[1] and item[2])
+    receiptContent += `
+            <div class="item">
+                <div>${item[1]} ${item[2]}</div>
+                <div class="item-detail">
+                    <span>${quantity} x PHP ${price.toFixed(2)}</span>
+                    <span>PHP ${itemTotal.toFixed(2)}</span>
+                </div>
+            </div>`;
+});
+
+
     receiptContent += `
             </div>
-            
             <div class="divider"></div>
-            
             <div class="amounts">
-                <div class="total-line">TOTAL: PHP ${totalPrice}</div>
-                <div>CASH: PHP ${cash}</div>
+                <div class="total-line">TOTAL: PHP ${totalPrice.toFixed(2)}</div>
+                <div>CASH: PHP ${cash.toFixed(2)}</div>
                 <div>CHANGE: PHP ${change.toFixed(2)}</div>
             </div>
-            
             <div class="divider"></div>
-        
             <div class="footer">
                 <p>Thank you for shopping with us!</p>
                 <p>Please come again</p>
             </div>
-            
             <div class="divider"></div>
-            
             <div class="footer">
                 <p>Powered by ELYTRA TECH</p>
             </div>
         </div>
-        
-        <div class="no-print" style="margin-top: 20px; text-align: center;">
-            <button onclick="window.print();setTimeout(function(){window.close();}, 500);" style="padding: 10px 20px; background-color: #274C77; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Print Receipt
-            </button>
-        </div>
     </body>
     </html>`;
 
-    let newWindow = window.open("", "_blank");
+    let newWindow = window.open("", "_blank", "width=300,height=600");
     newWindow.document.write(receiptContent);
     newWindow.document.close();
-    setTimeout(() => newWindow.focus(), 100);
+
+    newWindow.onload = function() {
+        newWindow.focus();
+        newWindow.print();
+        setTimeout(() => newWindow.close(), 500);
+    };
 }
 </script>
 
