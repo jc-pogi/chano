@@ -1,101 +1,146 @@
-<!DOCTYPE html>
 {% extends "index.html" %}
 {% load static %}
 
 {% block main_contents %}
 
 <div class="container my-4">
-    <!-- Header with Product title and Search bar -->
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="m-0">Revenue</h1>
+        <h1 class="m-0">Revenue Reports</h1>
     </div>
 
-    <!-- Centered Dashboard Layout -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <div class="card p-3 shadow-sm w-100" style="height: 150px;">
-                        <h6>Total Products:</h6>
-                        <h3>82</h3>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 shadow-sm w-100" style="height: 150px;">
-                        <h6>Today's Sales</h6>
-                        <h3>XX</h3>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 shadow-sm w-100" style="height: 150px;">
-                        <h6>Top-Selling Product</h6>
-                        <h3>XX</h3>
-                    </div>
-                </div>
-            </div>
+    <!-- Product Table Section -->
+    <div class="mt-4">
+        <h3>Product Sales</h3>
+        <div class="table-container">
+            <table class="table table-hover" id="reportTable">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">HNJ</th>
+                        <td>Ewan</td>
+                        <td>Black</td>
+                        <td>10</td>
+                        <td>Php 999</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        </th>
+                        <th scope="row">EVO</td>
+                        <td>GT PRO</td>
+                        <td>Black</td>
+                        <td>10</td>
+                        <td>Php 999</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">EVO</th>
+                        <td>GT PRO</td>
+                        <td>Black</td>
+                        <td>10</td>
+                        <td>Php 999</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">SPYDER</th>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4000</td>
+                        <td>2025-01-01</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-            <!-- Product Table aligned with Dashboard -->
-            <div class="mt-4">
-                <table class="table table-hover" id="{{ table_id }}">
-                    <thead>
-                        <tr>
-                            <th scope="col">Payment</th>
-                            <th scope="col">Brand</th>
-                            <th scope="col">Model</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">Cash</th>
-                            <td>HNJ</td>
-                            <td>Ewan</td>
-                            <td>Black</td>
-                            <td>10</td>
-                            <td>Php 999</td>
-                            <td>2025-01-01</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Cash</th>
-                            <td>EVO</td>
-                            <td>GT PRO</td>
-                            <td>Black</td>
-                            <td>10</td>
-                            <td>Php 999</td>
-                            <td>2025-01-01</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">GCash</th>
-                            <td>SPYDER</td>
-                            <td>Ewan</td>
-                            <td>Red</td>
-                            <td>10</td>
-                            <td>Php 4000</td>
-                            <td>2025-01-01</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Centered Box Below the Table -->
-            <div class="d-flex justify-content-center mt-4">
-                <div class="col-md-4">
-                    <div class="card p-3 shadow-sm w-100 text-center" style="height: 150px;">
-                        <h6>Total Revenue</h6>
-                        <h3>30,000</h3>
-                    </div>
-                </div>
+    <!-- Revenue Section -->
+    <div class="d-flex justify-content-center mt-4">
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm w-100 text-center" style="height: 100px;">
+                <h6>Total Revenue</h6>
+                <h3>30,000</h3>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    #reportTable {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .table-container {
+        max-height: 320px; /* Adjust the height */
+        overflow-y: auto;
+        border: 1px solid #ddd;
+    }
 
-
-
-
+    /* Fix table header */
+    .table-container thead {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+    }
+</style>
 
 {% endblock %}
