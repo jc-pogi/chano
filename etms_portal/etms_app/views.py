@@ -28,9 +28,6 @@ def revenue(request):
 def accounts(request):
     return render(request, "accounts.html", context={"current_tab": "accounts"})
 
-
-
-
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("employee_name")  # Get username from form
