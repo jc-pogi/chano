@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
+
     <style>
       body {
         font-family: 'Poppins', sans-serif;
@@ -23,32 +24,34 @@
 
       /* Sidebar styling */
       .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #E7ECEF;
-        padding: 5px 10px;
-        overflow-y: auto;
-        z-index: 1050;
-      }
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1E2A38; /* Darker shade for contrast */
+  color: white; /* Ensures text is visible */
+  padding: 5px 10px;
+  overflow-y: auto;
+  z-index: 1050;
+}
 
-      .sidebar .nav-link {
-        color: #8B8C89;
-        font-size: 15px;
-        padding: 10px 15px;
-        border-radius: 5px;
-      }
+.sidebar .nav-link {
+  color: #B0BEC5; /* Light gray for better readability */
+  transition: all 0.3s ease-in-out; /* Smooth scaling and color transition */
+  border-radius: 8px; /* Default rounded corners */
+}
 
-      .sidebar .nav-link.active, .sidebar .nav-link:hover {
-        background-color: #274c77;
-        color: white;
-      }
+.sidebar .nav-link.active, .sidebar .nav-link:hover {
+  background-color: #274c77;
+  transform: scale(1.05);
+  border-radius: 8px; /* Default rounded corners */
+  color: white;
+}
 
       /* Main content styling */
       .main-content {
-        margin-top: 70px;
+        margin-top: 15px;
         margin-left: 250px;
         padding: 20px;
         width: 100%;
@@ -76,7 +79,7 @@
        <!-- Header Bar Elytra Tech -->
     <div class="nav-item" style="padding-bottom: 20px; padding-top: 15px; padding-left: 12px;" >
         <img src="{% static '/headline-logo.png' %}" height="40px" width="43px">
-        Elytra Technology
+        Elytra Technology 
     </div> 
 
         <li class="nav-item">
