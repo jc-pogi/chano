@@ -26,6 +26,7 @@
         width: 250px;
         height: 100vh;
         position: fixed;
+        top: 0;
         left: 0;
         background-color: #E7ECEF;
         padding: 5px 10px;
@@ -47,10 +48,21 @@
 
       /* Main content styling */
       .main-content {
-        margin-top: 80px;
+        margin-top: 70px;
+        margin-left: 250px;
         padding: 20px;
         width: 100%;
       }
+
+      /* Default state - Arrow pointing down */
+      .collapse-icon {
+          transition: transform 0.1s linear;
+        }
+        
+        /* Rotates the arrow when active */
+        .rotate {
+          transform: rotate(180deg);
+        }
 
     </style>
   </head>

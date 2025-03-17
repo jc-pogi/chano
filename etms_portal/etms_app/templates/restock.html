@@ -4,7 +4,76 @@
 
 {% block main_contents %}
 
-<div class="container my-4" >
+<style>
+
+ 
+  /* Make tables scrollable */
+  .table-container {
+    max-height: 300px;  /* Set max height for scrolling */
+    overflow-y: auto;   /* Enable vertical scroll */
+    overflow-x: auto;   /* Prevent horizontal cutoff */
+    border: 2px solid #ccc !important; /* Visible border */
+    border-radius: 5px; /* Smooth rounded corners */
+    background: white; /* Ensure white background */
+  }
+  
+  /* Ensure table takes full width */
+  .table-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Keep table header sticky */
+  .table-container thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa; /* Light background */
+    z-index: 10;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  /* Minor table border adjustments */
+  .table-bordered th, .table-bordered td {
+    border: 1px solid #aaa !important; /* Darker border for visibility */
+    padding: 8px;
+    text-align: center;
+  }
+  
+  /* Fix Bootstrap column layout */
+  @media (min-width: 768px) {
+    .col-md-8 {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+  }
+  
+  
+  /* Ensure the left-side form doesn't stretch unnecessarily */
+  .col-md-4 {
+    background-color: #dfdfdf;
+    border-radius: 5px;
+    padding: 10px;
+    height: 300px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+  }
+
+  hr {
+    margin: 5px 0; /* Adjust as needed */
+    padding: 0;
+    border: none;
+    height: 2px; /* Adjust thickness */
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+</style>
+
+<div class="container my-4" style="overflow: hidden;">
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h5 id="transactionDate" class="text-muted small"></h5>
@@ -97,7 +166,6 @@
       <h2 class="h6">Stocks</h2>  
         {% include "productTable.html" with table_id="productTable" %}
     </div>
-    <hr class="solid" style="color: white;">
     
     <div class="table-container border rounded p-2" style="background-color: #dfdfdf;">
        <h2 class="h6 mt-3">Restock Items</h2> 
