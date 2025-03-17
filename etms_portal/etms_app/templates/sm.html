@@ -4,90 +4,117 @@
 <link rel="stylesheet" href="{% static 'etms_app/design.css' %}">
 
 {% block main_contents %}
-<div class="container my-4">
+<div class="container-fluid px-2 my-3">
     <!-- Header with Product title and Search bar -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="m-0">Stock Management</h1>
+        <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Stock Management</h1>
         <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
     </div>
 
     <!-- Row container for form and table -->
-    <div class="row">
-        <!-- Left Side: Form (Smaller) -->
-        <div class="col-md-3 pe-3 me-3">
-            <form id="transactionForm">
-                {% csrf_token %}
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="product_id" class="form-label">Product ID:</label>
-                        <input type="number" id="product_id" name="product_id" class="form-control" required min="1">
+<div class="row">
+    <!-- Left Side: Form (Smaller) -->
+    <div class="col-md-4">
+        <div class="card mb-4" style="border: none; border-radius: 8px;">
+            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                <h5 class="card-title mb-0">Item Details</h5>
+            </div>
+            <div class="card-body">
+                <form id="transactionForm">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="product_id" class="form-label" style="color: #274C77; font-weight: 500;">Product ID</label>
+                            <input type="number" id="product_id" name="product_id" class="form-control" required min="1" style="border-color: #8B8C89;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="brand" class="form-label" style="color: #274C77; font-weight: 500;">Brand</label>
+                            <input type="text" id="brand" name="brand" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" style="border-color: #8B8C89;">
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="brand" class="form-label">Brand:</label>
-                        <input type="text" id="brand" name="brand" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed">
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="model" class="form-label" style="color: #274C77; font-weight: 500;">Model</label>
+                            <input type="text" id="model" name="model" class="form-control" required pattern="[A-Za-z0-9\s\-]+" title="Only letters, numbers, spaces, and hyphens allowed" style="border-color: #8B8C89;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="size" class="form-label" style="color: #274C77; font-weight: 500;">Size</label>
+                            <input type="text" id="size" name="size" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" style="border-color: #8B8C89;">
+                        </div>
                     </div>
-                </div>
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="model" class="form-label">Model:</label>
-                        <input type="text" id="model" name="model" class="form-control" required pattern="[A-Za-z0-9\s\-]+" title="Only letters, numbers, spaces, and hyphens allowed">
-
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="color" class="form-label" style="color: #274C77; font-weight: 500;">Color</label>
+                            <input type="text" id="color" name="color" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" style="border-color: #8B8C89;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="quantity" class="form-label" style="color: #274C77; font-weight: 500;">Quantity</label>
+                            <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" required style="border-color: #8B8C89;">
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="size" class="form-label">Size:</label>
-                        <input type="text" id="size" name="size" class="form-control" required pattern="[A-Za-z\s]+"  title="Only letters and spaces allowed">
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="price" class="form-label" style="color: #274C77; font-weight: 500;">Price</label>
+                            <input type="number" id="price" name="price" class="form-control" required min="1" style="border-color: #8B8C89;">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" class="btn w-100" onclick="clearForm()" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+                                <i class="fas fa-eraser me-1"></i> Clear Fields
+                            </button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="color" class="form-label">Color:</label>
-                        <input type="text" id="color" name="color" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed">
-                    </div>
-                    <div class="col">
-                        <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" required>
-                    </div>
-                </div>
-
-            
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" id="price" name="price" class="form-control" required min="1">
-                    </div>
-                    <div class="col d-flex align-items-end">
-                        <button type="button" class="btn btn-outline-dark w-100" onclick="clearForm()">Clear</button>
-                    </div>
-                </div>
-
-
-
-
+                </form>
                 
-            </form>
-
-            <!-- Buttons -->
-            <div class="row g-2 mt-4"> <!-- Increased margin-top -->
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="addItem()">Add</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="editItem()">Edit</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="openDeleteModal()">Delete</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="printInventory()">Print Inventory</button>
+                <div class="row g-2 mt-4">
+                    <div class="col-6">
+                        <button type="button" class="btn w-100" onclick="addItem()" style="background-color: #274C77; color: white;">
+                            <i class="fas fa-plus me-1"></i> Add
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn w-100" onclick="editItem()" style="background-color: #274C77; color: white;">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row g-2 mt-2">
+                    <div class="col-6">
+                        <button type="button" class="btn w-100" onclick="openDeleteModal()" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+                            <i class="fas fa-trash me-1"></i> Delete
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn w-100" onclick="printInventory()" style="background-color: #274C77; color: white;">
+                            <i class="fas fa-print me-1"></i> Print Inventory
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-
-
-        <!-- Right Side: Overview of Inventory Table -->
-        <div class="col-md-8">
-            <div class="product-table">
+    <!-- Right Side: Overview of Inventory Table (Larger) -->
+    <div class="col-md-8">
+        <div class="card mb-4" style="border: none; border-radius: 8px;">
+            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                <h5 class="card-title mb-0">Product Catalog</h5>
+            </div>
+            <div class="card-body p-0" style="max-height: 450px; overflow-y: auto;">
+                <div class="product-table">
                 {% include "productTable.html" with table_id="productTable" %}
+                </div>
             </div>
         </div>
+    </div>
+</div>
+
+
+
     </div>
 </div>
 
@@ -196,11 +223,7 @@
 
     }
 
-    .table-container {
-    max-height: 500px; /* Adjust the height */
-    overflow-y: auto;
-    border: 1px solid #ddd;
-}
+    
 
 /* Fix table header */
 .table-container thead {

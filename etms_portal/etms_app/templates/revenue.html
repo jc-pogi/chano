@@ -5,14 +5,24 @@
 
 <div class="container my-4">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="m-0">Revenue Reports</h1>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Revenue Report</h1>
+    
+        <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
+            <h5 id="transactionDate" class="text-muted small mb-0" style="color: #8B8C89 !important;">Date Today: Monday, March 17, 2025</h5>
+        </div>
     </div>
 
     <!-- Product Table Section -->
     <div class="mt-4">
         <h3>Product Sales</h3>
-        <div class="table-container">
+        <div class="card mb-4" style="border: none; border-radius: 8px;">
+            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                <h5 class="card-title mb-0">Product Catalog</h5>
+            </div>
+        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+        
+            <div class="table-container">
             <table class="table table-hover" id="reportTable">
                 <thead class="table-light">
                     <tr>
@@ -47,7 +57,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -55,7 +65,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -63,7 +73,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -71,7 +81,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -79,7 +89,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -95,7 +105,7 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
@@ -103,13 +113,14 @@
                         <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
-                        <td>Php 4000</td>
+                        <td>Php 4,000</td>
                         <td>2025-01-01</td>
                 </tbody>
             </table>
         </div>
     </div>
-
+</div>
+</div>
     <!-- Revenue Section -->
     <div class="d-flex justify-content-center mt-4">
         <div class="col-md-3">
@@ -128,11 +139,6 @@
         width: 100%;
         border-collapse: collapse;
     }
-    .table-container {
-        max-height: 320px; /* Adjust the height */
-        overflow-y: auto;
-        border: 1px solid #ddd;
-    }
 
     /* Fix table header */
     .table-container thead {
@@ -142,5 +148,21 @@
         z-index: 2;
     }
 </style>
+
+
+<script>
+
+    function updateTransactionDate() {
+        let now = new Date();
+        let formattedDate = new Intl.DateTimeFormat('en-PH', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'Asia/Manila'
+        }).format(now);
+        document.getElementById("transactionDate").innerText = "Date of Transaction: " + formattedDate;
+    }
+</script>
 
 {% endblock %}
