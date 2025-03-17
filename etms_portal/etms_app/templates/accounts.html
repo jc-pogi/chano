@@ -2,47 +2,94 @@
 {% load static %}
 
 {% block main_contents %}
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row">
-        <!-- Form Section -->
-        <div class="col-md-4">
-            <div class="card p-3">
-                <h4>Manage Accounts</h4>
-                <form id="accountForm">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control">
-                    </div>
-                    <button type="button" class="btn custom-btn" onclick="addAccount()">Add</button>
-                    <button type="button" class="btn custom-btn" onclick="updateAccount()">Update</button>
-                    <button type="button" class="btn custom-btn" onclick="showDeleteModal()">Delete</button>
-                </form>
+        <!-- User Statistics Cards -->
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h5>⚙️ Active Users</h5>
+                <h3 id="activeUsers" class="title">0</h3>
             </div>
         </div>
-        <!-- Table Section -->
-        <div class="col-md-8">
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h5>🛠 Admins</h5>
+                <h3 id="adminCount" class="title">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center">
+                <h5>👤 Total Accounts</h5>
+                <h3 id="totalAccounts" class="title">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <!-- Accounts List -->
+        <div class="col-md-12">
             <div class="card p-3">
-                <h4>Accounts List</h4>
+                <div class="d-flex justify-content-between mb-3">
+                    <h4 class="title">Accounts List</h4>
+                    <button class="btn add-account-btn" onclick="openAccountModal()">+ Add Account</button>
+                </div>
                 <input type="text" id="search" class="form-control mb-3" placeholder="Search..." onkeyup="searchAccounts()">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Username</th>
                             <th>Password</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="accountTable">
                         <!-- Dynamic content -->
                     </tbody>
-                </table>
+                </table>                
             </div>
         </div>
     </div>
 </div>
+
+<!-- Account Modal -->
+<div id="accountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Manage Account</h4>
+            <span class="close" onclick="closeAccountModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="accountForm">
+                <input type="hidden" id="editIndex">
+                
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control">
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control">
+                
+                <label for="role">Role</label>
+                <select id="role" class="form-control">
+                    <option>Admin</option>
+                    <option>Manager</option>
+                    <option>Staff</option>
+                </select>
+                
+                <label for="status">Status</label>
+                <select id="status" class="form-control">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                </select>
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn save-btn" onclick="saveAccount()">Save</button>
+                </div>                                
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- Deletion Confirmation Modal -->
 <div id="deleteModal" class="modal">
@@ -55,27 +102,15 @@
         <p>Do you really want to delete this account? This process cannot be undone.</p>
         <div class="modal-buttons">
             <button class="btn btn-cancel" onclick="closeDeleteModal()">Cancel</button>
-            <button class="btn btn-confirm" onclick="deleteAccount()">Delete</button>
+            <button class="btn btn-confirm" onclick="confirmDeleteAccount()">Delete</button>
         </div>
     </div>    
 </div>
 
 <style>
-    .custom-btn {
-        background-color: #274C77;
-        color: white;
-        border: none;
-    }
-    .custom-btn:hover {
-        background-color: #E7ECEF;
+    .title {
         color: #274C77;
-    }
-    .selected-row {
-        background-color: #D3D3D3 !important;
-    }
-    tr:hover {
-        background-color: #D3D3D3;
-        cursor: pointer;
+        font-weight: bold;
     }
 
     .custom-icon {
@@ -94,7 +129,23 @@
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.4);
     }
-    
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-body {
+        text-align: left;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+ 
     .modal-content {
         background-color: white;
         margin: 15% auto;
@@ -103,23 +154,6 @@
         width: 350px;
         text-align: center;
         border-radius: 10px;
-    }
-
-    .modal-icon {
-        width: 60px;
-        margin-bottom: 20px;
-    }
-
-    h2 {
-        margin-top: 10px;
-        margin-bottom: 15px; 
-        font-size: 22px;
-    }
-
-    p {
-        font-size: 14px;
-        margin-bottom: 25px;
-        line-height: 1.6;
     }
 
     .close-container {
@@ -142,10 +176,10 @@
     }
     
     .modal-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 20px;
     }
 
     .btn-cancel {
@@ -163,81 +197,152 @@
         padding: 10px 20px;
         flex: 1;
         font-size: 14px;
-}
+    }
+
+    .save-btn {
+        background-color: #274C77 !important;
+        color: white !important;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .save-btn:hover {
+        background-color: #1e3a5f !important; /* Darker shade on hover */
+    }
+
+    .add-account-btn {
+        background-color: #274C77 !important;
+        color: white !important;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .add-account-btn:hover {
+        background-color: #1e3a5f !important;
+    }
 
 </style>
 
 <script>
-    let accounts = [];
-    let selectedAccount = null;
+    let accounts = [
+        { username: "admin", password: "admin", role: "Admin", status: "Active", lastLogin: "2025-03-18" },
+        { username: "Saerelety", password: "1234", role: "Manager", status: "Active", lastLogin: "2025-03-16" },
+        { username: "Camille", password: "abcd", role: "Manager", status: "Active", lastLogin: "2025-03-15" },
+        { username: "Niño", password: "pass1", role: "Manager", status: "Active", lastLogin: "2025-03-15" },
+        { username: "JC", password: "pogi123", role: "Manager", status: "Active", lastLogin: "2025-03-14" },
+        { username: "Dominique", password: "siopao<3", role: "Manager", status: "Inactive", lastLogin: "2025-03-10" },
+    ];
 
-    function addAccount() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    function openAccountModal(index = null) {
+        if (index !== null) {
+            document.getElementById("editIndex").value = index;
+            document.getElementById("username").value = accounts[index].username;
+            document.getElementById("password").value = accounts[index].password;
+            document.getElementById("role").value = accounts[index].role;
+            document.getElementById("status").value = accounts[index].status;
+        } else {
+            document.getElementById("editIndex").value = "";
+            document.getElementById("accountForm").reset();
+        }
+        document.getElementById("accountModal").style.display = "block";
+    }
+
+    function closeAccountModal() {
+        document.getElementById("accountModal").style.display = "none";
+    }
+
+    function saveAccount() {
+        const index = document.getElementById("editIndex").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const role = document.getElementById("role").value;
+        const status = document.getElementById("status").value;
+
         if (username && password) {
-            accounts.push({ username, password });
+            if (index !== "") {
+                accounts[index] = { username, password, role, status, lastLogin: accounts[index].lastLogin };
+            } else {
+                accounts.push({ username, password, role, status, lastLogin: "Never" });
+            }
             updateTable();
-            clearForm();
+            closeAccountModal();
         }
     }
 
-    function showDeleteModal() {
-        if (selectedAccount) {
-            document.getElementById('deleteModal').style.display = 'block';
-        }
+    let deleteIndex = null;
+
+    function openDeleteModal(index) {
+        deleteIndex = index;
+        document.getElementById("deleteModal").style.display = "block";
     }
 
     function closeDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'none';
+        deleteIndex = null;
+        document.getElementById("deleteModal").style.display = "none";
     }
 
-    function deleteAccount() {
-        if (selectedAccount) {
-            accounts = accounts.filter(acc => acc.username !== selectedAccount.username);
+    function confirmDeleteAccount() {
+        if (deleteIndex !== null) {
+            accounts.splice(deleteIndex, 1);
             updateTable();
-            clearForm();
-            closeDeleteModal();
         }
-    }
-
-    function updateAccount() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        if (selectedAccount && username && password) {
-            accounts = accounts.map(acc => acc.username === selectedAccount.username ? { username, password } : acc);
-            updateTable();
-            clearForm();
-        }
+        closeDeleteModal();
     }
 
     function updateTable() {
-        const table = document.getElementById('accountTable');
-        table.innerHTML = '';
-        accounts.forEach(acc => {
-            table.innerHTML += `<tr onclick="selectAccount('${acc.username}')" class="${selectedAccount && selectedAccount.username === acc.username ? 'selected-row' : ''}"><td>${acc.username}</td><td>${acc.password}</td></tr>`;
+        const table = document.getElementById("accountTable");
+        table.innerHTML = "";
+        accounts.forEach((acc, index) => {
+            table.innerHTML += `
+                <tr>
+                    <td>${acc.username}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-light border-0 me-2" onclick="togglePassword(${index})">
+                                👁
+                            </button>
+                            <span id="password-${index}">****</span>
+                        </div>
+                    </td>
+                    <td>${acc.role}</td>
+                    <td>${acc.status}</td>
+                    <td>${acc.lastLogin}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="openAccountModal(${index})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${index})">Delete</button>
+                    </td>
+                </tr>`;
         });
+        document.getElementById("totalAccounts").innerText = accounts.length;
+        document.getElementById("activeUsers").innerText = accounts.filter(a => a.status === "Active").length;
+        document.getElementById("adminCount").innerText = accounts.filter(a => a.role === "Admin").length;
     }
 
-    function selectAccount(username) {
-        selectedAccount = accounts.find(acc => acc.username === username);
-        document.getElementById('username').value = selectedAccount.username;
-        document.getElementById('password').value = selectedAccount.password;
-        updateTable();
+    function togglePassword(index) {
+        const passwordSpan = document.getElementById(`password-${index}`);
+        if (passwordSpan.innerText === "****") {
+            passwordSpan.innerText = accounts[index].password; //for local display lang
+        } else {
+            passwordSpan.innerText = "****";
+        }
     }
 
     function searchAccounts() {
-        const query = document.getElementById('search').value.toLowerCase();
+        const query = document.getElementById("search").value.toLowerCase();
         document.querySelectorAll('#accountTable tr').forEach(row => {
             row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
         });
     }
 
-    function clearForm() {
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        selectedAccount = null;
-        updateTable();
-    }
+    updateTable();
 </script>
 
 {% endblock %}
