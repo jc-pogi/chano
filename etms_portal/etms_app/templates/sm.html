@@ -75,7 +75,8 @@
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="addItem()">Add</button></div>
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="editItem()">Edit</button></div>
                 <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="openDeleteModal()">Delete</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="printInventory()">Print Inventory</button></div>
+                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="printInventory()">Print Inventory</button>
+                </div>
             </div>
         </div>
 
@@ -194,6 +195,30 @@
         font-size: 14px;
 
     }
+
+    .table-container {
+    max-height: 500px; /* Adjust the height */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+/* Fix table header */
+.table-container thead {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+}
+
+/* Optional: Adjust padding */
+th:first-child, td:first-child {
+    display: none;
+}
+
+table td, table th {
+    padding: 15px 10px;
+}
+
     </style>
 
 
@@ -201,253 +226,242 @@
 
 <!------------------------------------------------ JavaScript ------------------------------------------------------------------------>
 <script>
-    let selectedRow = null;
+   let selectedRow = null;
 
-    // Function to add an item to the table
-    function addItem() {
-            let productID = document.getElementById("product_id").value.trim();
-            let brand = document.getElementById("brand").value.trim();
-            let model = document.getElementById("model").value.trim();
-            let size = document.getElementById("size").value.trim();
-            let color = document.getElementById("color").value.trim();
-            let price = document.getElementById("price").value.trim();
-            let quantity = document.getElementById("quantity").value.trim();
-
-            // Check if any field is empty
-            if (!productID || !brand || !model || !size || !color || !price || !quantity) {
-                alert("Please fill up all text fields.");
-                return;
+function highlightLowQuantity() {
+    let table = document.getElementById("productTable");
+    if (!table) return;
+    
+    let tbody = table.getElementsByTagName("tbody")[0];
+    if (!tbody) return;
+    
+    let rows = tbody.getElementsByTagName("tr");
+    
+    for (let i = 0; i < rows.length; i++) {
+        let quantityCell = rows[i].cells[6]; // Assuming quantity is in the 7th column (index 6)
+        if (!quantityCell) continue;
+        
+        let quantity = parseInt(quantityCell.textContent);
+        
+        if (quantity <= 3) {
+            // Apply inline styles directly to each cell in the row
+            for (let j = 0; j < rows[i].cells.length; j++) {
+                rows[i].cells[j].setAttribute("style", "background-color: #ff0000 !important; color: #000000 !important; font-weight: bold !important;");
             }
-
-            // Regular expressions for validation
-            let brandRegex = /^[A-Za-z\s]+$/;
-            let modelRegex = /^[A-Za-z0-9\s-]+$/;
-            let sizeRegex = /^[A-Za-z\s]+$/;
-            let charRegex = /^[A-Za-z\s-]+$/;
-            let intRegex = /^[0-9]+$/;
-
-            // Validate inputs and show separate error messages
-            if (!intRegex.test(productID) || parseInt(productID) < 1) {
-                alert("Invalid input detected. Product ID should contain only numbers.");
-                return;
+        } else {
+            // Remove inline styles
+            for (let j = 0; j < rows[i].cells.length; j++) {
+                rows[i].cells[j].removeAttribute("style");
             }
+        }
+    }
+}
 
-            if (!brandRegex.test(brand)) {
-                alert("Invalid input detected. Brand should contain only letters and spaces.");
-                return;
-            }
+// Function to format price with PHP and thousands separators
+function formatPrice(price) {
+    return "PHP " + parseInt(price).toLocaleString();
+}
 
-            if (!modelRegex.test(model)) {
-                alert("Invalid input detected. Model should contain only letters, numbers, spaces, and hyphens (-).");
-                return;
-            }
+// Function to extract numeric value from formatted price
+function extractPrice(formattedPrice) {
+    return formattedPrice.replace(/[^\d]/g, '');
+}
 
-            if (!sizeRegex.test(size)) {
-                alert("Invalid input detected. Size should contain only letters and spaces.");
-                return;
-            }
-
-            if (!charRegex.test(color)) {
-                alert("Invalid input detected. Color should contain only letters, spaces, and hyphens (-).");
-                return;
-            }
-
-            if (!intRegex.test(price) || parseInt(price) < 1) {
-                alert("Invalid input detected. Price should contain only numbers.");
-                return;
-            }
-
-            if (!intRegex.test(quantity) || parseInt(quantity) < 1) {
-                alert("Invalid input detected. Quantity should contain only numbers.");
-                return;
-            }
-
-            // Check if Product ID already exists
-            let table = document.getElementById("productTable").getElementsByTagName("tbody")[0];
-            let rows = table.getElementsByTagName("tr");
-
-            for (let row of rows) {
-                let existingProductID = row.cells[0].textContent.trim();
-                if (existingProductID === productID) {
-                    alert("Product ID already exists. Please use Edit instead.");
-                    return;
+// Call the function when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+    highlightLowQuantity();
+    
+    // Format existing prices in the table
+    let table = document.getElementById("productTable");
+    if (table) {
+        let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let priceCell = rows[i].cells[5]; // Assuming price is in the 6th column (index 5)
+            if (priceCell) {
+                let rawPrice = priceCell.textContent;
+                if (!rawPrice.includes("PHP")) {
+                    priceCell.textContent = formatPrice(rawPrice);
                 }
             }
-
-            // Insert new row
-            let newRow = table.insertRow();
-            newRow.insertCell(0).innerHTML = productID;
-            newRow.insertCell(1).innerHTML = brand;
-            newRow.insertCell(2).innerHTML = model;
-            newRow.insertCell(3).innerHTML = size;
-            newRow.insertCell(4).innerHTML = color;
-            newRow.insertCell(5).innerHTML = price;
-            newRow.insertCell(6).innerHTML = quantity;
-
-            // Clear input fields
-            document.getElementById("transactionForm").reset();
         }
+    }
+    
+    // Add PHP prefix to price input field
+    let priceInput = document.getElementById("price");
+    if (priceInput) {
+        priceInput.placeholder = "PHP";
+    }
+});
 
-    // Function to populate form fields when a row is clicked
-    document.addEventListener("DOMContentLoaded", function () {
-        let table = document.getElementById("productTable");
-        if (table) {
-            table.addEventListener("click", function (e) {
-                let targetRow = e.target.closest("tr"); // Get clicked row
-                if (!targetRow || targetRow.rowIndex === 0) return; // Ignore header row
+// Function to add an item to the table
+function addItem() {
+    let productID = document.getElementById("product_id").value.trim();
+    let brand = document.getElementById("brand").value.trim();
+    let model = document.getElementById("model").value.trim();
+    let size = document.getElementById("size").value.trim();
+    let color = document.getElementById("color").value.trim();
+    let price = document.getElementById("price").value.trim();
+    let quantity = document.getElementById("quantity").value.trim();
 
-                selectedRow = targetRow;
+    // Check if any field is empty
+    if (!productID || !brand || !model || !size || !color || !price || !quantity) {
+        alert("Please fill up all text fields.");
+        return;
+    }
 
-                document.getElementById("product_id").value = targetRow.cells[0].textContent;
-                document.getElementById("brand").value = targetRow.cells[1].textContent;
-                document.getElementById("model").value = targetRow.cells[2].textContent;
-                document.getElementById("size").value = targetRow.cells[3].textContent;
-                document.getElementById("color").value = targetRow.cells[4].textContent;
-                document.getElementById("price").value = targetRow.cells[5].textContent;
-                document.getElementById("quantity").value = targetRow.cells[6].textContent;
-            });
-        }
-    });
+    // Regular expressions for validation
+    let brandRegex = /^[A-Za-z\s]+$/;
+    let modelRegex = /^[A-Za-z0-9\s-]+$/;
+    let sizeRegex = /^[A-Za-z\s]+$/;
+    let charRegex = /^[A-Za-z\s-]+$/;
+    let intRegex = /^[0-9]+$/;
 
-    // Function to edit and update the row
-    function editItem() {
-        if (!selectedRow) {
-            alert("Please select a row to edit.");
+    // Validate inputs and show separate error messages
+    if (!intRegex.test(productID) || parseInt(productID) < 1) {
+        alert("Invalid input detected. Product ID should contain only numbers.");
+        return;
+    }
+
+    if (!brandRegex.test(brand)) {
+        alert("Invalid input detected. Brand should contain only letters and spaces.");
+        return;
+    }
+
+    if (!modelRegex.test(model)) {
+        alert("Invalid input detected. Model should contain only letters, numbers, spaces, and hyphens (-).");
+        return;
+    }
+
+    if (!sizeRegex.test(size)) {
+        alert("Invalid input detected. Size should contain only letters and spaces.");
+        return;
+    }
+
+    if (!charRegex.test(color)) {
+        alert("Invalid input detected. Color should contain only letters, spaces, and hyphens (-).");
+        return;
+    }
+
+    // Extract numeric value from price for validation
+    let numericPrice = extractPrice(price);
+    if (!intRegex.test(numericPrice) || parseInt(numericPrice) < 1) {
+        alert("Invalid input detected. Price should contain only numbers.");
+        return;
+    }
+
+    if (!intRegex.test(quantity) || parseInt(quantity) < 1) {
+        alert("Invalid input detected. Quantity should contain only numbers.");
+        return;
+    }
+
+    // Check if Product ID already exists
+    let table = document.getElementById("productTable").getElementsByTagName("tbody")[0];
+    let rows = table.getElementsByTagName("tr");
+
+    for (let row of rows) {
+        let existingProductID = row.cells[0].textContent.trim();
+        if (existingProductID === productID) {
+            alert("Product ID already exists. Please use Edit instead.");
             return;
         }
-
-        selectedRow.cells[0].textContent = document.getElementById("product_id").value;
-        selectedRow.cells[1].textContent = document.getElementById("brand").value;
-        selectedRow.cells[2].textContent = document.getElementById("model").value;
-        selectedRow.cells[3].textContent = document.getElementById("size").value;
-        selectedRow.cells[4].textContent = document.getElementById("color").value;
-        selectedRow.cells[5].textContent = document.getElementById("price").value;
-        selectedRow.cells[6].textContent = document.getElementById("quantity").value;
-
-        // Clear form and reset selection
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
     }
 
-    // Function to delete the selected row
-    function deleteItem() {
-        if (!selectedRow) {
-            alert("Please select a row to delete.");
-            return;
-        }
+    // Insert new row
+    let newRow = table.insertRow();
+    newRow.insertCell(0).innerHTML = productID;
+    newRow.insertCell(1).innerHTML = brand;
+    newRow.insertCell(2).innerHTML = model;
+    newRow.insertCell(3).innerHTML = size;
+    newRow.insertCell(4).innerHTML = color;
+    newRow.insertCell(5).innerHTML = formatPrice(numericPrice);
+    newRow.insertCell(6).innerHTML = quantity;
 
-        // Remove the selected row from the table
-        selectedRow.remove();
+    // Highlight low quantity rows
+    setTimeout(function() {
+        highlightLowQuantity();
+    }, 0);
 
-        // Clear form and reset selection
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
+    // Clear input fields
+    document.getElementById("transactionForm").reset();
+}
 
-    // Function to clear the form fields and reset selection
-    function clearForm() {
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
+// Function to populate form fields when a row is clicked
+document.addEventListener("DOMContentLoaded", function () {
+    let table = document.getElementById("productTable");
+    if (table) {
+        table.addEventListener("click", function (e) {
+            let targetRow = e.target.closest("tr"); // Get clicked row
+            if (!targetRow || targetRow.rowIndex === 0) return; // Ignore header row
 
-    // Search functionality
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-        let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#productTable tbody tr");
+            selectedRow = targetRow;
 
-        rows.forEach(row => {
-            let pid = row.cells[0]?.textContent.toLowerCase() || "";
-            let brand = row.cells[1]?.textContent.toLowerCase() || "";
-            let model = row.cells[2]?.textContent.toLowerCase() || "";
-
-            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
+            document.getElementById("product_id").value = targetRow.cells[0].textContent;
+            document.getElementById("brand").value = targetRow.cells[1].textContent;
+            document.getElementById("model").value = targetRow.cells[2].textContent;
+            document.getElementById("size").value = targetRow.cells[3].textContent;
+            document.getElementById("color").value = targetRow.cells[4].textContent;
+            // Extract numeric value from formatted price
+            document.getElementById("price").value = extractPrice(targetRow.cells[5].textContent);
+            document.getElementById("quantity").value = targetRow.cells[6].textContent;
         });
+    }
+});
+
+// Function to edit and update the row
+function editItem() {
+    if (!selectedRow) {
+        alert("Please select a row to edit.");
+        return;
+    }
+
+    let price = document.getElementById("price").value.trim();
+    let numericPrice = extractPrice(price);
+
+    // Update the row with new values
+    selectedRow.cells[0].textContent = document.getElementById("product_id").value;
+    selectedRow.cells[1].textContent = document.getElementById("brand").value;
+    selectedRow.cells[2].textContent = document.getElementById("model").value;
+    selectedRow.cells[3].textContent = document.getElementById("size").value;
+    selectedRow.cells[4].textContent = document.getElementById("color").value;
+    selectedRow.cells[5].textContent = formatPrice(numericPrice);
+    selectedRow.cells[6].textContent = document.getElementById("quantity").value;
+
+    // Use setTimeout to ensure DOM is updated before highlighting
+    setTimeout(function() {
+        highlightLowQuantity();
+    }, 0);
+
+    // Clear form and reset selection
+    document.getElementById("transactionForm").reset();
+    selectedRow = null;
+}
+
+// Function to clear form fields
+function clearForm() {
+    document.getElementById("transactionForm").reset();
+    selectedRow = null;
+}
+
+// Search functionality
+document.getElementById("searchInput").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#productTable tbody tr");
+
+    rows.forEach(row => {
+        let pid = row.cells[0]?.textContent.toLowerCase() || "";
+        let brand = row.cells[1]?.textContent.toLowerCase() || "";
+        let model = row.cells[2]?.textContent.toLowerCase() || "";
+
+        row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
     });
+    
+    // Reapply highlighting after search
+    setTimeout(function() {
+        highlightLowQuantity();
+    }, 0);
+});
 
-
-
-    // Function to populate form fields when a row is clicked
-    document.addEventListener("DOMContentLoaded", function () {
-        let table = document.getElementById("productTable");
-        if (table) {
-            table.addEventListener("click", function (e) {
-                let targetRow = e.target.closest("tr"); // Get clicked row
-                if (!targetRow || targetRow.rowIndex === 0) return; // Ignore header row
-
-                selectedRow = targetRow;
-
-                document.getElementById("product_id").value = targetRow.cells[0].textContent;
-                document.getElementById("brand").value = targetRow.cells[1].textContent;
-                document.getElementById("model").value = targetRow.cells[2].textContent;
-                document.getElementById("size").value = targetRow.cells[3].textContent;
-                document.getElementById("color").value = targetRow.cells[4].textContent;
-                document.getElementById("price").value = targetRow.cells[5].textContent;
-                document.getElementById("quantity").value = targetRow.cells[6].textContent;
-            });
-        }
-    });
-
-    // Function to edit and update the row
-    function editItem() {
-        if (!selectedRow) {
-            alert("Please select a row to edit.");
-            return;
-        }
-
-        selectedRow.cells[0].textContent = document.getElementById("product_id").value;
-        selectedRow.cells[1].textContent = document.getElementById("brand").value;
-        selectedRow.cells[2].textContent = document.getElementById("model").value;
-        selectedRow.cells[3].textContent = document.getElementById("size").value;
-        selectedRow.cells[4].textContent = document.getElementById("color").value;
-        selectedRow.cells[5].textContent = document.getElementById("price").value;
-        selectedRow.cells[6].textContent = document.getElementById("quantity").value;
-
-        // Clear form and reset selection
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
-
-    // Function to clear form fields
-    function clearForm() {
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
-
-    // Search functionality
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-        let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#productTable tbody tr");
-
-        rows.forEach(row => {
-            let pid = row.cells[0]?.textContent.toLowerCase() || "";
-            let brand = row.cells[1]?.textContent.toLowerCase() || "";
-            let model = row.cells[2]?.textContent.toLowerCase() || "";
-
-            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
-        });
-    });
-    // Function to delete the selected row
-    function deleteItem() {
-        if (!selectedRow) {
-            alert("Please select a row to delete.");
-            return;
-        }
-
-        // Remove the selected row from the table
-        selectedRow.remove();
-
-        // Clear form and reset selection
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
-
-    // Function to clear the form fields and reset selection
-    function clearForm() {
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-    }
-
-    function openDeleteModal() {
+function openDeleteModal() {
     if (!selectedRow) {
         alert("Please select a row to delete.");
         return;
@@ -460,22 +474,77 @@ function closeDeleteModal() {
     document.getElementById("deleteModal").style.display = "none";
 }
 
-    // Function to delete the selected row after confirmation
-    function deleteAccount() {
-        if (!selectedRow) {
-            alert("No item selected.");
-            return;
-        }
-        
-        selectedRow.remove();
-        
-        // Clear form and reset selection
-        document.getElementById("transactionForm").reset();
-        selectedRow = null;
-
-        // Close the modal
-        closeDeleteModal();
+// Function to delete the selected row after confirmation
+function deleteAccount() {
+    if (!selectedRow) {
+        alert("No item selected.");
+        return;
     }
+    
+    selectedRow.remove();
+    
+    // Clear form and reset selection
+    document.getElementById("transactionForm").reset();
+    selectedRow = null;
+    
+    // Highlight rows after deletion
+    setTimeout(function() {
+        highlightLowQuantity();
+    }, 0);
+
+    // Close the modal
+    closeDeleteModal();
+}
+
+function printInventory() {
+    let printContents = document.querySelector(".product-table").outerHTML;
+    let originalTitle = document.title;
+
+    let printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>ElytraTech</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    border: 1px solid black;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                @media print {
+                    body {
+                        margin: 20px;
+                    }
+                    .no-print {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <h2>ElytraTech Inventory Report</h2>
+            ${printContents}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+
+
+
 
 
 

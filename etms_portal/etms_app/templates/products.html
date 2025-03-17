@@ -3,14 +3,14 @@
 {% load static %}
 
 {% block main_contents %}
-<div class="container my-4">
+<div class="container">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="m-0">Products</h1>
     </div>
 
     <div class="container my-0 d-flex">
         <!-- Sidebar Filter (Separate Container) -->
-        <div class="filter-container" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 100vh;">
+        <div class="filter-container" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 0vh;">
             <h2 style="font-size: 25px; ">
                 <!--I will put icon here-->  Search Filters
             </h2>
@@ -79,14 +79,49 @@
             </div>
         </div>
 
-        <!-- Product Table (Separate Container) -->
-        <div class="product-container flex-grow-1 ps-3" style="background-color: #6096BA; padding: 17px; height: fit-content; border-radius: 15px;">
+
+        
+        <div class="product-container ps-3" style="background-color: transparent; padding: 0px; border-radius: 10px; margin: 0px auto; width: 78%; box-sizing: border-box;">
             {% include "productTable.html" with table_id="productTable" %}
         </div>
+        
+        
+        
+        
     </div>
 </div>
 
+<style>
+    #productTable {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-collapse: collapse; /* Ensures no extra spacing between table rows */
+}
+.table-container {
+    max-height: 550px; /* Adjust the height */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
 
+/* Fix table header */
+.table-container thead {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+}
+
+/* Optional: Adjust padding */
+th:first-child, td:first-child {
+    display: none;
+}
+
+table td, table th {
+    padding: 15px 10px;
+}
+
+</style>
 
 <script>
     function applyFilters() {
