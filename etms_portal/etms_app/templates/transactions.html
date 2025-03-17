@@ -3,114 +3,176 @@
 {% load static %}
 
 {% block main_contents %}
-<div class="container my-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-3">Transactions</h1>
-        <div>
-            <h5 id="transactionDate" class="text-muted small"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3 pe-3 me-3">
-            <form id="transactionForm">
-                {% csrf_token %}
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="product_id" class="form-label">Product ID:</label>
-                        <input type="text" id="product_id" name="product_id" class="form-control" required>
-                    </div>
-                    <div class="col">
-                        <label for="brand" class="form-label">Brand:</label>
-                        <input type="text" id="brand" name="brand" class="form-control" required>
-                    </div>
+<div class="container-fluid px-2 my-3">
+    <div class="card" style="border: none; background-color: #ffffffe6; border-radius: 8px;">
+        <div class="card-body px-3 pt-1">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Transactions</h1>
+                <div>
+                    <h5 id="transactionDate" class="text-muted small" style="color: #8B8C89 !important;"></h5>
                 </div>
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="model" class="form-label">Model:</label>
-                        <input type="text" id="model" name="model" class="form-control" required>
-                    </div>
-                    <div class="col">
-                        <label for="size" class="form-label">Size:</label>
-                        <input type="text" id="size" name="size" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="row g-2 mb-2">
-                    <div class="col">
-                        <label for="color" class="form-label">Color:</label>
-                        <input type="text" id="color" name="color" class="form-control" required>
-                    </div>
-                    <div class="col">
-                        <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control" value="0" min="0" required>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price:</label>
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <input type="text" id="price" name="price" class="form-control" required>
-                        </div>
-                        <div class="col-6">
-                            <button type="button" class="btn btn-outline-dark w-100" onclick="clearFields()">Clear</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <div class="row g-2 mt-3">
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="addItem()">Add Item</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="removeItem()">Remove Item</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="voidTransaction()">Void</button></div>
-                <div class="col-6"><button type="button" class="btn btn-outline-dark w-100" onclick="processPayment()">Pay</button></div>
             </div>
-        </div>
 
-        <div class="col-md-8">
+            <div class="row">
+                <!-- Left Panel: Form -->
+                <div class="col-md-4">
+                    <div class="card mb-4" style="border: none; border-radius: 8px;">
+                        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                            <h5 class="card-title mb-0">Item Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="transactionForm">
+                                {% csrf_token %}
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="brand" class="form-label" style="color: #274C77; font-weight: 500;">Brand</label>
+                                        <input type="text" id="brand" name="brand" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="model" class="form-label" style="color: #274C77; font-weight: 500;">Model</label>
+                                        <input type="text" id="model" name="model" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="size" class="form-label" style="color: #274C77; font-weight: 500;">Size</label>
+                                        <input type="text" id="size" name="size" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="color" class="form-label" style="color: #274C77; font-weight: 500;">Color</label>
+                                        <input type="text" id="color" name="color" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="quantity" class="form-label" style="color: #274C77; font-weight: 500;">Quantity</label>
+                                        <input type="number" id="quantity" name="quantity" class="form-control" value="0" min="0" required style="border-color: #8B8C89;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="price" class="form-label" style="color: #274C77; font-weight: 500;">Price</label>
+                                        <input type="text" id="price" name="price" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn mb-3 mx-auto" onclick="clearFields()" style="width: 200px; background-color: #eceaea; color: rgb(33, 33, 33); display: block;">
+                                    <i class="fas fa-eraser me-1"></i> Clear Fields
+                                </button>
+                                
+                            </form>
+
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button type="button" class="btn w-100" onclick="addItem()" style="background-color: #274C77; color: white;">
+                                        <i class="fas fa-plus me-1"></i> Add
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn w-100" onclick="removeItem()" style="background-color: #274C77; color: white;">
+                                        <i class="fas fa-minus me-1"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-2 mt-2">
+                                <div class="col-6">
+                                    <button type="button" class="btn w-100" onclick="voidTransaction()" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+                                        <i class="fas fa-ban me-1"></i> Void
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn w-100" onclick="processPayment()" style="background-color: #274C77; color: white;">
+                                        <i class="fas fa-cash-register me-1"></i> Pay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Tables -->
+                <div class="col-md-8">
+    <!-- Products Table -->
+    <div class="card mb-4" style="border: none; border-radius: 8px;">
+        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+            <h5 class="card-title mb-0">Product Catalog</h5>
+        </div>
+        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
             <div class="product-table">
                 {% include "productTable.html" with table_id="productTable" %}
             </div>
-
-            <div class="mt-4">
-                <h2 class="h6">Added Items</h2>
-                <table class="table table-bordered" id="addedItemsTable">
-                    <thead>
-                        <tr>
-                            <th>PID</th>
-                            <th>Brand</th>
-                            <th>Model</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 
-      <!-- Payment Modal -->
+    <!-- Added Items Table -->
+    <div class="card" style="border: none; border-radius: 8px;">
+        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+            <h5 class="card-title mb-0">Current Transaction</h5>
+        </div>
+        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-hover mb-0" id="addedItemsTable">
+                <thead style="position: sticky; top: 0; background-color: #274C77; color: white;">
+                    <tr>
+                        <th>PID</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Size</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items will be added here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
+            <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">PHP 0.00</span></span>
+        </div>
+    </div>
+
+<!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Enter Payment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+                <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Total: <strong id="totalAmount">PHP 0</strong></p>
-                <label for="cashAmount" class="form-label">Enter Cash Amount:</label>
-                <input type="number" id="cashAmount" class="form-control" min="0">
+                <div class="mb-4 p-3 rounded">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <span class="fs-5">Total Amount:</span>
+                        </div>
+                        <div class="col-6 text-end">
+                            <span class="fs-5 fw-bold" id="totalAmount">PHP 0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="cashAmount" class="form-label" style="color: #274C77; font-weight: 500;">Cash Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-text">PHP</span>
+                        <input type="number" id="cashAmount" class="form-control form-control-lg" min="0" step="0.01">
+                    </div>
+                </div>
+                
+                <div class="mb-3" id="changeContainer" style="display: none;">
+                    <label class="form-label" style="color: #274C77; font-weight: 500;">Change</label>
+                    <div class="input-group">
+                        <span class="input-group-text">PHP</span>
+                        <input type="text" id="changeAmount" class="form-control form-control-lg" readonly>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-white" style="background-color: #274C77; max-width: 200px;" onclick="confirmPayment()">Confirm Payment</button>
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eceaea; color: rgb(33, 33, 33);">Cancel</button>
+                <button type="button" class="btn" onclick="confirmPayment()" style="background-color: #274C77; color: white;">Confirm Payment</button>
             </div>
         </div>
     </div>
@@ -120,24 +182,39 @@
 <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #eceaea; color: rgb(33, 33, 33);">
                 <h5 class="modal-title" id="paymentSuccessModalLabel">Payment Successful</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Payment Completed Successfully!</strong></p>
-                <p>Total: <span id="receiptTotal"></span></p>
-                <p>Cash: <span id="receiptCash"></span></p>
-                <p>Change: <span id="receiptChange"></span></p>
+                <div class="text-center mb-3">
+                    <i class="fas fa-check-circle text-success" style="font-size: 48px;"></i>
+                    <h4 class="mt-2">Payment Completed Successfully!</h4>
+                </div>
+                
+                <div class="p-3 rounded">
+                    <div class="row mb-2">
+                        <div class="col-6">Total:</div>
+                        <div class="col-6 text-end fw-bold" id="receiptTotal">PHP 0.00</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Cash:</div>
+                        <div class="col-6 text-end" id="receiptCash">PHP 0.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">Change:</div>
+                        <div class="col-6 text-end" id="receiptChange">PHP 0.00</div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn text-white" style="background-color: #274C77;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn text-white" style="background-color: #274C77;" id="printReceiptBtn">Print Receipt</button>
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eceaea; color: rgb(33, 33, 33);">Close</button>
+                <button type="button" class="btn" id="printReceiptBtn" style="background-color: #274C77; color: white;">
+                    <i class="fas fa-print me-1"></i> Print Receipt
+                </button>
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 <script>
@@ -166,9 +243,14 @@
         let table = document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0];
         let newRow = table.insertRow();
 
-        let fields = ["product_id", "brand", "model", "size", "color", "price", "quantity"];
-        fields.forEach((field, index) => {
-            let cell = newRow.insertCell(index);
+        // Add a placeholder for PID (hidden column)
+        let pidCell = newRow.insertCell(0);
+        pidCell.innerHTML = "AUTO"; // Or whatever placeholder you want
+
+        // Add the visible fields
+        let fields = ["brand", "model", "size", "color", "price", "quantity"];
+        fields.forEach((field) => {
+            let cell = newRow.insertCell();
             cell.innerHTML = document.getElementById(field).value;
         });
 
@@ -186,11 +268,13 @@
         selectedRow = row;
         selectedRow.classList.add("table-active");
 
-        // Populate form fields with selected row data
-        let fields = ["product_id", "brand", "model", "size", "color", "price", "quantity"];
-        for (let i = 0; i < fields.length; i++) {
-            document.getElementById(fields[i]).value = row.cells[i].innerText;
-        }
+        // Populate form fields with selected row data - adjusted for hidden PID
+        document.getElementById("brand").value = row.cells[1].innerText;
+        document.getElementById("model").value = row.cells[2].innerText;
+        document.getElementById("size").value = row.cells[3].innerText;
+        document.getElementById("color").value = row.cells[4].innerText;
+        document.getElementById("price").value = row.cells[5].innerText;
+        document.getElementById("quantity").value = row.cells[6].innerText;
     }
 
     function removeItem() {
@@ -211,173 +295,291 @@
         document.getElementById("transactionForm").reset();
     }
 
-
     function processPayment() {
-    let items = document.querySelectorAll("#addedItemsTable tbody tr");
+        let items = document.querySelectorAll("#addedItemsTable tbody tr");
 
-    if (items.length === 0) {
-        alert("No items to process payment.");
-        return;
-    }
+        if (items.length === 0) {
+            alert("No items to process payment.");
+            return;
+        }
 
-    let totalPrice = 0;
+        let totalPrice = 0;
 
-    // Calculate total price from added items
-    items.forEach(row => {
-        let price = parseInt(row.cells[5].innerText.replace(/[^0-9]/g, "")); // Remove non-numeric characters
-        let quantity = parseInt(row.cells[6].innerText);
-        totalPrice += price * quantity;
-    });
-
-    // Set total amount in modal
-    document.getElementById("totalAmount").innerText = `PHP ${totalPrice}`;
-    document.getElementById("cashAmount").value = ""; // Clear previous input
-
-    // Show the payment modal
-    let paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
-    paymentModal.show();
-}
-
-function confirmPayment() {
-    let totalPrice = parseInt(document.getElementById("totalAmount").innerText.replace(/[^0-9]/g, ""));
-    let cash = parseFloat(document.getElementById("cashAmount").value);
-
-    if (isNaN(cash) || cash <= totalPrice) { // Ensure cash is greater than the total
-        alert("Cash amount must be greater than the total amount.");
-        return;
-    }
-
-    let change = cash - totalPrice;
-
-    // Store transaction data before clearing the table
-    let items = [];
-    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-        let rowData = [];
-        row.querySelectorAll("td").forEach(cell => {
-            rowData.push(cell.innerText);
+        // Calculate total price from added items
+        items.forEach(row => {
+            let price = parseInt(row.cells[5].innerText.replace(/[^0-9]/g, "")); // Remove non-numeric characters
+            let quantity = parseInt(row.cells[6].innerText);
+            totalPrice += price * quantity;
         });
-        items.push(rowData);
-    });
 
-    // Store for printing later
-    window.receiptData = {
-        transactionDate: document.getElementById("transactionDate").innerText,
-        totalPrice: totalPrice,
-        cash: cash,
-        change: change,
-        items: items
-    };
+        // Set total amount in modal
+        document.getElementById("totalAmount").innerText = `PHP ${totalPrice}`;
+        document.getElementById("cashAmount").value = ""; // Clear previous input
 
-    // Update receipt modal
-    document.getElementById("receiptTotal").innerText = `PHP ${totalPrice}`;
-    document.getElementById("receiptCash").innerText = `PHP ${cash}`;
-    document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+        // Show the payment modal
+        let paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
+        paymentModal.show();
+    }
 
-    // Hide payment modal & show success modal
-    let paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
-    paymentModal.hide();
+    function confirmPayment() {
+        let totalPrice = parseInt(document.getElementById("totalAmount").innerText.replace(/[^0-9]/g, ""));
+        let cash = parseFloat(document.getElementById("cashAmount").value);
 
-    let successModal = new bootstrap.Modal(document.getElementById("paymentSuccessModal"));
-    successModal.show();
+        if (isNaN(cash) || cash < totalPrice) { // Allow cash equal to totalPrice
+            alert("Cash amount must be equal to or greater than the total amount.");
+            return;
+        }
 
-    // Clear the transaction only after storing data
-    voidTransaction();
-}
+        let change = cash - totalPrice;
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Update transaction date
-    updateTransactionDate();
-    
-    // Set up product table click events
-    let table = document.getElementById("productTable");
-    if (table) {
-        table.addEventListener("click", function (e) {
-            let targetRow = e.target.closest("tr");
-            if (!targetRow || targetRow.rowIndex === 0) return;
-
-            let fields = ["product_id", "brand", "model", "size", "color", "price"];
-            fields.forEach((field, index) => {
-                document.getElementById(field).value = targetRow.cells[index].textContent;
+        // Store transaction data before clearing the table
+        let items = [];
+        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+            let rowData = [];
+            row.querySelectorAll("td").forEach(cell => {
+                rowData.push(cell.innerText);
             });
-            document.getElementById("quantity").value = 0;
+            items.push(rowData);
         });
-    }
-    
-    // Add event listener to the Print Receipt button in success modal
-    let printBtn = document.getElementById("printReceiptBtn");
-    if (printBtn) {
-        printBtn.addEventListener("click", function () {
-            if (window.receiptData) {
-                printReceipt(
-                    window.receiptData.totalPrice, 
-                    window.receiptData.cash, 
-                    window.receiptData.change
-                );
-            }
-        });
-    }
-});
 
+        // Store for printing later
+        window.receiptData = {
+            transactionDate: document.getElementById("transactionDate").innerText,
+            totalPrice: totalPrice,
+            cash: cash,
+            change: change,
+            items: items
+        };
 
-function printReceipt() {
+        // Update receipt modal
+        document.getElementById("receiptTotal").innerText = `PHP ${totalPrice}`;
+        document.getElementById("receiptCash").innerText = `PHP ${cash}`;
+        document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+
+        // Hide payment modal & show success modal
+        let paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
+        paymentModal.hide();
+
+        let successModal = new bootstrap.Modal(document.getElementById("paymentSuccessModal"));
+        successModal.show();
+
+        // Clear the transaction only after storing data
+        voidTransaction();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Update transaction date
+        updateTransactionDate();
+        
+        // Set up product table click events
+        let table = document.getElementById("productTable");
+        if (table) {
+            table.addEventListener("click", function (e) {
+                let targetRow = e.target.closest("tr");
+                if (!targetRow || targetRow.rowIndex === 0) return;
+
+                // Adjust indices to account for hidden PID column
+                document.getElementById("brand").value = targetRow.cells[1].textContent;
+                document.getElementById("model").value = targetRow.cells[2].textContent;
+                document.getElementById("size").value = targetRow.cells[3].textContent;
+                document.getElementById("color").value = targetRow.cells[4].textContent;
+                document.getElementById("price").value = targetRow.cells[5].textContent;
+                document.getElementById("quantity").value = 1;
+            });
+        }
+        
+        // Add event listener to the Print Receipt button in success modal
+        let printBtn = document.getElementById("printReceiptBtn");
+        if (printBtn) {
+            printBtn.addEventListener("click", function () {
+                if (window.receiptData) {
+                    printReceipt();
+                }
+            });
+        }
+    });
+
+    function printReceipt() {
     if (!window.receiptData || window.receiptData.items.length === 0) {
         alert("No receipt data available.");
         return;
     }
 
     let { transactionDate, totalPrice, cash, change, items } = window.receiptData;
+    
+    // Generate unique transaction ID (simplified version)
+    const transactionId = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
 
     let receiptContent = `
+    <!DOCTYPE html>
     <html>
     <head>
         <title>Receipt</title>
+        <meta charset="UTF-8">
         <style>
-            body { font-family: 'Courier New', monospace; text-align: center; }
-            .receipt-container { max-width: 350px; margin: auto; padding: 10px; border: 1px solid #000; }
-            .store-info { font-size: 14px; font-weight; bold;}
-            .line { border-top: 1px dashed #000; margin: 5px 0; }
-            .title { font-size: 16px; font-weight: bold; margin: 5px 0; }
-            .items, .total { text-align: left; white-space: pre-wrap; font-size: 14px; }
-            .thank-you { font-size: 14px; font-weight: bold; margin-top: 10px; }
+            @page {
+                size: 80mm auto;
+                margin: 0mm;
+            }
+            body {
+                font-family: 'Courier New', monospace;
+                margin: 0;
+                padding: 5px;
+                width: 80mm;
+                font-size: 12px;
+                background-color: white;
+            }
+            .receipt {
+                width: 100%;
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 8px;
+            }
+            .store-name {
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .store-info {
+                font-size: 11px;
+                margin-bottom: 5px;
+            }
+            .divider {
+                border-top: 1px dashed black;
+                margin: 5px 0;
+            }
+            .title {
+                text-align: center;
+                font-weight: bold;
+                margin: 5px 0;
+            }
+            .transaction-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+                margin-bottom: 5px;
+            }
+            .item {
+                margin-bottom: 5px;
+                font-size: 11px;
+            }
+            .item-detail {
+                display: flex;
+                justify-content: space-between;
+            }
+            .amounts {
+                text-align: right;
+                margin-top: 5px;
+            }
+            .total-line {
+                font-weight: bold;
+                margin-top: 5px;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 10px;
+                font-size: 11px;
+            }
+            @media print {
+                body {
+                    width: 80mm;
+                }
+                .no-print {
+                    display: none;
+                }
+            }
         </style>
     </head>
     <body>
-        <div class="receipt-container">
-            <div class="store-info">
-                ELYTRA TECH<br>
-                Homer's Helmet Shop<br>
-                Bagumbayan, Ligao City, Albay<br>
-                09234567801
+        <div class="receipt">
+            <div class="header">
+                <div class="store-name">ELYTRA TECH</div>
+                <div class="store-info">Homer's Helmet Shop</div>
+                <div class="store-info">Bagumbayan, Ligao City, Albay</div>
+                <div class="store-info">09234567801</div>
             </div>
-            <div class="line"></div>
+            
+            <div class="divider"></div>
+            
             <div class="title">CASH RECEIPT</div>
-            <div class="line"></div>
-            <div class="items">
-                ${transactionDate}<br>
-                <strong>Items:</strong><br>
-                ${items.map(item => `${item[1]} - ${item[2]} - ${item[5]} x ${item[6]}`).join("<br>")}
+            
+            <div class="divider"></div>
+            
+            <div class="transaction-info">
+                <span>Receipt #: ${transactionId}</span>
+                <span>${timeString}</span>
             </div>
-            <div class="line"></div>
-            <div class="total">
-                <strong>Total: PHP ${totalPrice}</strong><br>
-                Cash: PHP ${cash}<br>
-                Change: PHP ${change.toFixed(2)}
+            <div class="transaction-info">
+                <span>${transactionDate.replace('Date of Transaction: ', '')}</span>
             </div>
-            <div class="line"></div>
-            <div class="thank-you">Thank you for shopping!</div>
+            
+            <div class="divider"></div>
+            
+            <div>`;
+    
+    // Calculate the longest item name to align prices
+    let longestItem = 0;
+    items.forEach(item => {
+        const length = `${item[1]} ${item[2]} ${item[3]}`.length;
+        if (length > longestItem) longestItem = length;
+    });
+    
+    // Add items
+    items.forEach(item => {
+        const price = parseInt(item[5].replace(/[^0-9]/g, ""));
+        const quantity = parseInt(item[6]);
+        const itemTotal = price * quantity;
+        
+        receiptContent += `
+                <div class="item">
+                    <div>${item[1]} ${item[2]} (${item[3]}, ${item[4]})</div>
+                    <div class="item-detail">
+                        <span>${quantity} x PHP ${price}</span>
+                        <span>PHP ${itemTotal}</span>
+                    </div>
+                </div>`;
+    });
+    
+    receiptContent += `
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="amounts">
+                <div class="total-line">TOTAL: PHP ${totalPrice}</div>
+                <div>CASH: PHP ${cash}</div>
+                <div>CHANGE: PHP ${change.toFixed(2)}</div>
+            </div>
+            
+            <div class="divider"></div>
+        
+            <div class="footer">
+                <p>Thank you for shopping with us!</p>
+                <p>Please come again</p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="footer">
+                <p>Powered by ELYTRA TECH</p>
+            </div>
+        </div>
+        
+        <div class="no-print" style="margin-top: 20px; text-align: center;">
+            <button onclick="window.print();setTimeout(function(){window.close();}, 500);" style="padding: 10px 20px; background-color: #274C77; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Print Receipt
+            </button>
         </div>
     </body>
-    </html>
-    `;
+    </html>`;
 
     let newWindow = window.open("", "_blank");
     newWindow.document.write(receiptContent);
     newWindow.document.close();
-    newWindow.print();
+    setTimeout(() => newWindow.focus(), 100);
 }
-
-
 </script>
 
 <style>
@@ -385,6 +587,13 @@ function printReceipt() {
         background-color: #f8d7da !important;
     }
 
+    th:first-child, td:first-child {
+    display: none;
+}
+
+    table td, table th {
+        padding: 15px 10px; /* Adjust padding */
+    }
 </style>
 
 {% endblock %}
