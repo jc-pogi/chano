@@ -4,163 +4,129 @@
 
 {% block main_contents %}
 <div class="container my-4">
-    <!-- Header with Product title and Search bar -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center">
         <h1 class="m-0">Products</h1>
-        <input id="searchInput" class="form-control w-25" type="text" placeholder="Search by PID, Brand, & Model">
     </div>
 
-    <!-- Style for Filter Button -->
-    <style>
-        .filter-btn {
-            background-color: white;
-            color: #6096BA;
-            border: 1px solid #6096BA;
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    <div class="container my-0 d-flex">
+        <!-- Sidebar Filter (Separate Container) -->
+        <div class="filter-container" style="width: 250px; padding: 15px; border-right: 1px solid #ddd; min-height: 100vh;">
+            <h2 style="font-size: 25px; ">
+                <!--I will put icon here-->  Search Filters
+            </h2>
+            <div class="mb-3">    
+                <label for="category">Category:</label>
+                <select id="category" class="form-control" onchange="applyFilters()">
+                    <option value="">All</option>
+                    <option value="helmet">Helmet</option>
+                    <option value="top box">Top Box</option>
+                </select>   
+            </div>
 
-        .filter-btn:hover {
-            background-color: #6096BA;
-            color: white;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 20px;
-            width: 50%;
-            border-radius: 10px;
-        }
-
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-btn:hover {
-            color: black;
-        }
-    </style>
-
-    <!-- Filter Button -->
-    <div style="display: flex; justify-content: flex-end; padding: 10px;">
-        <button type="button" class="btn filter-btn" onclick="openFilterModal()">Filter</button>
-    </div>
-
-    <!-- Filter Modal -->
-    <div id="filterModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeFilterModal()">&times;</span>
-            <h2>Filter Options</h2>
-
-            <form id="filterForm">
-                <!-- Price Range -->
-                <div class="mb-3">
-                    <label for="minPrice">Price Range:</label>
-                    <input type="number" id="minPrice" placeholder="Min Price" class="form-control">
-                    <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mt-2">
+            <!-- Price Range -->
+            <div class="mb-3">
+                <label>Price Range:</label>
+                <div class="d-flex align-items-center">
+                    <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
+                    <span>—</span>
+                    <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
                 </div>
+            </div>
 
-                <!-- Brand -->
-                <div class="mb-3">
-                    <label for="brand">Brand:</label>
-                    <select id="brand" class="form-control">
-                        <option value="">All Brands</option>
-                        <option value="BrandA">Brand A</option>
-                        <option value="BrandB">Brand B</option>
-                        <option value="BrandC">Brand C</option>
-                    </select>
+            <!-- Brand -->
+            <div class="mb-3">
+                <label for="brand">Brand:</label>
+                <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
+            </div>
+
+            <!-- Color -->
+            <div class="mb-3">
+                <label for="color">Color:</label>
+                <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
+            </div>
+
+            <!-- Size -->
+            <div class="mb-3">
+                <label>Size:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Kids" id="sizeKids" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeKids">Kids</label>
                 </div>
-
-                <!-- Color -->
-                <div class="mb-3">
-                    <label for="color">Color:</label>
-                    <select id="color" class="form-control">
-                        <option value="">All Colors</option>
-                        <option value="Red">Red</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Black">Black</option>
-                    </select>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Standard" id="sizeStandard" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeStandard">Standard</label>
                 </div>
-
-                <!-- Size -->
-                <div class="mb-3">
-                    <label for="size">Size:</label>
-                    <select id="size" class="form-control">
-                        <option value="">All Sizes</option>
-                        <option value="Small">Small</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
-                    </select>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Medium" id="sizeMedium" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeMedium">Medium</label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Large" id="sizeLarge" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeLarge">Large</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="X Large" id="sizeXLarge" onchange="applyFilters()">
+                    <label class="form-check-label" for="sizeXLarge">X Large</label>
+                </div>
+            </div>
 
-                <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filter</button>
-            </form>
+            <!-- In Stock -->
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
+                    <label class="form-check-label" for="inStock">In Stock</label>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Product Table -->
-    <div class="product-table">
-        {% include "productTable.html" with table_id="productTable" %}
+        <!-- Product Table (Separate Container) -->
+        <div class="product-container flex-grow-1 ps-3" style="background-color: #6096BA; padding: 17px; height: fit-content; border-radius: 15px;">
+            {% include "productTable.html" with table_id="productTable" %}
+        </div>
     </div>
 </div>
 
-<!-- JavaScript for filtering and modal -->
+
+
 <script>
-    // Open Modal
-    function openFilterModal() {
-        document.getElementById("filterModal").style.display = "block";
-    }
-
-    // Close Modal
-    function closeFilterModal() {
-        document.getElementById("filterModal").style.display = "none";
-    }
-
-    // Apply Filters
     function applyFilters() {
-        let minPrice = parseFloat(document.getElementById("minPrice").value) || 0;
-        let maxPrice = parseFloat(document.getElementById("maxPrice").value) || Infinity;
-        let brand = document.getElementById("brand").value.toLowerCase();
-        let color = document.getElementById("color").value.toLowerCase();
-        let size = document.getElementById("size").value.toLowerCase();
+    let minPriceInput = document.getElementById("minPrice").value.trim();
+    let maxPriceInput = document.getElementById("maxPrice").value.trim();
+    let minPrice = minPriceInput !== "" ? parseFloat(minPriceInput) : 0;
+    let maxPrice = maxPriceInput !== "" ? parseFloat(maxPriceInput) : Infinity;
+    let brand = document.getElementById("brand").value.toLowerCase();
+    let color = document.getElementById("color").value.toLowerCase();
+    let selectedSizes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+        .filter(checkbox => checkbox.id !== 'inStock')
+        .map(checkbox => checkbox.value.toLowerCase());
+    let inStock = document.getElementById("inStock").checked;
+    
+    // Get selected category (Helmet or Top Box)
+    let category = document.getElementById("category").value.toLowerCase();
 
-        let rows = document.querySelectorAll("#productTable tbody tr");
+    let rows = document.querySelectorAll("#productTable tbody tr");
+    rows.forEach(row => {
+        let price = parseFloat(row.getAttribute("data-price")) || 0;
+        let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
+        let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
+        let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
+        let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
+        let rowCategory = row.getAttribute("data-type")?.toLowerCase() || "";
 
-        rows.forEach(row => {
-            let price = parseFloat(row.getAttribute("data-price")) || 0;
-            let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
-            let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
-            let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
+        let matchesPrice = (minPrice <= price) && (price <= maxPrice);
+        let matchesBrand = !brand || rowBrand.includes(brand);
+        let matchesColor = !color || rowColor.includes(color);
+        let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
+        let matchesInStock = !inStock || rowInStock;
+        let matchesCategory = !category || rowCategory === category;
 
-            let matchesPrice = price >= minPrice && price <= maxPrice;
-            let matchesBrand = !brand || rowBrand.includes(brand);
-            let matchesColor = !color || rowColor.includes(color);
-            let matchesSize = !size || rowSize.includes(size);
+        row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesInStock && matchesCategory ? "" : "none";
+    });
+}
 
-            row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize ? "" : "none";
-        });
 
-        closeFilterModal();
-    }
+   
+
+
 </script>
 {% endblock %}
