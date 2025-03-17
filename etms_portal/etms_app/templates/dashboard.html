@@ -50,13 +50,29 @@
                             <h3>XX</h3>
                         </div>
                     </div>
+                    <!-- Recent Transactions Below Today's Sales -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
+                            <h6>Recent Transactions:</h6>
+                            <p style="font-size: 14px;"><strong>Helmet 1</strong> - 3000</p>
+                            <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
+                        </div>
+                    </div>
+                    <!-- Low Stock Below Top-Selling Product -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
+                            <h6>Low Stock:</h6>
+                            <p style="font-size: 14px;"><strong>Helmet 1</strong></p>
+                            <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
+                        </div>
+                    </div>
                 </div>
             </div>
     
             <!-- Carousel (Slideshow) -->
-            <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="col-md-6 d-flex align-items-start justify-content-center">
                 <div id="productCarousel" class="carousel slide w-100" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div class="carousel-inner" style="height: 400px; border-radius: 10px;">
+                    <div class="carousel-inner" style="height: 410px; border-radius: 10px;">
                         <div class="carousel-item active">
                             <img src="{% static '/p1.jpg' %}" class="d-block w-100 h-100" alt="slideshow 1" style="object-fit: cover;">
                         </div>
@@ -67,24 +83,6 @@
                             <img src="{% static '/p3.jpg' %}" class="d-block w-100 h-100" alt="slideshow 3" style="object-fit: cover;">
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    
-        <!-- Transactions & Low Stock (Aligned to Introduction Section) -->
-        <div class="row mt-4">
-            <div class="col-md-6 mb-3">
-                <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 140px;">
-                    <h6>Recent Transactions:</h6>
-                    <p style="font-size: 14px;"><strong>Helmet 1</strong> - 3000</p>
-                    <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 140px;">
-                    <h6>Low Stock:</h6>
-                    <p style="font-size: 14px;"><strong>Helmet 1</strong></p>
-                    <p style="font-size: 14px;"><strong>Helmet 2</strong></p>
                 </div>
             </div>
         </div>
