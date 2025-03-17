@@ -4,10 +4,10 @@
 
 {% block main_contents %}
 <div class="container-fluid px-2 my-3">
-    <div class="card" style="border: none; background-color: #ffffffe6; border-radius: 8px;">
+    <div class="card" style="border: none; background-color: transparent; border-radius: 8px;">
         <div class="card-body px-3 pt-1"> 
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Transactions</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Transactions</h1>
             
                 <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
                     <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
@@ -59,9 +59,13 @@
                                     </div>
                                 </div>
                                 
-                                <button type="button" class="btn mb-3 mx-auto" onclick="clearFields()" style="width: 200px; background-color: #eceaea; color: rgb(33, 33, 33); display: block;">
-                                    <i class="fas fa-eraser me-1"></i> Clear Fields
-                                </button>
+                                <div class="row g-2 justify-content-center">
+                                    <div class="col-12 col-md-6 text-center">
+                                        <button type="button" class="btn mb-3 w-100" onclick="clearFields()" >
+                                            <i class="fas fa-eraser me-1"></i> Clear Fields
+                                        </button>
+                                    </div>
+                                </div>
                                 
                             </form>
 
@@ -80,7 +84,7 @@
                             
                             <div class="row g-2 mt-2">
                                 <div class="col-6">
-                                    <button type="button" class="btn w-100" onclick="voidTransaction()" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+                                    <button type="button" class="btn w-100" onclick="voidTransaction()" style="background-color: #274C77; color: white;">
                                         <i class="fas fa-ban me-1"></i> Void
                                     </button>
                                 </div>
@@ -95,18 +99,20 @@
                 </div>
 
                 <!-- Right Panel: Tables -->
-                <div class="col-md-8">
+                <div class="col-lg-8 col-md-6 col-12">
     <!-- Products Table -->
     <div class="card mb-4" style="border: none; border-radius: 8px;">
         <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
             <h5 class="card-title mb-0">Product Catalog</h5>
         </div>
-        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
             <div class="product-table">
                 {% include "productTable.html" with table_id="productTable" %}
             </div>
         </div>
     </div>
+</div>
 
        <!-- Added Items Table -->
 <div class="card" style="border: none; border-radius: 8px;">
@@ -259,7 +265,7 @@
         let quantity = document.getElementById("quantity").value;
 
         if (!quantity || quantity <= 0) {
-            alert("Quantity must be greater than zero.");
+            showToast("Quantity must be greater than zero.", "danger");
             return;
         }
 
@@ -310,7 +316,7 @@
 
             updateSummary();
         } else {
-            alert("Please select an item to remove.");
+            showToast("Please select an item to remove.", "danger");
         }
     }
 
@@ -354,7 +360,7 @@
         let items = document.querySelectorAll("#addedItemsTable tbody tr");
 
         if (items.length === 0) {
-            alert("No items to process payment.");
+            showToast("No items to process payment.", "danger");
             return;
         }
 
@@ -457,7 +463,7 @@
 
     function printReceipt() {
     if (!window.receiptData || window.receiptData.items.length === 0) {
-        alert("No receipt data available.");
+        showToast("No receipt data available.", "danger");
         return;
     }
 
@@ -619,9 +625,48 @@
         setTimeout(() => newWindow.close(), 500);
     };
 }
+
+function showToast(message, type = "success") {
+    let toastContainer = document.getElementById("toast-container");
+    let toast = document.createElement("div");
+
+    toast.className = `toast align-items-center text-white bg-${type} border-0 show`;
+    toast.style = `
+        position: fixed; 
+        top: 0; /* Adjust this value for positioning */
+        left: 50%; 
+        transform: translateX(-50%);
+        min-width: 250px; 
+        padding: 15px; 
+        border-radius: 8px; 
+        text-align: center; 
+        font-size: 16px;
+        z-index: 1050; /* Ensure it appears above other elements */
+    `;
+
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white bg-transparent me-2 m-auto" onclick="this.parentElement.parentElement.remove();"></button>
+        </div>
+    `;
+
+    toastContainer.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+}
 </script>
 
 <style>
+    body {
+    background: linear-gradient(to right, #d9dde4, #7196b3); /* Subtle gradient */
+    }
+
+    table {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to tables */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
     .table-active {
         background-color: #f8d7da !important;
     }
@@ -633,6 +678,83 @@
     table td, table th {
         padding: 15px 10px; /* Adjust padding */
     }
-</style>
 
+    button {
+    transition: all 0.3s ease-in-out;
+    color: white !important;
+    background-color: #274C77 !important;
+    width: 100%; /* Full width on small screens */
+    max-width: 350px; /* Limit width on larger screens */
+}
+
+button:hover {
+    transform: scale(1.05);
+    background-color:  rgb(1, 45, 95) !important; /* Slightly darker hover effect */
+}
+
+.btn-close:hover{
+    background-color: transparent !important;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+  /* Make tables scrollable */
+  .table-container {
+    max-height: 55vh;  /* Set max height for scrolling */
+    max-width: 90vw;
+    overflow-y: auto;   /* Enable vertical scroll */
+    overflow-x: auto;   /* Prevent horizontal cutoff */
+    border-radius: 8px; /* Smooth rounded corners */
+    background: white; /* Ensure white background */
+  }
+  
+
+    h1 {
+        font-size: 2.5vw; /* Adjust based on screen width */
+    }
+   
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 5vw;
+            text-align: center;
+        }
+    }
+
+  /* Fix Bootstrap column layout */
+  @media (min-width: 768px) {
+    .col-md-8 {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.modal-dialog {
+    max-width: 400px; /* Adjust width as needed */
+}
+
+.modal-content {
+    text-align: center;
+}
+.modal-footer {
+    display: flex;
+    justify-content: center; /* Centers buttons */
+    gap: 10px; /* Adds space between buttons */
+}
+.modal-footer .btn {
+    width: auto; /* Prevents buttons from being too wide */
+    padding: 8px 16px; /* Adjust padding for better sizing */
+    font-size: 14px; /* Reduces button text size */
+}
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<body><div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div></body>
 {% endblock %}

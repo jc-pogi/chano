@@ -12,7 +12,7 @@
 
 <style>
 body {
-    background: linear-gradient(to right, #eef2f3, #8e9eab); /* Subtle gradient */
+    background: linear-gradient(to right, #d9dde4, #7196b3); /* Subtle gradient */
 }
 
 table {
@@ -34,10 +34,13 @@ button:hover {
     background-color:  rgb(1, 45, 95) !important; /* Slightly darker hover effect */
 }
 
+.btn-close:hover{
+    background-color: transparent !important;
+}
  
   /* Make tables scrollable */
   .table-container {
-    max-height: 50vh;  /* Set max height for scrolling */
+    max-height: 55vh;  /* Set max height for scrolling */
     max-width: 90vw;
     overflow-y: auto;   /* Enable vertical scroll */
     overflow-x: auto;   /* Prevent horizontal cutoff */
@@ -74,6 +77,29 @@ th:first-child, td:first-child {
     overflow-x: auto;
 }
 
+.modal-footer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.modal-dialog {
+    max-width: 400px; /* Adjust width as needed */
+}
+
+.modal-content {
+    text-align: center;
+}
+.modal-footer {
+    display: flex;
+    justify-content: center; /* Centers buttons */
+    gap: 10px; /* Adds space between buttons */
+}
+.modal-footer .btn {
+    width: auto; /* Prevents buttons from being too wide */
+    padding: 8px 16px; /* Adjust padding for better sizing */
+    font-size: 14px; /* Reduces button text size */
+}
+
 </style>
 
 
@@ -83,6 +109,12 @@ th:first-child, td:first-child {
         <div class="card-body px-3 pt-1">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Restock</h1>
+               
+                <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
+                    <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
+                           placeholder="Search by Brand & Model" style="width: 310px;"> 
+                    <h5 id="transactionDate" class="text-muted small mb-0" style="color: #8B8C89 !important;">Date of Transaction: Monday, March 17, 2025</h5>
+                </div>
             </div>
 
     <div class="row" >
@@ -210,8 +242,7 @@ th:first-child, td:first-child {
         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
             <h5 class="card-title mb-0">Current Transaction</h5>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
+        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
                 <table class="table table-hover mb-0" id="addedItemsTable">
                     <thead style="position: sticky; top: 0; background-color: #274C77; color: white;">
                         <tr>
@@ -229,35 +260,52 @@ th:first-child, td:first-child {
                     </tbody>
                 </table>
             </div>
-        </div>
-        
-        <div class="card-footer d-flex justify-content-between">
-            <span class="fw-bold"><span id="totalItems"></span></span>
-            <span class="fw-bold"><span id="totalAmountDisplay"></span></span>
-        </div>
+            <div class="card-footer d-flex justify-content-between">
+                <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
+                <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">PHP 0.00</span></span>
+            </div>
     </div>
 
 
 <script>
      let selectedRow = null;
 
-function updateTransactionDate() {
-    let now = new Date();
-    let formattedDate = new Intl.DateTimeFormat('en-PH', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        timeZone: 'Asia/Manila'
-    }).format(now);
-    document.getElementById("transactionDate").innerText = "Date of Transaction: " + formattedDate;
-}
+     function updateTransactionDate() {
+        let now = new Date();
+        let formattedDate = new Intl.DateTimeFormat('en-PH', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'Asia/Manila'
+        }).format(now);
+        document.getElementById("transactionDate").innerText = "Date of Transaction: " + formattedDate;
+    }
+
+    // Search functionality
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#productTable tbody tr");
+
+        rows.forEach(row => {
+            let pid = row.cells[0]?.textContent.toLowerCase() || "";
+            let brand = row.cells[1]?.textContent.toLowerCase() || "";
+            let model = row.cells[2]?.textContent.toLowerCase() || "";
+
+            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
+        });
+    
+        // Reapply highlighting after search
+        setTimeout(function() {
+         highlightLowQuantity();
+        }, 0);
+    });
 
 function addItem() {
     let quantity = document.getElementById("quantity").value;
 
     if (!quantity || quantity <= 0 || brand == null || model == null|| size == null|| color == null|| price == null) {
-        alert("Please fill up the fields properly!");
+        showToast("Please fill up the fields properly!", "danger");
         return;
     }
 
@@ -280,6 +328,9 @@ function addItem() {
     };
 
     document.getElementById("transactionForm").reset();
+
+    // Update the summary after adding an item
+    updateSummary();
 }
 
 function selectRow(row) {
@@ -302,8 +353,10 @@ function removeItem() {
     if (selectedRow) {
         selectedRow.remove();
         selectedRow = null;
+
+        updateSummary();
     } else {
-        alert("Please select an item to remove.");
+        showToast("Please select an item to remove.", "danger");
     }
 }
 
@@ -316,6 +369,23 @@ function clearFields() {
     document.getElementById("transactionForm").reset();
 }
     
+function updateSummary() {
+        let totalItems = 0;
+        let totalAmount = 0;
+
+        // Select all rows in the table body
+        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+            const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
+            const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent) || 0;
+        
+            totalItems += quantity;
+            totalAmount += price * quantity;
+        });
+
+        // Update the footer display
+        document.getElementById("totalItems").textContent = totalItems;
+        document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toFixed(2)}`;
+    }
 
     function confirmRestock() {
         let tbody = document.querySelector("#addedItemsTable tbody");
@@ -362,12 +432,23 @@ function clearFields() {
     let toast = document.createElement("div");
 
     toast.className = `toast align-items-center text-white bg-${type} border-0 show`;
-    toast.style = "min-width: 250px; padding: 10px; border-radius: 5px; margin-bottom: 10px;";
+    toast.style = `
+        position: fixed; 
+        top: 0; /* Adjust this value for positioning */
+        left: 50%; 
+        transform: translateX(-50%);
+        min-width: 250px; 
+        padding: 15px; 
+        border-radius: 8px; 
+        text-align: center; 
+        font-size: 16px;
+        z-index: 1050; /* Ensure it appears above other elements */
+    `;
 
     toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.parentElement.parentElement.remove();"></button>
+            <button type="button" class="btn-close btn-close-white bg-transparent me-2 m-auto" onclick="this.parentElement.parentElement.remove();" ></button>
         </div>
     `;
 
@@ -375,6 +456,7 @@ function clearFields() {
     setTimeout(() => toast.remove(), 5000);
 }
 </script>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

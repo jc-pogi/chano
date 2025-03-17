@@ -88,30 +88,31 @@
           </a>
         </li>
         <li class="nav-item">
-  <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#inventoryMenu" id="inventoryToggle">
-    <i class="bi bi-box" style="margin-right: 10px;"></i> Inventory
-    <i class="bi bi-chevron-down ms-auto" id="inventoryArrow"></i>
-  </a>
-  <div class="collapse {% if current_tab == 'sm' or current_tab == 'products' or current_tab == 'restock' %}show{% endif %}" id="inventoryMenu">
-    <ul class="nav flex-column ps-3" style="border-left: 2px solid #ccc; padding-left: 50px; margin-left: 20px;">
-      <li>
-        <a class="nav-link {% if current_tab == 'products' %}active{% endif %}" href="/products">
-          <i class="bi bi-basket" style="margin-right: 10px;"></i> Products
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {% if current_tab == 'sm' %}active{% endif %}" href="/sm">
-          <i class="bi bi-archive" style="margin-right: 10px;"></i> Stocks
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {% if current_tab == 'restock' %}active{% endif %}" href="/restock">
-          <i class="bi bi-box-arrow-in-down" style="margin-right: 10px;"></i> Restock
-        </a>
-      </li>
-    </ul>
-  </div>
-</li>
+          <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#inventoryMenu" role="button" aria-expanded="false" aria-controls="inventoryMenu">
+            <i class="bi bi-box" style="margin-right: 10px;"></i> Inventory
+            <i class="bi bi-chevron-down ms-auto collapse-icon"></i>
+          </a>
+          <div class="collapse {% if current_tab == 'sm' or current_tab == 'products' or current_tab == 'restock' %}show{% endif %}" id="inventoryMenu">
+            <ul class="nav flex-column ps-3" style="border-left: 2px solid #ccc; padding-left: 50px; margin-left: 20px;">
+              <li>
+                <a class="nav-link {% if current_tab == 'products' %}active{% endif %}" href="/products">
+                  <i class="bi bi-basket" style="margin-right: 10px;"></i> Products
+                </a>
+              </li>
+              <li>
+                <a class="nav-link {% if current_tab == 'sm' %}active{% endif %}" href="/sm">
+                  <i class="bi bi-archive" style="margin-right: 10px;"></i> Stocks
+                </a>
+              </li>
+              <li>
+                <a class="nav-link {% if current_tab == 'restock' %}active{% endif %}" href="/restock">
+                  <i class="bi bi-box-arrow-in-down" style="margin-right: 10px;"></i> Restock
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        
         
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'transactions' %}active{% endif %}" href="/transactions">
@@ -178,22 +179,19 @@
         inventoryArrow.style.transform = "rotate(0deg)";
     }
 
-    // Flip the arrow instantly when clicked
-    inventoryToggle.addEventListener("click", function () {
-        const isExpanded = inventoryMenu.classList.contains("show");
-        inventoryArrow.style.transform = isExpanded ? "rotate(0deg)" : "rotate(180deg)";
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+    const inventoryToggle = document.querySelector('[href="#inventoryMenu"]');
+    const inventoryArrow = inventoryToggle.querySelector(".collapse-icon");
 
-    // Listen to Bootstrap collapse events and store state
-    inventoryMenu.addEventListener("shown.bs.collapse", function () {
+    document.getElementById("inventoryMenu").addEventListener("shown.bs.collapse", function () {
         inventoryArrow.style.transform = "rotate(180deg)";
-        localStorage.setItem("inventoryState", "shown");
     });
 
-    inventoryMenu.addEventListener("hidden.bs.collapse", function () {
+    document.getElementById("inventoryMenu").addEventListener("hidden.bs.collapse", function () {
         inventoryArrow.style.transform = "rotate(0deg)";
-        localStorage.setItem("inventoryState", "hidden");
     });
+});
+
 });
 </script>
 
