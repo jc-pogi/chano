@@ -9,9 +9,11 @@
         <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Revenue Report</h1>
     
         <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
+
             <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important; font-size: 1rem;">
                 <i class="bi bi-calendar"></i> <span>Date of Transaction:</span>
             </h5>
+
         </div>
         
     </div>
@@ -156,7 +158,6 @@
     }
 </style>
 
-
 <script>
     function updateTransactionDate() {
         let now = new Date();
@@ -167,10 +168,8 @@
             day: 'numeric',
             timeZone: 'Asia/Manila'
         }).format(now);
-        
         document.querySelector("#transactionDate span").innerText = formattedDate;
     }
-
     document.addEventListener("DOMContentLoaded", updateTransactionDate);
 </script>
 
