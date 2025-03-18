@@ -10,11 +10,12 @@
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Transactions</h1>
             
                 <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
+
                     <div class="d-flex align-items-center">
                         <i class="bi bi-search me-2"></i> 
                         <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
                            placeholder="Search by Brand & Model" style="width: 310px;"> 
-
+                    </div>
                     <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important;">Date of Transaction: Monday, March 17, 2025</h5>
                 </div>
             </div>
@@ -151,6 +152,7 @@
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
             <div class="modal-header" style="background-color: #274C77; color: white;">
                 <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
                 <button type="button" class="btn-close btn-close-white bg-transparent" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -168,6 +170,7 @@
                 </div>
                 
                 <div class="mb-3">
+
                     <label for="cashAmount" class="form-label" style="color: #274C77; font-weight: 500; text-align: left;">Cash Amount</label>
                     <div class="input-group">
                         <span class="input-group-text">PHP</span>
@@ -195,7 +198,7 @@
 <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #eceaea; color: rgb(33, 33, 33);">
+            <div class="modal-header" style="background-color: #274C77; color: rgb(255, 255, 255);">
                 <h5 class="modal-title" id="paymentSuccessModalLabel">Payment Successful</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -265,37 +268,197 @@
     });
 
     function addItem() {
-        let quantity = document.getElementById("quantity").value;
-
-        if (!quantity || quantity <= 0) {
-            showToast("Quantity must be greater than zero.", "danger");
-            return;
+    // 1. Get the basic values we need
+    let quantity = document.getElementById("quantity").value;
+    let brand = document.getElementById("brand").value;
+    let model = document.getElementById("model").value;
+    
+    // Debug output
+    console.log("Input values:", { quantity, brand, model });
+    
+    // 2. Validate quantity
+    if (!quantity || isNaN(parseInt(quantity)) || parseInt(quantity) <= 0) {
+        showToast("Quantity must be greater than zero.", "danger");
+        return;
+    }
+    
+    quantity = parseInt(quantity); // Convert to number after validation
+    
+    // 3. Find the product in the catalog table
+    let productTable = document.getElementById("productTable");
+    if (!productTable) {
+        console.error("Product table not found!");
+        showToast("Product table not found.", "danger");
+        return;
+    }
+    
+    let tbody = productTable.querySelector("tbody");
+    if (!tbody) {
+        console.error("Product table body not found!");
+        showToast("Product table body not found.", "danger");
+        return;
+    }
+    
+    let rows = tbody.querySelectorAll("tr");
+    console.log("Found", rows.length, "rows in product table");
+    
+    // Variables to store product details
+    let productFound = false;
+    let productSize = "";
+    let productColor = "";
+    let productPrice = "";
+    let availableStock = 0;
+    
+    // Search for matching product
+    for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        let cells = row.cells;
+        
+        // Debug what we're checking
+        console.log("Checking row", i, "Brand:", cells[1]?.textContent, "Model:", cells[2]?.textContent);
+        
+        // Make sure we're comparing with consistent case and trimming whitespace
+        let rowBrand = (cells[1]?.textContent || "").trim();
+        let rowModel = (cells[2]?.textContent || "").trim();
+        
+        if (rowBrand.toLowerCase() === brand.toLowerCase() && 
+            rowModel.toLowerCase() === model.toLowerCase()) {
+            
+            console.log("Product found in row", i);
+            productFound = true;
+            
+            // Get product details
+            productSize = (cells[3]?.textContent || "").trim();
+            productColor = (cells[4]?.textContent || "").trim();
+            productPrice = (cells[5]?.textContent || "").trim();
+            availableStock = parseInt((cells[6]?.textContent || "0").trim());
+            
+            console.log("Product details:", { 
+                productSize, 
+                productColor, 
+                productPrice, 
+                availableStock 
+            });
+            
+            break;
         }
-
-        let table = document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0];
-        let newRow = table.insertRow();
-
-        // Add a placeholder for PID (hidden column)
-        let pidCell = newRow.insertCell(0);
-        pidCell.innerHTML = "AUTO"; // Or whatever placeholder you want
-
-        // Add the visible fields
-        let fields = ["brand", "model", "size", "color", "price", "quantity"];
-        fields.forEach((field) => {
-            let cell = newRow.insertCell();
-            cell.innerHTML = document.getElementById(field).value;
-        });
-
-        newRow.onclick = function () {
+    }
+    
+    if (!productFound) {
+        console.error("Product not found in catalog.");
+        showToast("Product not found in catalog.", "warning");
+        return;
+    }
+    
+    // 4. Check stock
+    if (isNaN(availableStock)) {
+        console.error("Invalid stock value:", availableStock);
+        showToast("Invalid stock value.", "danger");
+        return;
+    }
+    
+    if (quantity > availableStock) {
+        showToast(`Not enough stock available. Only ${availableStock} items in stock.`, "danger");
+        return;
+    }
+    
+    // 5. Check for existing items in transaction
+    let addedItemsTable = document.getElementById("addedItemsTable");
+    if (!addedItemsTable) {
+        console.error("Added items table not found!");
+        showToast("Added items table not found.", "danger");
+        return;
+    }
+    
+    let addedItemsBody = addedItemsTable.querySelector("tbody");
+    if (!addedItemsBody) {
+        console.error("Added items table body not found!");
+        showToast("Added items table body not found.", "danger");
+        return;
+    }
+    
+    let addedRows = addedItemsBody.querySelectorAll("tr");
+    let currentQuantity = 0;
+    
+    for (let i = 0; i < addedRows.length; i++) {
+        let row = addedRows[i];
+        let cells = row.cells;
+        
+        let rowBrand = (cells[1]?.textContent || "").trim();
+        let rowModel = (cells[2]?.textContent || "").trim();
+        
+        if (rowBrand.toLowerCase() === brand.toLowerCase() && 
+            rowModel.toLowerCase() === model.toLowerCase()) {
+            
+            let rowQuantity = parseInt((cells[6]?.textContent || "0").trim());
+            if (!isNaN(rowQuantity)) {
+                currentQuantity += rowQuantity;
+            }
+        }
+    }
+    
+    console.log("Current quantity in transaction:", currentQuantity);
+    
+    if ((currentQuantity + quantity) > availableStock) {
+        showToast(`Cannot add ${quantity} more items. You already have ${currentQuantity} in your transaction. Only ${availableStock} available in stock.`, "danger");
+        return;
+    }
+    
+    // 6. Add the new row
+    try {
+        let newRow = addedItemsBody.insertRow();
+        
+        // Add cells
+        let cell0 = newRow.insertCell(0);
+        cell0.textContent = "AUTO";
+        
+        let cell1 = newRow.insertCell(1);
+        cell1.textContent = brand;
+        
+        let cell2 = newRow.insertCell(2);
+        cell2.textContent = model;
+        
+        let cell3 = newRow.insertCell(3);
+        cell3.textContent = productSize;
+        
+        let cell4 = newRow.insertCell(4);
+        cell4.textContent = productColor;
+        
+        let cell5 = newRow.insertCell(5);
+        cell5.textContent = productPrice;
+        
+        let cell6 = newRow.insertCell(6);
+        cell6.textContent = quantity;
+        cell6.style.textAlign = "center"; // Center align the quantity
+        
+        console.log("Added new row successfully");
+        
+        // Add click handler
+        newRow.onclick = function() {
             selectRow(this);
         };
-
-        document.getElementById("transactionForm").reset();
-
-         // Update the summary after adding an item
-        updateSummary();
+        
+        // Reset form
+        let transactionForm = document.getElementById("transactionForm");
+        if (transactionForm) {
+            transactionForm.reset();
+        } else {
+            console.error("Transaction form not found!");
+        }
+        
+        // Update summary if function exists
+        if (typeof updateSummary === "function") {
+            updateSummary();
+        } else {
+            console.warn("updateSummary function not found");
+        }
+        
+        showToast(`Added ${quantity} ${brand} ${model} to transaction.`, "success");
+    } catch (error) {
+        console.error("Error adding row:", error);
+        showToast("Error adding item to table: " + error.message, "danger");
     }
-
+}
     function selectRow(row) {
         if (selectedRow) {
             selectedRow.classList.remove("table-active");
@@ -488,14 +651,15 @@
                 font-family: 'Courier New', monospace; 
                 margin: 0; 
                 padding: 5px; 
-                width: 72mm; 
+                width: 69mm; 
                 font-size: 12px; 
                 background-color: white;
                 box-sizing: border-box;
             }
             .receipt { 
                 width: 100%; 
-                max-width: 72mm;
+                max-width: 69mm;
+                padding: 5mm 2mm;
             }
             .header { 
                 text-align: center; 
@@ -610,15 +774,13 @@
                 <p>Thank you for shopping with us!</p>
                 <p>Please come again</p>
             </div>
-            <div class="divider"></div>
-            <div class="footer">
-                <p>Powered by ELYTRA TECH</p>
-            </div>
+            <div class="divider">
+                </div>
         </div>
     </body>
     </html>`;
 
-    let newWindow = window.open("", "_blank", "width=300,height=600");
+    let newWindow = window.open("", "_blank", "width=600,height=600");
     newWindow.document.write(receiptContent);
     newWindow.document.close();
 
@@ -740,7 +902,7 @@ button:hover {
 }
 
 .modal-dialog {
-    max-width: 200px; /* Adjust width as needed */
+    max-width: 500px; /* Adjust width as needed */
 }
 
 .modal-content {
@@ -756,6 +918,13 @@ button:hover {
     padding: 8px 16px; /* Adjust padding for better sizing */
     font-size: 14px; /* Reduces button text size */
 }
+
+.btn-close-white {
+    filter: none !important;  /* Removes any color inversion */
+    opacity: 1 !important;    /* Ensures full visibility */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-width='2' d='M4 4l8 8M12 4l-8 8'/%3E%3C/svg%3E") !important;
+}
+
 </style>
 <body><div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div></body>
 {% endblock %}
