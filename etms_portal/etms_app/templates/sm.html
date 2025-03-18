@@ -47,14 +47,14 @@
                         </div>
                         <div class="col-md-6">
                             <label for="size" class="form-label" style="color: #274C77; font-weight: 500;">Size</label>
-                            <input type="text" id="size" name="size" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" style="border-color: #8B8C89;">
+                            <input type="text" id="size" name="size" class="form-control" required pattern="[A-Za-z\s\-]+" title="Only letters, spaces, and hyphens allowed" style="border-color: #8B8C89;">
                         </div>
                     </div>
                     
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label for="color" class="form-label" style="color: #274C77; font-weight: 500;">Color</label>
-                            <input type="text" id="color" name="color" class="form-control" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" style="border-color: #8B8C89;">
+                            <input type="text" id="color" name="color" class="form-control" required pattern="[A-Za-z\s\-]+" title="Only letters, spaces, and hyphens allowed" style="border-color: #8B8C89;">
                         </div>
                         <div class="col-md-6">
                             <label for="quantity" class="form-label" style="color: #274C77; font-weight: 500;">Quantity</label>
@@ -276,6 +276,9 @@ table td, table th {
     background: white; /* Ensure white background */
   }
 
+  .quantity-cell {
+    text-align: center;
+}
     </style>
 
 
@@ -303,7 +306,7 @@ function highlightLowQuantity() {
         if (quantity <= 3) {
             // Apply inline styles directly to each cell in the row
             for (let j = 0; j < rows[i].cells.length; j++) {
-                rows[i].cells[j].setAttribute("style", "background-color: #ff0000 !important; color: #000000 !important; font-weight: bold !important;");
+                rows[i].cells[j].setAttribute("style", "background-color: #FF8383 !important; color: #000000 !important; font-weight: bold !important;");
             }
         } else {
             // Remove inline styles
@@ -357,7 +360,7 @@ function addItem() {
     let model = document.getElementById("model").value.trim();
     let size = document.getElementById("size").value.trim();
     let color = document.getElementById("color").value.trim();
-    let price = document.getElementById("price").value.trim();
+    let price = document.getElementById("price").value.trim()   ;
     let quantity = document.getElementById("quantity").value.trim();
 
     // Check if any field is empty
@@ -366,11 +369,13 @@ function addItem() {
         return;
     }
 
+    
+
     // Regular expressions for validation
     let brandRegex = /^[A-Za-z\s]+$/;
     let modelRegex = /^[A-Za-z0-9\s-]+$/;
-    let sizeRegex = /^[A-Za-z\s]+$/;
-    let charRegex = /^[A-Za-z\s-]+$/;
+    let sizeRegex = /^[A-Za-z0-9\s-]+$/;
+    let charRegex = /^[A-Za-z0-9\s-]+$/;
     let intRegex = /^[0-9]+$/;
 
     // Validate inputs and show separate error messages
@@ -431,7 +436,13 @@ function addItem() {
     newRow.insertCell(3).innerHTML = size;
     newRow.insertCell(4).innerHTML = color;
     newRow.insertCell(5).innerHTML = formatPrice(numericPrice);
-    newRow.insertCell(6).innerHTML = quantity;
+    
+    // Create quantity cell with center alignment
+    let quantityCell = newRow.insertCell(6);
+    quantityCell.innerHTML = quantity;
+    quantityCell.style.textAlign = "center"; // Center-align the quantity
+    // Or alternatively, add a class
+    quantityCell.classList.add("quantity-cell");
 
     // Highlight low quantity rows
     setTimeout(function() {
@@ -492,6 +503,26 @@ function editItem() {
     document.getElementById("transactionForm").reset();
     selectedRow = null;
 }
+
+
+
+function formatAllQuantityCells() {
+    let table = document.getElementById("productTable");
+    let rows = table.getElementsByTagName("tr");
+    
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].cells.length >= 7) { // Make sure the row has enough cells
+            let quantityCell = rows[i].cells[6]; // Assuming quantity is in the 7th column (index 6)
+            quantityCell.style.textAlign = "center";
+            // Or with class
+            quantityCell.classList.add("quantity-cell");
+        }
+    }
+}
+
+// Call this function after page load and after adding new items
+window.onload = formatAllQuantityCells;
+
 
 // Function to clear form fields
 function clearForm() {
