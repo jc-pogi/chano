@@ -3,7 +3,7 @@
 
 {% block main_contents %}
 <div class="container mt-4">
-    <div class="row">
+    <div class="row justify-content-center">
         <!-- User Statistics Cards -->
         <div class="col-md-3">
             <div class="card p-3 text-center">
@@ -26,33 +26,37 @@
     </div>
     <div class="row mt-4">
         <!-- Accounts List -->
-        <div class="col-md-12">
-            <div class="card p-3">
-                <div class="d-flex justify-content-between mb-3">
-                    <h4 class="title">Accounts List</h4>
-                    <button class="btn add-account-btn" onclick="openAccountModal()">+ Add Account</button>
+        <div class="col-md-12" style="border: none; border-radius: 8px;">
+            <div class="card">
+                <!-- Blue Header -->
+                <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                    <h4 class="mb-0">Accounts List</h4>
                 </div>
-                <input type="text" id="search" class="form-control mb-3" placeholder="Search..." onkeyup="searchAccounts()">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Last Login</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="accountTable">
-                        <!-- Dynamic content -->
-                    </tbody>
-                </table>                
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <input type="text" id="search" class="form-control w-75" placeholder="Search..." onkeyup="searchAccounts()">
+                        <button class="btn add-account-btn btn-primary ms-3" onclick="openAccountModal()">+ Add Account</button>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountTable">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>                
             </div>
         </div>
     </div>
-</div>
-
+    
 <!-- Account Modal -->
 <div id="accountModal" class="modal">
     <div class="modal-content">
