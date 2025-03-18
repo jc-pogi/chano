@@ -9,8 +9,11 @@
         <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Revenue Report</h1>
     
         <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
-           <h5 id="transactionDate" class="text-muted small mb-0" style="color: #8B8C89 !important;"> <i class="bi bi-calendar"></i> Date Today: Monday, March 17, 2025</h5>
+            <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important; font-size: 1rem;">
+                <i class="bi bi-calendar"></i> <span>Date of Transaction:</span>
+            </h5>
         </div>
+        
     </div>
 
     <!-- Product Table Section -->
@@ -155,7 +158,6 @@
 
 
 <script>
-
     function updateTransactionDate() {
         let now = new Date();
         let formattedDate = new Intl.DateTimeFormat('en-PH', {
@@ -165,8 +167,11 @@
             day: 'numeric',
             timeZone: 'Asia/Manila'
         }).format(now);
-        document.getElementById("transactionDate").innerText = "Date of Transaction: " + formattedDate;
+        
+        document.querySelector("#transactionDate span").innerText = formattedDate;
     }
+
+    document.addEventListener("DOMContentLoaded", updateTransactionDate);
 </script>
 
 {% endblock %}
