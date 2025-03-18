@@ -2,6 +2,7 @@
 {% extends "index.html" %}
 {% load static %}
 
+
 {% block main_contents %}
 <div class="container-fluid px-2 my-3">
     <div class="card" style="border: none; background-color: transparent; border-radius: 8px;">
@@ -9,6 +10,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Products</h1>
             </div>
+
 
     <div class="container my-0 d-flex w-100" style="gap: 20px;"> <!-- Added gap here -->
         <!-- Sidebar Filter (Separate Container) -->
@@ -18,17 +20,18 @@
                     <i class="bi bi-filter"></i> Search Filters
                 </h5>
             </div>
-    
+   
         <div class="filter-container me-3" style="width: 30vh; padding: 15px; min-height: 0vh;">
-                    
+                   
                     <div class="mb-3">    
                         <label for="category">Category:</label>
                         <select id="category" class="form-control" onchange="applyFilters()">
                             <option value="">All</option>
                             <option value="helmet">Helmet</option>
                             <option value="top box">Top Box</option>
-                        </select>   
+                        </select>  
                     </div>
+
 
                     <!-- Price Range -->
                     <div class="mb-3">
@@ -40,17 +43,20 @@
                         </div>
                     </div>
 
+
                     <!-- Brand -->
                     <div class="mb-3">
                         <label for="brand">Brand:</label>
                         <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
                     </div>
 
+
                     <!-- Color -->
                     <div class="mb-3">
                         <label for="color">Color:</label>
                         <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
                     </div>
+
 
                     <!-- Size -->
                     <div class="mb-3">
@@ -72,24 +78,28 @@
                             <label class="form-check-label" for="sizeLarge">Large</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="X Large" id="sizeXLarge" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeXLarge">X Large</label>
-                            
-                        </div> 
+                            <input class="form-check-input" type="checkbox" value="Extra Large" id="sizeXLarge" onchange="applyFilters()">
+                            <label class="form-check-label" for="sizeXLarge">Extra Large</label>
+                           
                         </div>
-                     <label>Stocks:</label>   
+                        </div>
+                     <label>Stocks:</label>  
                      <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
-                            <label class="form-check-label" for="inStock">In Stock</label>   
+                            <label class="form-check-label" for="inStock">In Stock</label>  
                     </div>
+
 
                 </div>
 
+
          </div>
-        
+       
 
 
-        
+
+
+       
             <!-- Product Catalog -->
     <div class="card mb-4 flex-grow-1" style="border: none; border-radius: 8px;">
         <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
@@ -102,12 +112,13 @@
         </div>
     </div>
 </div>
-        
-        
-        
-        
+       
+       
+       
+       
     </div>
 </div>
+
 
 <style>
 body {
@@ -116,10 +127,12 @@ body {
     overflow: hidden;
 }
 
+
    #productTable {
     width: 100%;
     border-collapse: collapse;
 }
+
 
 .table-container thead {
     position: sticky;
@@ -128,11 +141,14 @@ body {
     z-index: 2;
 }
 
+
 /* Ensure the table expands fully */
 .product-table {
     width: 100%;
     overflow-x: auto;
 }
+
+
 
 
 /* Fix table header */
@@ -143,14 +159,17 @@ body {
     z-index: 2;
 }
 
+
 /* Optional: Adjust padding */
 th:first-child, td:first-child {
     display: none;
 }
 
+
 table td, table th {
     padding: 15px 10px;
 }
+
 
 .filter-container {
     background-color: #ffffff;
@@ -162,6 +181,7 @@ table td, table th {
     padding: 15px;
 }
 
+
 .container {
     display: flex;
     flex-wrap: wrap;
@@ -169,10 +189,12 @@ table td, table th {
     overflow: auto;
 }
 
+
 .card.mb-4.flex-grow-1 {
     flex: 2;
     min-width: 60%;
 }
+
 
 .card-body {
     flex-grow: 1;
@@ -180,27 +202,32 @@ table td, table th {
     overflow-y: auto;
 }
 
+
 /* Responsive for smaller screens */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
     }
 
+
     .filter-container, .card.mb-4.flex-grow-1 {
         max-width: 100%;
     }
 }
 
+
 /* Style text fields */
 .form-control {
-    border: 1px solid #000000; 
+    border: 1px solid #000000;
     border-radius: 6px; /* Rounded corners */
     transition: all 0.3s ease-in-out;
 }
 
+
 .form-control:focus {
     border-color: #000000; /* Darker blue on focus */
 }
+
 
 /* Style checkboxes */
 .form-check-input {
@@ -208,10 +235,12 @@ table td, table th {
     border-radius: 4px; /* Slight rounding */
 }
 
+
 .form-check-input:checked {
     background-color: #274C77;
     border-color: #1B3A57;
 }
+
 
 .main-content {
     flex-grow: 1;
@@ -219,16 +248,19 @@ table td, table th {
     overflow-y: auto;
 }
 
+
 .product-catalog {
     max-height: 60vh; /* Adjust based on layout */
     overflow-y: auto;
 }
+
 
 .main-content > * {
     margin-bottom: 0;
     padding-bottom: 0;
 }
 </style>
+
 
 <script>
     function applyFilters() {
@@ -242,9 +274,10 @@ table td, table th {
         .filter(checkbox => checkbox.id !== 'inStock')
         .map(checkbox => checkbox.value.toLowerCase());
     let inStock = document.getElementById("inStock").checked;
-    
+   
     // Get selected category (Helmet or Top Box)
     let category = document.getElementById("category").value.toLowerCase();
+
 
     let rows = document.querySelectorAll("#productTable tbody tr");
     rows.forEach(row => {
@@ -255,6 +288,7 @@ table td, table th {
         let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
         let rowCategory = row.getAttribute("data-type")?.toLowerCase() || "";
 
+
         let matchesPrice = (minPrice <= price) && (price <= maxPrice);
         let matchesBrand = !brand || rowBrand.includes(brand);
         let matchesColor = !color || rowColor.includes(color);
@@ -262,9 +296,10 @@ table td, table th {
         let matchesInStock = !inStock || rowInStock;
         let matchesCategory = !category || rowCategory === category;
 
+
         row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesInStock && matchesCategory ? "" : "none";
     });
 }
 </script>
-
 {% endblock %}
+
