@@ -303,7 +303,7 @@ th:first-child, td:first-child {
         let rows = tbody.getElementsByTagName("tr");
         
         for (let i = 0; i < rows.length; i++) {
-            let quantityCell = rows[i].cells[6]; // Assuming quantity is in the 7th column (index 6)
+            let quantityCell = rows[i].cells[8]; // Assuming quantity is in the 7th column (index 6)
             if (!quantityCell) continue;
             
             let quantity = parseInt(quantityCell.textContent);

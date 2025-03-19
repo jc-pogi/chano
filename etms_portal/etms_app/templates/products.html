@@ -94,18 +94,33 @@
                             <input class="form-check-input" type="checkbox" value="Full Face" id="typeFull" onchange="applyFilters()">       
                                <label class="form-check-label" for="typeFull">Full Face</label>
                         </div>       
-                               <div class="form-check">
+                        <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Modular" id="typeMod" onchange="applyFilters()">
                                <label class="form-check-label" for="typeMod">Modular</label>   
                         </div>
                     </div>
 
-                     <label><br>Stocks:</label>  
+
+                    <div class="mb-3">
+                        <label>Visor Type:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="visorSingle" name="visor" value="Single" onchange="applyFilters()">
+                            <label class="form-check-label" for="visorSingle">Single</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="visorDouble" name="visor" value="Double" onchange="applyFilters()">
+                            <label class="form-check-label" for="visorDouble">Double</label>
+                        </div>
+                    </div>
+
+
+                <div class="mb-3">
+                     <label>Stocks:</label>  
                      <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
                             <label class="form-check-label" for="inStock">In Stock</label>  
                     </div>
-
+                </div>
 
                 </div>
 
@@ -280,25 +295,28 @@ table td, table th {
 
 
 <script>
-    function applyFilters() {
+   function applyFilters() {
     let minPriceInput = document.getElementById("minPrice").value.trim();
     let maxPriceInput = document.getElementById("maxPrice").value.trim();
     let minPrice = minPriceInput !== "" ? parseFloat(minPriceInput) : Number.NEGATIVE_INFINITY;
     let maxPrice = maxPriceInput !== "" ? parseFloat(maxPriceInput) : Infinity;
+
     let brand = document.getElementById("brand").value.toLowerCase();
     let color = document.getElementById("color").value.toLowerCase();
-    let selectedTypes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
-        .filter(checkbox => checkbox.id.startsWith("type"))
+
+    // Get selected visor types (Single, Double)
+    let selectedVisors = Array.from(document.querySelectorAll("input[name='visor']:checked"))
         .map(checkbox => checkbox.value.toLowerCase());
 
-    let selectedSizes = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
-        .filter(checkbox => checkbox.id.startsWith("size"))
+    // Get selected types (Full-face, Half-face, etc.)
+    let selectedTypes = Array.from(document.querySelectorAll("input[name='type']:checked"))
         .map(checkbox => checkbox.value.toLowerCase());
+
+    // Get selected sizes (Small, Medium, Large, etc.)
+    let selectedSizes = Array.from(document.querySelectorAll("input[name='size']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
     let inStock = document.getElementById("inStock").checked;
-   
-    // Get selected category (Helmet or Top Box)
-    let category = document.getElementById("category").value.toLowerCase();
-
 
     let rows = document.querySelectorAll("#productTable tbody tr");
     rows.forEach(row => {
@@ -307,21 +325,18 @@ table td, table th {
         let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
         let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
         let rowType = row.getAttribute("data-type")?.toLowerCase() || "";
+        let rowVisor = row.getAttribute("data-visor")?.toLowerCase() || "";
         let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
-        let rowCategory = row.getAttribute("data-category")?.toLowerCase() || "";
-
 
         let matchesPrice = (minPrice <= price) && (price <= maxPrice);
         let matchesBrand = !brand || rowBrand.includes(brand);
         let matchesColor = !color || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
         let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
+        let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
         let matchesInStock = !inStock || rowInStock;
-        let matchesCategory = !category || rowCategory.includes(category);
 
-
-
-        row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesType && matchesInStock && matchesCategory ? "" : "none";
+        row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesInStock ? "" : "none";
     });
 }
 </script>
