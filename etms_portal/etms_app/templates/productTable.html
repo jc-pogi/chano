@@ -278,3 +278,59 @@
         </tbody>
     </table>
 </div>
+
+<table id="{{ table_id }}">
+    <thead>
+        <tr>
+            <th scope="col">PID</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
+            <th scope="col">Type</th>
+            <th scope="col">Size</th>
+            <th scope="col">Color</th>
+            <th scope="col">Price</th> <!-- 7th column (index 6) -->
+            <th class="text-center" scope="col">Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.pid }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.model }}</td>
+            <td>{{ product.type }}</td>
+            <td>{{ product.size }}</td>
+            <td>{{ product.color }}</td>
+            <td>{{ product.price }}</td> <!-- Price column -->
+            <td class="text-center">{{ product.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        formatTablePrices("{{ table_id }}");
+    });
+
+    function formatTablePrices(tableId) {
+        let table = document.getElementById(tableId);
+        if (table) {
+            let rows = table.querySelectorAll("tbody tr");
+            rows.forEach((row) => {
+                let priceCell = row.cells[6]; // 7th column (index 6)
+                if (priceCell) {
+                    let rawPrice = priceCell.textContent.trim();
+                    if (!rawPrice.includes("₱")) {
+                        priceCell.textContent = formatPrice(rawPrice);
+                    }
+                }
+            });
+        }
+    }
+
+    function formatPrice(price) {
+        let number = parseFloat(price.replace(/[^\d.]/g, "")); // Remove non-numeric characters
+        return isNaN(number) ? price : "₱ " + number.toLocaleString();
+    }
+</script>
