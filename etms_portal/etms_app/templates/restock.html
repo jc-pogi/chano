@@ -309,7 +309,7 @@ th:first-child, td:first-child {
             let brand = row.cells[1]?.textContent.toLowerCase() || "";
             let model = row.cells[2]?.textContent.toLowerCase() || "";
 
-            row.style.display = brand.includes(filter) || model.includes(filter)) ? "" : "none";
+            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
         });
     
         // Reapply highlighting after search
