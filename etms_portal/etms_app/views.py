@@ -14,14 +14,17 @@ def dashboard(request):
     return render(request, "dashboard.html", context={"current_tab": "dashboard"})
 
 def products(request):
-    return render(request, "products.html", context={"current_tab": "products"})
+    helmets = Helmet.objects.all()
+    return render(request, "products.html", {"helmets": helmets})
 
 def sm(request):
-    return render(request, "sm.html", context={"current_tab": "sm"})
+    helmets = Helmet.objects.all()
+    return render(request, "sm.html", {"helmets": helmets})
 
 
 def transactions(request):
-    return render(request, "transactions.html", context={"current_tab": "transactions"})
+    helmets = Helmet.objects.all()
+    return render(request, "transactions.html", {"helmets": helmets})
 
 
 def restock(request):
