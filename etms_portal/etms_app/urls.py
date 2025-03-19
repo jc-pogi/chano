@@ -28,4 +28,5 @@ urlpatterns = [
     path("revenue/", revenue, name="revenue"),
     path("accounts/", accounts, name="accounts"),
     path("login/", login_view, name="login"),  # Entransactionssure this exists
+    
 ]

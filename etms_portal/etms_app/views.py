@@ -1,9 +1,13 @@
 from django.shortcuts import render
+from .models import Helmet
 from django.contrib import admin
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def dashboard(request):
@@ -19,8 +23,51 @@ def sm(request):
 def transactions(request):
     return render(request, "transactions.html", context={"current_tab": "transactions"})
 
+
 def restock(request):
-    return render(request, "restock.html", context={"current_tab": "restock"})
+    if request.method == "POST":
+        try:
+            body_unicode = request.body.decode('utf-8')
+            print("Received JSON:", body_unicode)  # Debugging
+
+            data = json.loads(body_unicode)
+            items = data.get("items", [])
+
+            if not items:
+                return JsonResponse({"status": "error", "message": "No items received."})
+
+            # Process each item
+            for item in items:
+                print("Processing item:", item)  # Debugging
+
+                required_fields = ["brand", "model", "size", "color", "helmet_type", "visor_type", "price", "quantity"]
+                for field in required_fields:
+                    if field not in item or item[field] is None:
+                        return JsonResponse({"status": "error", "message": f"Missing field: {field}"})
+
+                helmet, created = Helmet.objects.get_or_create(
+                    brand=item["brand"],
+                    model=item["model"],
+                    size=item["size"],
+                    color=item["color"],
+                    helmet_type=item["helmet_type"],
+                    visor_type=item["visor_type"],
+                    defaults={"price": item["price"], "quantity": item["quantity"]}
+                )
+
+                if not created:
+                    helmet.quantity += item["quantity"]
+                    helmet.save()
+
+            return JsonResponse({"status": "success", "message": "Restock successful!"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON data."})
+
+    helmets = Helmet.objects.all()
+    return render(request, "restock.html", {"helmets": helmets})
+
+
 
 def revenue(request):
     return render(request, "revenue.html", context={"current_tab": "revenue"})
