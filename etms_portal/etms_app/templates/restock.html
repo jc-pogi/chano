@@ -255,7 +255,7 @@ th:first-child, td:first-child {
     <!-- Added Items Table -->
     <div class="card" style="border: none; border-radius: 8px;">
         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-            <h5 class="card-title mb-0">Current restock</h5>
+            <h5 class="card-title mb-0">Current Restock</h5>
         </div>
         <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
                 <table class="table table-hover mb-0" id="addedItemsTable">
@@ -282,7 +282,13 @@ th:first-child, td:first-child {
             </div>
     </div>
 
-
+    <style>
+    .low-quantity-warning {
+    background-color: #ffcccc !important;
+    font-weight: bold !important;
+}
+    </style>
+    
 <script>
      let selectedRow = null;
 
@@ -298,25 +304,65 @@ th:first-child, td:first-child {
         document.getElementById("transactionDate").innerText = "Date of Restock: " + formattedDate;
     }
 
-    
+    //Alert 
+    function highlightLowQuantity() {
+        let table = document.getElementById("productTable");
+        if (!table) return;
+        
+        let tbody = table.getElementsByTagName("tbody")[0];
+        if (!tbody) return;
+        
+        let rows = tbody.getElementsByTagName("tr");
+        
+        for (let i = 0; i < rows.length; i++) {
+            let quantityCell = rows[i].cells[8]; // Assuming quantity is in the 7th column (index 6)
+            if (!quantityCell) continue;
+            
+            let quantity = parseInt(quantityCell.textContent);
+            
+            if (quantity <= 3) {
+                // Apply styles to entire row
+                for (let j = 0; j < rows[i].cells.length; j++) {
+                    rows[i].cells[j].style.backgroundColor = "#FF8383";  // Light red
+                    rows[i].cells[j].style.color = "#000000";            // Black text
+                    rows[i].cells[j].style.fontWeight = "bold";         // Bold font
+                }
+            } else {
+                // Reset styles if quantity is greater than 3
+                for (let j = 0; j < rows[i].cells.length; j++) {
+                    rows[i].cells[j].style.backgroundColor = "";
+                    rows[i].cells[j].style.color = "";
+                    rows[i].cells[j].style.fontWeight = "";
+                }
+            }
+        }
+    }
+
+    // Run when the page loads
+    document.addEventListener("DOMContentLoaded", function() {
+        highlightLowQuantity();
+    });
+
+    // Run after any table update
+    function updateProductTable() {
+        // Your logic to update table (e.g., adding/removing items)
+        highlightLowQuantity(); // Ensure highlighting updates
+    }
 
     // Search functionality
     document.getElementById("searchInput").addEventListener("keyup", function () {
-        let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#productTable tbody tr");
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#productTable tbody tr");
+
 
         rows.forEach(row => {
             let brand = row.cells[1]?.textContent.toLowerCase() || "";
             let model = row.cells[2]?.textContent.toLowerCase() || "";
 
-            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
-        });
-    
-        // Reapply highlighting after search
-        setTimeout(function() {
-         highlightLowQuantity();
-        }, 0);
+
+        row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
     });
+
 
     function addItem() {
         let brand = document.getElementById("brand").value;
@@ -372,6 +418,22 @@ th:first-child, td:first-child {
         document.getElementById("quantity").value = row.cells[5].innerText;
         document.getElementById("helmet_type").value = row.cells[6].innerText;
         document.getElementById("visor_type").value = row.cells[7].innerText;
+
+    // Reapply highlighting after search
+    setTimeout(function() {
+        highlightLowQuantity();
+    }, 0);
+});
+
+    
+   
+
+
+
+function selectRow(row) {
+    if (selectedRow) {
+        selectedRow.classList.remove("table-active");
+
     }
 
 function removeItem() {
@@ -383,6 +445,7 @@ function removeItem() {
     } else {
         showToast("Please select an item to remove.", "danger");
     }
+    highlightLowQuantity(); // Update the row highlighting
 }
 
 function voidTransaction() {
@@ -506,6 +569,9 @@ function confirmRestock() {
                 document.getElementById("quantity").value = 1;
             });
         }
+
+         // Apply initial highlighting
+        highlightLowQuantity();
     });
 
     function showToast(message, type = "success") {

@@ -646,55 +646,73 @@
         <title>Receipt</title>
         <meta charset="UTF-8">
         <style>
-            @page { size: 90mm auto; margin: 0; }
+            @page { 
+                size: 80mm auto; /* Width fixed, height automatic */
+                margin: 0;
+            }
             body { 
                 font-family: 'Courier New', monospace; 
                 margin: 0; 
-                padding: 5px; 
-                width: 69mm; 
-                font-size: 12px; 
+                padding: 0; 
                 background-color: white;
                 box-sizing: border-box;
+                width: 80mm; /* Fixed width for thermal receipt */
+            }
+            .receipt-container {
+                width: 100%;
+                max-width: 300px; /* Larger for preview */
+                margin: 0 auto;
+                padding: 10px;
             }
             .receipt { 
                 width: 100%; 
-                max-width: 69mm;
-                padding: 5mm 2mm;
+                border: 1px dashed #ccc;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            .logo {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .logo img {
+                max-width: 100px;
+                height: auto;
             }
             .header { 
                 text-align: center; 
-                margin-bottom: 8px; 
+                margin-bottom: 15px; 
                 width: 100%;
             }
             .store-name { 
-                font-size: 16px; 
+                font-size: 18px; 
                 font-weight: bold; 
             }
             .store-info { 
-                font-size: 11px; 
+                font-size: 14px; 
                 margin-bottom: 5px; 
             }
             .divider { 
                 border-top: 1px dashed black; 
-                margin: 5px 0; 
+                margin: 10px 0; 
                 width: 100%;
             }
             .title { 
                 text-align: center; 
                 font-weight: bold; 
-                margin: 5px 0; 
+                margin: 10px 0; 
                 width: 100%;
+                font-size: 16px;
             }
             .transaction-info { 
                 display: flex; 
                 justify-content: space-between; 
-                font-size: 11px; 
+                font-size: 14px; 
                 margin-bottom: 5px;
                 width: 100%; 
             }
             .item { 
-                margin-bottom: 5px; 
-                font-size: 11px; 
+                margin-bottom: 8px; 
+                font-size: 14px; 
                 width: 100%;
             }
             .item-detail { 
@@ -704,93 +722,162 @@
             }
             .amounts { 
                 text-align: right; 
-                margin-top: 5px; 
+                margin-top: 10px; 
                 width: 100%;
+                font-size: 14px;
             }
             .total-line { 
                 font-weight: bold; 
                 margin-top: 5px; 
+                font-size: 16px;
             }
             .footer { 
                 text-align: center; 
-                margin-top: 10px; 
-                font-size: 11px; 
+                margin-top: 15px; 
+                font-size: 14px; 
                 width: 100%;
             }
+            .print-button {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                background-color: #274C77;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            /* Only apply thermal printer settings when actually printing */
             @media print { 
-                body { width: 90mm; } 
-                .no-print { display: none; } 
+                .no-print, .print-button { 
+                    display: none; 
+                } 
+                body { 
+                    width: 80mm;
+                    padding: 0;
+                    margin: 0;
+                }
+                .receipt-container {
+                    width: 76mm;
+                    max-width: 76mm;
+                    padding: 2mm;
+                    margin: 0;
+                }
+                .receipt {
+                    width: 100%;
+                    border: none;
+                    padding: 0;
+                }
+                .store-name { 
+                    font-size: 12px; 
+                }
+                .store-info { 
+                    font-size: 9px; 
+                }
+                .title {
+                    font-size: 10px;
+                }
+                .transaction-info,
+                .item,
+                .amounts {
+                    font-size: 9px;
+                }
+                .total-line {
+                    font-size: 10px;
+                }
+                .footer {
+                    font-size: 9px;
+                }
+                .logo img {
+                    max-width: 60px;
+                }
+                /* Add these properties to prevent page breaks */
+                html, body {
+                    height: auto;
+                    overflow: visible;
+                }
+                /* Control where page breaks can occur */
+                .item {
+                    page-break-inside: avoid;
+                }
+                .divider {
+                    page-break-after: avoid;
+                }
+                .header, .footer {
+                    page-break-inside: avoid;
+                }
             }
         </style>
     </head>
     <body>
-        <div class="receipt">
-            <div class="header">
-                <div class="store-name">ELYTRA TECH</div>
-                <div class="store-info">Homer's Helmet Shop</div>
-                <div class="store-info">Bagumbayan, Ligao City, Albay</div>
-                <div class="store-info">09234567801</div>
-            </div>
-            <div class="divider"></div>
-            <div class="title">CASH RECEIPT</div>
-            <div class="divider"></div>
-            <div class="transaction-info">
-                <span>Receipt #: ${transactionId}</span>
-                <span>${timeString}</span>
-            </div>
-            <div class="transaction-info">
-                <span>${transactionDate.replace('Date of Transaction: ', '')}</span>
-            </div>
-            <div class="divider"></div>
-            <div>`;
-    
-                items.forEach(item => {
-    const price = parseFloat(item[5].replace(/[^0-9.]/g, ""));
-    const quantity = parseInt(item[6]);
-    const itemTotal = price * quantity;
-    
-    // Display only brand and model (item[1] and item[2])
-    receiptContent += `
-            <div class="item">
-                <div>${item[1]} ${item[2]}</div>
-                <div class="item-detail">
-                    <span>${quantity} x PHP ${price.toFixed(2)}</span>
-                    <span>PHP ${itemTotal.toFixed(2)}</span>
+        <div class="receipt-container">
+            <div class="receipt">
+                <div class="logo">
+                    <img src="img/LOGO.jpg" alt="Elytra Tech Logo">
                 </div>
-            </div>`;
-});
-
+                <div class="header">
+                    <div class="store-name">ELYTRA TECH</div>
+                    <div class="store-info">Homer's Helmet Shop</div>
+                    <div class="store-info">Bagumbayan, Ligao City, Albay</div>
+                    <div class="store-info">09234567801</div>
+                </div>
+                <div class="divider"></div>
+                <div class="title">CASH RECEIPT</div>
+                <div class="divider"></div>
+                <div class="transaction-info">
+                    <span>Receipt #: ${transactionId}</span>
+                    <span>${timeString}</span>
+                </div>
+                <div class="transaction-info">
+                    <span>${transactionDate.replace('Date of Transaction: ', '')}</span>
+                </div>
+                <div class="divider"></div>
+                <div>`;
+    
+    items.forEach(item => {
+        const price = parseFloat(item[5].replace(/[^0-9.]/g, ""));
+        const quantity = parseInt(item[6]);
+        const itemTotal = price * quantity;
+        
+        // Display only brand and model (item[1] and item[2])
+        receiptContent += `
+                    <div class="item">
+                        <div>${item[1]} ${item[2]}</div>
+                        <div class="item-detail">
+                            <span>${quantity} x PHP ${price.toFixed(2)}</span>
+                            <span>PHP ${itemTotal.toFixed(2)}</span>
+                        </div>
+                    </div>`;
+    });
 
     receiptContent += `
-            </div>
-            <div class="divider"></div>
-            <div class="amounts">
-                <div class="total-line">TOTAL: PHP ${totalPrice.toFixed(2)}</div>
-                <div>CASH: PHP ${cash.toFixed(2)}</div>
-                <div>CHANGE: PHP ${change.toFixed(2)}</div>
-            </div>
-            <div class="divider"></div>
-            <div class="footer">
-                <p>Thank you for shopping with us!</p>
-                <p>Please come again</p>
-            </div>
-            <div class="divider">
                 </div>
+                <div class="divider"></div>
+                <div class="amounts">
+                    <div class="total-line">TOTAL: PHP ${totalPrice.toFixed(2)}</div>
+                    <div>CASH: PHP ${cash.toFixed(2)}</div>
+                    <div>CHANGE: PHP ${change.toFixed(2)}</div>
+                </div>
+                <div class="divider"></div>
+                <div class="footer">
+                    <p>Thank you for shopping with us!</p>
+                    <p>Please come again</p>
+                </div>
+                <div class="divider"></div>
+            </div>
+            <button onclick="window.print(); return false;" class="print-button">Print Receipt</button>
         </div>
     </body>
     </html>`;
 
-    let newWindow = window.open("", "_blank", "width=600,height=600");
-    newWindow.document.write(receiptContent);
-    newWindow.document.close();
-
-    newWindow.onload = function() {
-        newWindow.focus();
-        newWindow.print();
-        setTimeout(() => newWindow.close(), 500);
-    };
+    // Open in new window and set focus with proper options for receipt printing
+    let receiptWindow = window.open("", "_blank", "width=400,height=600,toolbar=no,menubar=no");
+    receiptWindow.document.write(receiptContent);
+    receiptWindow.document.close();
+    receiptWindow.focus();
 }
-
 function showToast(message, type = "success") {
     let toastContainer = document.getElementById("toast-container");
     let toast = document.createElement("div");
