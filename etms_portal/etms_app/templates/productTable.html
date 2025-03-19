@@ -39,31 +39,5 @@
 </body>
 </html>
 
-<script>
-    helmets = Helmet.objects.all()
 
-    document.addEventListener("DOMContentLoaded", function () {
-        formatTablePrices("{{ table_id }}");
-    });
 
-    function formatTablePrices(tableId) {
-        let table = document.getElementById(tableId);
-        if (table) {
-            let rows = table.querySelectorAll("tbody tr");
-            rows.forEach((row) => {
-                let priceCell = row.cells[4]; // 7th column (index 6)
-                if (priceCell) {
-                    let rawPrice = priceCell.textContent.trim();
-                    if (!rawPrice.includes("₱")) {
-                        priceCell.textContent = formatPrice(rawPrice);
-                    }
-                }
-            });
-        }
-    }
-
-    function formatPrice(price) {
-        let number = parseFloat(price.replace(/[^\d.]/g, "")); // Remove non-numeric characters
-        return isNaN(number) ? price : "₱ " + number.toLocaleString();
-    }
-</script>
