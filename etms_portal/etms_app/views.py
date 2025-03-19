@@ -15,16 +15,28 @@ def dashboard(request):
 
 def products(request):
     helmets = Helmet.objects.all()
-    return render(request, "products.html", {"helmets": helmets})
+    context = {
+        "helmets": helmets,
+        "current_tab": "products"
+    }
+    return render(request, "products.html", context)
 
 def sm(request):
     helmets = Helmet.objects.all()
-    return render(request, "sm.html", {"helmets": helmets})
+    context = {
+        "helmets": helmets,
+        "current_tab": "sm"
+    }
+    return render(request, "sm.html", context)
 
 
 def transactions(request):
     helmets = Helmet.objects.all()
-    return render(request, "transactions.html", {"helmets": helmets})
+    context = {
+        "current_tab": "transactions",
+        "helmets": helmets,  # Include helmets inside the same context dictionary
+    }
+    return render(request, "transactions.html", context)
 
 
 def restock(request):
@@ -68,7 +80,11 @@ def restock(request):
             return JsonResponse({"status": "error", "message": "Invalid JSON data."})
 
     helmets = Helmet.objects.all()
-    return render(request, "restock.html", {"helmets": helmets})
+    context = {
+        "current_tab": "restock",
+        "helmets": helmets,  # Include helmets inside the same context dictionary
+    }
+    return render(request, "restock.html", context)
 
 
 
