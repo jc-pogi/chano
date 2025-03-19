@@ -317,10 +317,7 @@ function highlightLowQuantity() {
     }
 }
 
-// Function to format price with PHP and thousands separators
-function formatPrice(price) {
-    return "PHP " + parseInt(price).toLocaleString();
-}
+
 
 // Function to extract numeric value from formatted price
 function extractPrice(formattedPrice) {
@@ -331,26 +328,7 @@ function extractPrice(formattedPrice) {
 document.addEventListener("DOMContentLoaded", function() {
     highlightLowQuantity();
     
-    // Format existing prices in the table
-    let table = document.getElementById("productTable");
-    if (table) {
-        let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        for (let i = 0; i < rows.length; i++) {
-            let priceCell = rows[i].cells[5]; // Assuming price is in the 6th column (index 5)
-            if (priceCell) {
-                let rawPrice = priceCell.textContent;
-                if (!rawPrice.includes("PHP")) {
-                    priceCell.textContent = formatPrice(rawPrice);
-                }
-            }
-        }
-    }
-    
-    // Add PHP prefix to price input field
-    let priceInput = document.getElementById("price");
-    if (priceInput) {
-        priceInput.placeholder = "PHP";
-    }
+
 });
 
 // Function to add an item to the table
