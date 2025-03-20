@@ -7,21 +7,23 @@
     <style>
         table {
             width: 100%;
-            border-collapse: collapse;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to tables */
+            border-radius: 8px;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
     <table>
         <tr>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>Size</th>
-            <th>Color</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Helmet Type</th>
-            <th>Visor Type</th>
+            <th data-column="brand">Brand</th>
+            <th data-column="model">Model</th>
+            <th data-column="size">Size</th>
+            <th data-column="color">Color</th>
+            <th data-column="price">Price</th>
+            <th data-column="quantity">Quantity</th>
+            <th data-column="helmetType">Helmet Type</th>
+            <th data-column="visorType">Visor Type</th>
         </tr>
         {% for helmet in helmets %}
         <tr>
@@ -29,7 +31,7 @@
             <td>{{ helmet.model }}</td>
             <td>{{ helmet.size }}</td>
             <td>{{ helmet.color }}</td>
-            <td>{{ helmet.price }}</td>
+            <td>₱{{ helmet.price }}</td>
             <td>{{ helmet.quantity }}</td>
             <td>{{ helmet.helmet_type }}</td>
             <td>{{ helmet.visor_type }}</td>

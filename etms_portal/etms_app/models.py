@@ -30,23 +30,3 @@ class Helmet(models.Model):
         return f"{self.brand} {self.model} ({self.helmet_type}, {self.visor_type})"
 
 
-class TransactionLog(models.Model):
-    transaction_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    helmet = models.ForeignKey(Helmet, on_delete=models.CASCADE)
-    transaction_date = models.DateTimeField(auto_now_add=True)
-    quantity = models.IntegerField(default=1)  # Default quantity to 1
-
-    def __str__(self):
-        return f"{self.user} - {self.helmet}"
-
-
-class RestockLog(models.Model):
-    log_id = models.AutoField(primary_key=True)
-    admin = models.ForeignKey(User, on_delete=models.CASCADE)
-    helmet = models.ForeignKey(Helmet, on_delete=models.CASCADE)
-    restock_date = models.DateTimeField(auto_now_add=True)
-    added_quantity = models.IntegerField(default=0)  # Default restock quantity
-
-    def __str__(self):
-        return f"{self.admin} restocked {self.helmet} with {self.added_quantity} units"
