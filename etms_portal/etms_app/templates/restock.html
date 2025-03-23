@@ -273,9 +273,10 @@ button:hover {
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
-                <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">PHP 0.00</span></span>
+                <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">₱ 0.00</span></span>
             </div>
     </div>
+
 
 
 <script>
@@ -296,7 +297,7 @@ button:hover {
     document.addEventListener("DOMContentLoaded", function () {
     // Update transaction date
     updateTransactionDate();
-    
+
     // Set up product table click events
     let productTable = document.getElementById("productTable");
     if (productTable) {
@@ -304,10 +305,10 @@ button:hover {
         productTable.addEventListener("click", function (e) {
             let targetRow = e.target.closest("tr");
             if (!targetRow || targetRow.parentElement.tagName !== "TBODY") return;
-            
+
             // Select the row
             selectRow(targetRow);
-            
+
             // Fill the form with the row data
             document.getElementById("brand").value = targetRow.cells[1].textContent;
             document.getElementById("model").value = targetRow.cells[2].textContent;
@@ -317,7 +318,7 @@ button:hover {
             document.getElementById("quantity").value = 1;  // Default to 1 for new transactions
         });
     }
-    
+
     // Highlight low quantity items on page load
     highlightLowQuantity();
 });
@@ -373,33 +374,33 @@ function addItem() {
     updateSummary();
 }
 
-    // Function to edit and update the row
-    function editItem() {
+ // Function to edit and update the row
+ function editItem() {
     console.log("Edit button clicked");
     console.log("Selected Row:", selectedRow);
-    
+
     if (!selectedRow) {
         console.log("No row selected!");
         alert("Please select a row to edit.");
         return;
     }
-    
+
     // Check if the selected row is from the product table
     if (selectedRow.closest("table").id !== "productTable") {
         alert("Please select a product from the Product Catalog table to edit.");
         return;
     }
-    
+
     // Get form values
     let brand = document.getElementById("brand").value;
     let model = document.getElementById("model").value;
     let size = document.getElementById("size").value;
     let color = document.getElementById("color").value;
     let price = document.getElementById("price").value;
-    
+
     // Keep the original quantity
     let originalQuantity = selectedRow.cells[6].textContent;
-    
+
     // Update the product row with new values, but preserve quantity
     selectedRow.cells[1].textContent = brand;
     selectedRow.cells[2].textContent = model;
@@ -407,19 +408,19 @@ function addItem() {
     selectedRow.cells[4].textContent = color;
     selectedRow.cells[5].textContent = price;
     // Do not update quantity (cell 6)
-    
+
     // Clear form
     document.getElementById("transactionForm").reset();
-    
+
     // Remove selection highlight
     selectedRow.classList.remove("table-active");
     selectedRow = null;
-    
+
     // Update highlighting for low quantity products
     setTimeout(function() {
         highlightLowQuantity();
     }, 0);
-    
+
     showToast("Product updated successfully!", "success");
 }
 
@@ -428,19 +429,19 @@ function addItem() {
     function highlightLowQuantity() {
         let table = document.getElementById("productTable");
         if (!table) return;
-        
+
         let tbody = table.getElementsByTagName("tbody")[0];
         if (!tbody) return;
-        
+
         let rows = tbody.getElementsByTagName("tr");
-        
+
         for (let i = 0; i < rows.length; i++) {
             let quantityCell = rows[i].cells[6]; // Assuming quantity is in the 7th column (index 6)
             if (!quantityCell) continue;
-            
+
             let quantity = parseInt(quantityCell.textContent);
-            
-            if (quantity <= 3) {
+
+            if (quantity <= 4) {
                 // Apply inline styles directly to each cell in the row
                 for (let j = 0; j < rows[i].cells.length; j++) {
                     rows[i].cells[j].setAttribute("style", "background-color: #FF8383 !important; color: #000000 !important; font-weight: bold !important;");
@@ -472,19 +473,31 @@ function selectRow(row) {
 
 
 function removeItem() {
-    if (selectedRow) {
-        selectedRow.remove();
-        selectedRow = null;
-
-        updateSummary();
-    } else {
+    if (!selectedRow) {
         showToast("Please select an item to remove.", "danger");
+        return;
     }
+
+    // Check if the selected row is from the Product Catalog
+    let tableId = selectedRow.closest("table").id;
+    if (tableId === "productTable") {
+        showToast("You cannot remove items from the Product Catalog!", "danger");
+        return;
+    }
+
+    // If the row is from the Current Transaction table, remove it
+    selectedRow.remove();
+    selectedRow = null;
+
+    updateSummary();
 }
 
 function voidTransaction() {
     document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0].innerHTML = "";
     selectedRow = null;
+    
+    // Reset total items and amount
+    updateSummary();
 }
 
 function clearFields() {
@@ -492,48 +505,87 @@ function clearFields() {
 }
     
 function updateSummary() {
-        let totalItems = 0;
-        let totalAmount = 0;
+    let totalItems = 0;
+    let totalAmount = 0;
 
-        // Select all rows in the table body
-        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-            const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
-            const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent) || 0;
-        
-            totalItems += quantity;
-            totalAmount += price * quantity;
-        });
+    // Select all rows in the table body
+    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+        const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
+        const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent.replace(/,/g, '')) || 0;
 
-        // Update the footer display
-        document.getElementById("totalItems").textContent = totalItems;
-        document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toFixed(2)}`;
-    }
+        totalItems += quantity;
+        totalAmount += price * quantity;
+    });
 
-    function confirmRestock() {
-        let tbody = document.querySelector("#addedItemsTable tbody");
-        let modalElement = document.getElementById("restockModal");
-        let modal = bootstrap.Modal.getInstance(modalElement);
+    // Update the footer display with comma formatting
+    document.getElementById("totalItems").textContent = totalItems;
+    document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}function updateSummary() {
+    let totalItems = 0;
+    let totalAmount = 0;
 
-        // Ensure tbody exists and has visible rows
-        if (!tbody || tbody.children.length == 0) {
-            
-            if (modal) {
-                modal.hide(); // Close modal after confirmation
-            } else {
-                console.error("Modal instance not found.");
-            }
-            showToast("No items to restock.", "danger");
-            return false;
-        }
+    // Select all rows in the table body
+    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+        const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
+        const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent.replace(/,/g, '')) || 0;
+
+        totalItems += quantity;
+        totalAmount += price * quantity;
+    });
+
+    // Update the footer display with comma formatting
+    document.getElementById("totalItems").textContent = totalItems;
+    document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function confirmRestock() {
+    let tbody = document.querySelector("#addedItemsTable tbody");
+    let modalElement = document.getElementById("restockModal");
+    let modal = bootstrap.Modal.getInstance(modalElement);
+
+    if (!tbody || tbody.children.length == 0) {
+        if (modal) {
             modal.hide();
-            document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
-            document.body.classList.remove("modal-open");
-            showToast("Restock confirmed!", "success");
-            voidTransaction();
-        
+        } else {
+            console.error("Modal instance not found.");
+        }
+        showToast("No items to restock.", "danger");
+        return false;
     }
 
-   
+    modal.hide();
+    document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+    document.body.classList.remove("modal-open");
+    showToast("Restock confirmed!", "success");
+
+    // Clear transaction table
+    voidTransaction();
+
+    // Reset total items and amount
+    updateSummary();
+}
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Update transaction date
+        updateTransactionDate();
+        // Set up product table click events
+        let table = document.getElementById("productTable");
+        if (table) {
+            table.addEventListener("click", function (e) {
+                let targetRow = e.target.closest("tr");
+                if (!targetRow || targetRow.rowIndex === 0) return;
+
+                // Adjust indices to account for hidden PID column
+                document.getElementById("brand").value = targetRow.cells[1].textContent;
+                document.getElementById("model").value = targetRow.cells[2].textContent;
+                document.getElementById("size").value = targetRow.cells[3].textContent;
+                document.getElementById("color").value = targetRow.cells[4].textContent;
+                document.getElementById("price").value = targetRow.cells[5].textContent;
+                document.getElementById("quantity").value = 1;
+            });
+        }
+    });
 
     function showToast(message, type = "success") {
     let toastContainer = document.getElementById("toast-container");
