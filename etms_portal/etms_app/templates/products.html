@@ -11,143 +11,118 @@
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Products</h1>
             </div>
 
-
-    <div class="container my-0 d-flex w-100" style="gap: 20px;"> <!-- Added gap here -->
-        <!-- Sidebar Filter (Separate Container) -->
-        <div class="card mb-4" style="border: none; border-radius: 8px; width: 250px;"> <!-- Fixed width for consistency -->
-            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-filter"></i> Search Filters
-                </h5>
-            </div>
-   
-        <div class="filter-container me-3" style="width: 30vh; padding: 15px; min-height: 0vh;">
-                   
-                    <div class="mb-3">    
-                        <label for="category">Category:</label>
-                        <select id="category" class="form-control" onchange="applyFilters()">
-                            <option value="">All</option>
-                            <option value="helmet">Helmet</option>
-                            <option value="top box">Top Box</option>
-                        </select>  
+            <div class="container my-0 d-flex w-100" style="gap: 20px;">
+                <!-- Sidebar Filter -->
+                <div class="card mb-4" style="border: none; border-radius: 8px; width: 250px;">
+                    <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                        <h5 class="card-title mb-0"><i class="bi bi-filter"></i> Search Filters</h5>
                     </div>
 
-
-                    <!-- Price Range -->
-                    <div class="mb-3">
-                        <label>Price Range:</label>
-                        <div class="d-flex align-items-center">
-                            <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
-                            <span>—</span>
-                            <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
+                    <div class="filter-container me-3" style="width: 30vh; padding: 15px;">
+                        <!-- Category -->
+                        <div class="mb-3">    
+                            <label for="category">Category:</label>
+                            <select id="category" class="form-control" onchange="applyFilters()">
+                                <option value="">All</option>
+                                <option value="helmet">Helmet</option>
+                                <option value="top box">Top Box</option>
+                            </select>  
                         </div>
-                    </div>
-
-
-                    <!-- Brand -->
-                    <div class="mb-3">
-                        <label for="brand">Brand:</label>
-                        <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
-                    </div>
-
-
-                    <!-- Color -->
-                    <div class="mb-3">
-                        <label for="color">Color:</label>
-                        <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
-                    </div>
-
-
-                    <!-- Size -->
-                    <div class="mb-3">
-                        <label>Size:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Kids" id="sizeKids" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeKids">Kids</label>
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label>Price Range:</label>
+                            <div class="d-flex align-items-center">
+                                <input type="number" id="minPrice" placeholder="₱ MIN" class="form-control me-2" style="width: 90px;" oninput="applyFilters()">
+                                <span>—</span>
+                                <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Standard" id="sizeStandard" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeStandard">Standard</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Medium" id="sizeMedium" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeMedium">Medium</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Large" id="sizeLarge" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeLarge">Large</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Extra Large" id="sizeXLarge" onchange="applyFilters()">
-                            <label class="form-check-label" for="sizeXLarge">Extra Large</label>
-                           
-                        </div>
+                        <!-- Brand -->
+                        <div class="mb-3">
+                            <label for="brand">Brand:</label>
+                            <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
                         </div>
 
-                    <div class="mb-3">    
-                        <label>Type:</label>  
-                        <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="Half Face" id="typeHalf" onchange="applyFilters()">
-                               <label class="form-check-label" for="typeHalf">Half Face</label>
+                        <!-- Color -->
+                        <div class="mb-3">
+                            <label for="color">Color:</label>
+                            <input type="text" id="color" class="form-control" placeholder="Type color" oninput="applyFilters()">
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Full Face" id="typeFull" onchange="applyFilters()">       
-                               <label class="form-check-label" for="typeFull">Full Face</label>
-                        </div>       
-                        <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Modular" id="typeMod" onchange="applyFilters()">
-                               <label class="form-check-label" for="typeMod">Modular</label>   
+
+                        <!-- Size -->
+                        <div class="mb-3">
+                            <label>Size:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Std" id="sizeStandard" onchange="applyFilters()">
+                                <label class="form-check-label" for="sizeStandard">Standard</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="M" id="sizeM" onchange="applyFilters()">
+                                <label class="form-check-label" for="sizeM">Medium</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="L" id="sizeL" onchange="applyFilters()">
+                                <label class="form-check-label" for="sizeL">Large</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="XL" id="sizeXL" onchange="applyFilters()">
+                                <label class="form-check-label" for="sizeXL">Extra Large</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="K" id="sizeKids" onchange="applyFilters()">
+                                <label class="form-check-label" for="sizeKids">Kids</label>
+                            </div>
                         </div>
-                    </div>
 
-
-                    <div class="mb-3">
-                        <label>Visor Type:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="visorSingle" name="visor" value="Single" onchange="applyFilters()">
-                            <label class="form-check-label" for="visorSingle">Single</label>
+                        <div class="mb-3">
+                            <label>Type:</label>  
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Half-Face" id="typeHalf" onchange="applyFilters()">
+                                <label class="form-check-label" for="typeHalf">Half-Face</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Full-Face" id="typeFull" onchange="applyFilters()">
+                                <label class="form-check-label" for="typeFull">Full-Face</label>
+                            </div>       
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="visorDouble" name="visor" value="Double" onchange="applyFilters()">
-                            <label class="form-check-label" for="visorDouble">Double</label>
+                        
+                        <!-- Visor Type -->
+                        <div class="mb-3">
+                            <label>Visor Type:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="visorSingle" value="Single" onchange="applyFilters()">
+                                <label class="form-check-label" for="visorSingle">Single</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="visorDouble" value="Double" onchange="applyFilters()">
+                                <label class="form-check-label" for="visorDouble">Double</label>
+                            </div>
                         </div>
-                    </div>
 
-
-                <div class="mb-3">
-                     <label>Stocks:</label>  
-                     <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="inStock" id="inStock" onchange="applyFilters()">
-                            <label class="form-check-label" for="inStock">In Stock</label>  
+                        <!-- Stocks -->
+                        <div class="mb-3">
+                            <label>Stocks:</label>  
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="inStock" onchange="applyFilters()">
+                                <label class="form-check-label" for="inStock">In Stock</label>  
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Product Catalog -->
+                <div class="card mb-4 flex-grow-1" style="border: none; border-radius: 8px;">
+                    <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                        <h5 class="card-title mb-0">Product Catalog</h5>
+                    </div>
+                    <div class="card-body p-0 overflow-auto">
+                        <div class="product-table">
+                            {% include "productTable.html" %}
+                        </div>
+                    </div>
                 </div>
-
-
-         </div>
-       
-
-
-
-
-       
-            <!-- Product Catalog -->
-    <div class="card mb-4 flex-grow-1" style="border: none; border-radius: 8px;">
-        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-            <h5 class="card-title mb-0">Product Catalog</h5>
-        </div>
-        <div class="card-body p-0 overflow-auto" style="max-height: 700px; border-radius: 0 0 8px 8px;">
-            <div class="product-table">
-                {% include "productTable.html" with table_id="productTable" %}
             </div>
         </div>
-    </div>
-</div>
-       
-       
-       
-       
     </div>
 </div>
 
@@ -187,19 +162,13 @@ body {
 .table-container thead {
     position: sticky;
     top: 0;
-    background: white;
+    background: rgb(255, 255, 255);
     z-index: 2;
 }
 
 
-/* Optional: Adjust padding */
-th:first-child, td:first-child {
-    display: none;
-}
-
-
 table td, table th {
-    padding: 15px 10px;
+    padding: 10px 10px;
 }
 
 
@@ -210,7 +179,7 @@ table td, table th {
     flex: 1;
     min-width: 250px;
     max-width: 30%;
-    padding: 15px;
+    padding: 10px;
 }
 
 
@@ -224,7 +193,7 @@ table td, table th {
 
 .card.mb-4.flex-grow-1 {
     flex: 2;
-    min-width: 60%;
+    min-width: 40%;
 }
 
 
@@ -295,50 +264,106 @@ table td, table th {
 
 
 <script>
-   function applyFilters() {
-    let minPriceInput = document.getElementById("minPrice").value.trim();
-    let maxPriceInput = document.getElementById("maxPrice").value.trim();
-    let minPrice = minPriceInput !== "" ? parseFloat(minPriceInput) : Number.NEGATIVE_INFINITY;
-    let maxPrice = maxPriceInput !== "" ? parseFloat(maxPriceInput) : Infinity;
 
+function loadProducts() {
+    fetch("/get-products/")
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.querySelector("#productTable tbody");
+        tableBody.innerHTML = "";
+
+        if (!data || !Array.isArray(data)) {
+            console.error("❌ Invalid JSON format:", data);
+            return;
+        }
+
+        data.forEach(item => {
+            let row = `<tr 
+                data-category="${item.category ? item.category.toLowerCase() : ''}"
+                data-brand="${item.brand.toLowerCase()}"
+                data-color="${item.color ? item.color.toLowerCase() : ''}"
+                data-size="${item.size.toLowerCase()}"
+                data-type="${item.helmet_type.toLowerCase()}"
+                data-visor="${item.visor_type.toLowerCase()}"
+                data-price="${item.price || 0}"
+                data-in-stock="${item.quantity > 0}">
+                <td>${item.brand}</td>
+                <td>${item.model}</td>
+                <td>${item.size}</td>
+                <td>${item.color || "N/A"}</td>
+                <td>${item.helmet_type}</td>
+                <td>${item.visor_type}</td>
+                <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
+                <td>${item.quantity}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+        applyFilters(); // Apply filters after loading products
+    })
+    .catch(error => console.error("❌ Error loading products:", error));
+}
+
+
+function applyFilters() {
+    let category = document.getElementById("category").value.toLowerCase();
     let brand = document.getElementById("brand").value.toLowerCase();
     let color = document.getElementById("color").value.toLowerCase();
-
-    // Get selected visor types (Single, Double)
-    let selectedVisors = Array.from(document.querySelectorAll("input[name='visor']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
-    // Get selected types (Full-face, Half-face, etc.)
-    let selectedTypes = Array.from(document.querySelectorAll("input[name='type']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
-    // Get selected sizes (Small, Medium, Large, etc.)
-    let selectedSizes = Array.from(document.querySelectorAll("input[name='size']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
     let inStock = document.getElementById("inStock").checked;
 
+    // Get selected price range
+    let minPrice = document.getElementById("minPrice").value.trim();
+    let maxPrice = document.getElementById("maxPrice").value.trim();
+    minPrice = minPrice !== "" ? parseFloat(minPrice) : Number.NEGATIVE_INFINITY;
+    maxPrice = maxPrice !== "" ? parseFloat(maxPrice) : Number.POSITIVE_INFINITY;
+
+    // Get selected filter values
+    let selectedSizes = Array.from(document.querySelectorAll("input[id^='size']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
+    let selectedTypes = Array.from(document.querySelectorAll("input[id^='type']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
+    let selectedVisors = Array.from(document.querySelectorAll("input[id^='visor']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
     let rows = document.querySelectorAll("#productTable tbody tr");
+
     rows.forEach(row => {
-        let price = parseFloat(row.getAttribute("data-price")) || 0;
+        let rowCategory = row.getAttribute("data-category")?.toLowerCase() || "";
         let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
         let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
         let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
         let rowType = row.getAttribute("data-type")?.toLowerCase() || "";
         let rowVisor = row.getAttribute("data-visor")?.toLowerCase() || "";
-        let rowInStock = row.getAttribute("data-in-stock")?.toLowerCase() === "true";
+        let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
+        let rowInStock = row.getAttribute("data-in-stock") === "true";
 
-        let matchesPrice = (minPrice <= price) && (price <= maxPrice);
-        let matchesBrand = !brand || rowBrand.includes(brand);
-        let matchesColor = !color || rowColor.includes(color);
+        console.log(`Row: Size=${rowSize}, Type=${rowType}, Visor=${rowVisor}, Price=${rowPrice}`);
+
+        // Fix: Ensure filters do not hide valid rows
+        let matchesCategory = category === "" || rowCategory.includes(category);
+        let matchesBrand = brand === "" || rowBrand.includes(brand);
+        let matchesColor = color === "" || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
         let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
         let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
+        let matchesPrice = (minPrice <= rowPrice) && (rowPrice <= maxPrice);
         let matchesInStock = !inStock || rowInStock;
 
-        row.style.display = matchesPrice && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesInStock ? "" : "none";
+        let showRow = matchesCategory && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
+
+        row.style.display = showRow ? "" : "none";
     });
+
+    console.log("Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
 }
+
+
+window.onload = function() {
+    loadProducts();
+    setTimeout(applyFilters, 500); // Ensures filters apply after data loads
+};
 </script>
 {% endblock %}
 

@@ -1,8 +1,7 @@
 <style>
-    /* Table container for scrolling */
     .table-container {
-        max-height: 500px; /* Adjust height as needed */
-        overflow-y: auto;
+        max-height: 500px; /* Set maximum height */
+        overflow-y: auto;  /* Enable vertical scrolling when needed */
         border: 1px solid #ddd;
     }
 
@@ -16,8 +15,7 @@
     thead {
         position: sticky;
         top: 0;
-        background-color:rgb(255, 255, 255);
-        color: black;
+        background-color: rgb(255, 255, 255);
         z-index: 2;
     }
 
@@ -33,8 +31,9 @@
     }
 
     tbody tr:hover {
-        background-color: #f1f1f1;
+        background-color: #c9c7c7;
     }
+    
 </style>
 
 <!-- Table Container -->
@@ -59,33 +58,42 @@
 
 <script>
     function loadProducts() {
-        fetch("/get-products/")
-        .then(response => response.json())
-        .then(data => {
-            let tableBody = document.querySelector("#productTable tbody");
-            tableBody.innerHTML = "";
+    fetch("/get-products/")
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.querySelector("#productTable tbody");
+        tableBody.innerHTML = "";
 
-            if (!data || !Array.isArray(data)) {
-                console.error("❌ Invalid JSON format:", data);
-                return;
-            }
+        if (!data || !Array.isArray(data)) {
+            console.error("❌ Invalid JSON format:", data);
+            return;
+        }
 
-            data.forEach(item => {
-                let row = `<tr>
-                    <td>${item.brand}</td>
-                    <td>${item.model}</td>
-                    <td>${item.size}</td>
-                    <td>${item.color || "N/A"}</td>
-                    <td>${item.helmet_type}</td>
-                    <td>${item.visor_type}</td>
-                    <td>₱${item.price.toLocaleString()}</td>
-                    <td>${item.quantity}</td>
-                </tr>`;
-                tableBody.innerHTML += row;
-            });
-        })
-        .catch(error => console.error("❌ Error loading products:", error));
-    }
+        data.forEach(item => {
+            let row = `<tr 
+                data-brand="${item.brand.toLowerCase()}"
+                data-color="${item.color ? item.color.toLowerCase() : ''}"
+                data-size="${item.size.toLowerCase()}"
+                data-type="${item.helmet_type.toLowerCase()}"
+                data-visor="${item.visor_type.toLowerCase()}"
+                data-price="${item.price || 0}"
+                data-in-stock="${item.quantity > 0}">
+                <td>${item.brand}</td>
+                <td>${item.model}</td>
+                <td>${item.size}</td>
+                <td>${item.color || "N/A"}</td>
+                <td>${item.helmet_type}</td>
+                <td>${item.visor_type}</td>
+                <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
+                <td>${item.quantity}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+        applyFilters(); // Apply filters after loading products
+    })
+    .catch(error => console.error("❌ Error loading products:", error));
+}
 
     // Load products on page load
     window.onload = loadProducts;
