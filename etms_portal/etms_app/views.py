@@ -8,6 +8,19 @@ from django.contrib import messages
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+import os
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_FILE = os.path.join(settings.BASE_DIR, "etms_app", "static", "data.json")
+
+print("📂 JSON Data File Path:", DATA_FILE)  # Debugging log
+
+if not os.path.exists(DATA_FILE):
+    print("⚠️ Data file does not exist. Creating a new one.")
+    with open(DATA_FILE, "w") as file:
+        json.dump([], file)
 
 # Create your views here.
 def dashboard(request):
@@ -21,14 +34,6 @@ def products(request):
     }
     return render(request, "products.html", context)
 
-def sm(request):
-    helmets = Helmet.objects.all()
-    context = {
-        "helmets": helmets,
-        "current_tab": "sm"
-    }
-    return render(request, "sm.html", context)
-
 
 def transactions(request):
     helmets = Helmet.objects.all()
@@ -39,52 +44,80 @@ def transactions(request):
     return render(request, "transactions.html", context)
 
 
+@csrf_exempt
 def restock(request):
     if request.method == "POST":
         try:
-            body_unicode = request.body.decode('utf-8')
-            print("Received JSON:", body_unicode)  # Debugging
+            raw_body = request.body.decode("utf-8")
+            print("🔍 Received JSON (Raw):", raw_body)
 
-            data = json.loads(body_unicode)
-            items = data.get("items", [])
+            if not raw_body.strip():
+                print("🚨 Empty request body received!")
+                return JsonResponse({"error": "Empty request body"}, status=400)
 
-            if not items:
-                return JsonResponse({"status": "error", "message": "No items received."})
+            # Attempt to parse JSON
+            try:
+                body = json.loads(raw_body)
+            except json.JSONDecodeError:
+                print("🚨 JSON Decode Error!")
+                return JsonResponse({"error": "Invalid JSON format"}, status=400)
 
-            # Process each item
-            for item in items:
-                print("Processing item:", item)  # Debugging
+            new_items = body.get("items", [])
+            if not new_items:
+                print("🚨 No items provided in request!")
+                return JsonResponse({"error": "No items provided"}, status=400)
 
-                required_fields = ["brand", "model", "size", "color", "helmet_type", "visor_type", "price", "quantity"]
-                for field in required_fields:
-                    if field not in item or item[field] is None:
-                        return JsonResponse({"status": "error", "message": f"Missing field: {field}"})
+            # Load existing data
+            if not os.path.exists(DATA_FILE):
+                print("⚠️ Data file not found. Creating a new one.")
+                with open(DATA_FILE, "w") as file:
+                    json.dump({"helmets": []}, file)
 
-                helmet, created = Helmet.objects.get_or_create(
-                    brand=item["brand"],
-                    model=item["model"],
-                    size=item["size"],
-                    color=item["color"],
-                    helmet_type=item["helmet_type"],
-                    visor_type=item["visor_type"],
-                    defaults={"price": item["price"], "quantity": item["quantity"]}
-                )
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
 
-                if not created:
-                    helmet.quantity += item["quantity"]
-                    helmet.save()
+            # Ensure data has a "helmets" list
+            if "helmets" not in data:
+                data["helmets"] = []
 
-            return JsonResponse({"status": "success", "message": "Restock successful!"})
+            # Merge new items with existing ones
+            for new_item in new_items:
+                found = False
+                for existing_item in data["helmets"]:
+                    if (
+                        existing_item["brand"] == new_item["brand"]
+                        and existing_item["model"] == new_item["model"]
+                        and existing_item["size"] == new_item["size"]
+                        and existing_item["color"] == new_item["color"]
+                        and existing_item["helmet_type"] == new_item["helmet_type"]
+                        and existing_item["visor_type"] == new_item["visor_type"]
+                        and existing_item["price"] == new_item["price"]
+                    ):
+                        # ✅ Update quantity instead of adding duplicate
+                        existing_item["quantity"] += new_item["quantity"]
+                        found = True
+                        break
 
-        except json.JSONDecodeError:
-            return JsonResponse({"status": "error", "message": "Invalid JSON data."})
+                if not found:
+                    # ✅ Add new item if it doesn't exist
+                    data["helmets"].append(new_item)
 
-    helmets = Helmet.objects.all()
-    context = {
-        "current_tab": "restock",
-        "helmets": helmets,  # Include helmets inside the same context dictionary
-    }
-    return render(request, "restock.html", context)
+            # Save updated data
+            with open(DATA_FILE, "w") as file:
+                json.dump(data, file, indent=4)
+
+            print("✅ Products Restocked Successfully!")
+            return JsonResponse({"message": "Products restocked successfully!"})
+
+        except Exception as e:
+            print("⚠️ Unexpected Error:", str(e))
+            return JsonResponse({"error": str(e)}, status=500)
+
+    elif request.method == "GET":
+        return render(request, "restock.html", {"current_tab": "restock"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
 
 
 
@@ -107,3 +140,15 @@ def login_view(request):
             messages.error(request, "Invalid username or password")  # Show error message
     
     return render(request, "login.html")  # Render login page
+
+def get_products(request):
+    try:
+        if not os.path.exists(DATA_FILE):
+            return JsonResponse({"helmets": []}, safe=False)  # Return empty list if file does not exist
+        
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+
+        return JsonResponse(data.get("helmets", []), safe=False)  # ✅ Return only the helmets list
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

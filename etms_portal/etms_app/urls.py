@@ -17,14 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import *
+from .views import restock
 
 urlpatterns = [
     path("", login_view, name="login"),
     path("dashboard/", dashboard, name="dashboard"),
     path("products/", products, name="products"),
-    path("sm/", sm, name="sm"),
     path("transactions/", transactions, name="transactions"),
     path("restock/", restock, name="restock"),
+    path("get-products/", get_products, name="get_products"),
     path("revenue/", revenue, name="revenue"),
     path("accounts/", accounts, name="accounts"),
     path("login/", login_view, name="login"),  # Entransactionssure this exists

@@ -1,0 +1,79 @@
+{
+    "helmets": [
+        {
+            "brand": "LS2",
+            "model": "Rapid",
+            "size": "M",
+            "color": "Matte Black",
+            "helmet_type": "Full-Face",
+            "visor_type": "Clear",
+            "quantity": 10,
+            "price": 3500.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 27,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "price": null,
+            "quantity": 3
+        }
+    ],
+    "users": [
+        {
+            "username": "admin",
+            "password": "admin123",
+            "last_login": "2025-03-24T10:30:00"
+        },
+        {
+            "username": "cashier1",
+            "password": "cashierpass",
+            "last_login": "2025-03-23T08:45:00"
+        }
+    ],
+    "restock_logs": [
+        {
+            "timestamp": "2025-03-20T14:15:00",
+            "admin": "admin",
+            "items": [
+                {
+                    "brand": "LS2",
+                    "model": "Rapid",
+                    "size": "M",
+                    "color": "Matte Black",
+                    "added_quantity": 5
+                }
+            ]
+        }
+    ],
+    "transactions": [
+        {
+            "transaction_id": "TXN1001",
+            "timestamp": "2025-03-22T09:30:00",
+            "cashier": "cashier1",
+            "items": [
+                {
+                    "brand": "HJC",
+                    "model": "CS-15",
+                    "size": "L",
+                    "color": "White",
+                    "quantity": 1,
+                    "price": 4200.0
+                }
+            ],
+            "total_amount": 4200.0
+        }
+    ]
+}
