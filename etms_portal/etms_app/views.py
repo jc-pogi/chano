@@ -152,3 +152,26 @@ def get_products(request):
         return JsonResponse(data.get("helmets", []), safe=False)  # ✅ Return only the helmets list
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+import json
+
+def update_product(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            with open("data.json", "r+") as file:
+                db = json.load(file)
+                for product in db["helmets"]:
+                    if (product["brand"] == data["brand"] and product["model"] == data["model"]
+                            and product["size"] == data["size"] and product["color"] == data["color"]):
+                        product["helmet_type"] = data["helmet_type"]
+                        product["visor_type"] = data["visor_type"]
+                        product["price"] = data["price"]
+                        break
+                
+                file.seek(0)
+                json.dump(db, file, indent=4)
+                file.truncate()
+
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
