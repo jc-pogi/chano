@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label>Type:</label>  
+                            <label>Helmet Type:</label>  
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Half-Face" id="typeHalf" onchange="applyFilters()">
                                 <label class="form-check-label" for="typeHalf">Half-Face</label>
@@ -279,7 +279,7 @@ function loadProducts() {
 
         data.forEach(item => {
             let row = `<tr 
-                data-category="${item.category ? item.category.toLowerCase() : ''}"
+                data-category="helmet"
                 data-brand="${item.brand.toLowerCase()}"
                 data-color="${item.color ? item.color.toLowerCase() : ''}"
                 data-size="${item.size.toLowerCase()}"
@@ -294,30 +294,53 @@ function loadProducts() {
                 <td>${item.helmet_type}</td>
                 <td>${item.visor_type}</td>
                 <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
-                <td>${item.quantity}</td>
+                <td class="quantity">${item.quantity}</td>
             </tr>`;
             tableBody.innerHTML += row;
         });
 
-        applyFilters(); // Apply filters after loading products
+        console.log("✅ Products Loaded Successfully!");
+        
+        // 🛠 Call `applyFilters()` and `highlightLowQuantity()` after loading products
+        if (typeof applyFilters === "function") {
+            applyFilters();
+        } else {
+            console.warn("⚠️ applyFilters() function is missing!");
+        }
+
+        if (typeof highlightLowQuantity === "function") {
+            highlightLowQuantity();
+        } else {
+            console.warn("⚠️ highlightLowQuantity() function is missing!");
+        }
     })
     .catch(error => console.error("❌ Error loading products:", error));
 }
 
 
+
 function applyFilters() {
-    let category = document.getElementById("category").value.toLowerCase();
-    let brand = document.getElementById("brand").value.toLowerCase();
-    let color = document.getElementById("color").value.toLowerCase();
-    let inStock = document.getElementById("inStock").checked;
+    console.log("✅ Running applyFilters() from products.html...");
+    console.log("🔍 Running applyFilters()...");
 
-    // Get selected price range
-    let minPrice = document.getElementById("minPrice").value.trim();
-    let maxPrice = document.getElementById("maxPrice").value.trim();
-    minPrice = minPrice !== "" ? parseFloat(minPrice) : Number.NEGATIVE_INFINITY;
-    maxPrice = maxPrice !== "" ? parseFloat(maxPrice) : Number.POSITIVE_INFINITY;
+    function getElementValue(id, defaultValue = "") {
+        let element = document.getElementById(id);
+        if (!element) {
+            console.warn(`⚠️ Warning: Element with ID '${id}' not found. Using default value: '${defaultValue}'`);
+            return defaultValue;
+        }
+        return element.value ? element.value.toLowerCase() : defaultValue;
+    }
 
-    // Get selected filter values
+    let category = getElementValue("category");
+    let brand = getElementValue("brand");
+    let color = getElementValue("color");
+    let minPrice = getElementValue("minPrice", "0");
+    let maxPrice = getElementValue("maxPrice", "9999999");
+
+    let inStockElement = document.getElementById("inStock");
+    let inStock = inStockElement ? inStockElement.checked : false;
+
     let selectedSizes = Array.from(document.querySelectorAll("input[id^='size']:checked"))
         .map(checkbox => checkbox.value.toLowerCase());
 
@@ -329,26 +352,27 @@ function applyFilters() {
 
     let rows = document.querySelectorAll("#productTable tbody tr");
 
+    if (rows.length === 0) {
+        console.warn("⚠️ Warning: No product rows found in the table.");
+    }
+
     rows.forEach(row => {
-        let rowCategory = row.getAttribute("data-category")?.toLowerCase() || "";
-        let rowBrand = row.getAttribute("data-brand")?.toLowerCase() || "";
-        let rowColor = row.getAttribute("data-color")?.toLowerCase() || "";
-        let rowSize = row.getAttribute("data-size")?.toLowerCase() || "";
-        let rowType = row.getAttribute("data-type")?.toLowerCase() || "";
-        let rowVisor = row.getAttribute("data-visor")?.toLowerCase() || "";
+        let rowCategory = row.getAttribute("data-category") || "";
+        let rowBrand = row.getAttribute("data-brand") || "";
+        let rowColor = row.getAttribute("data-color") || "";
+        let rowSize = row.getAttribute("data-size") || "";
+        let rowType = row.getAttribute("data-type") || "";
+        let rowVisor = row.getAttribute("data-visor") || "";
         let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
         let rowInStock = row.getAttribute("data-in-stock") === "true";
 
-        console.log(`Row: Size=${rowSize}, Type=${rowType}, Visor=${rowVisor}, Price=${rowPrice}`);
-
-        // Fix: Ensure filters do not hide valid rows
         let matchesCategory = category === "" || rowCategory.includes(category);
         let matchesBrand = brand === "" || rowBrand.includes(brand);
         let matchesColor = color === "" || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
         let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
         let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
-        let matchesPrice = (minPrice <= rowPrice) && (rowPrice <= maxPrice);
+        let matchesPrice = (parseFloat(minPrice) <= rowPrice) && (rowPrice <= parseFloat(maxPrice));
         let matchesInStock = !inStock || rowInStock;
 
         let showRow = matchesCategory && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
@@ -356,7 +380,7 @@ function applyFilters() {
         row.style.display = showRow ? "" : "none";
     });
 
-    console.log("Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
+    console.log("✅ Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
 }
 
 

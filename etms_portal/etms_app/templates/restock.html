@@ -246,18 +246,18 @@ button:hover {
 <div class="col-lg-8 col-md-6 col-12">
     
      <!-- Products Table -->
-     <div class="card mb-4" style="border: none; border-radius: 8px;">
-        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-            <h5 class="card-title mb-0">Product Catalog</h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <div class="product-table">
-                    {% include "productTable.html" with table_id="productTable" %}
-                </div>
+<div class="card mb-4" style="border: none; border-radius: 8px;">
+    <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+        <h5 class="card-title mb-0">Product Catalog</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <div class="product-table" id="productTableContainer">
+                {% include "productTable.html" with table_id="productTable" %}
             </div>
         </div>
     </div>
+</div>
     
     <!-- Added Items Table -->
     <div class="card" style="border: none; border-radius: 8px;">
@@ -310,32 +310,35 @@ button:hover {
     // Update transaction date
     updateTransactionDate();
 
-    // Set up product table click events
+    // Ensure the table exists before adding the event listener
     let productTable = document.getElementById("productTable");
-    if (productTable) {
-        // Add click event to the entire table, using event delegation
-        productTable.addEventListener("click", function (e) {
-            let targetRow = e.target.closest("tr");
-            if (!targetRow || targetRow.parentElement.tagName !== "TBODY") return;
-
-            // Select the row
-            selectRow(targetRow);
-
-            // Fill the form with the row data
-            document.getElementById("brand").value = targetRow.cells[0].textContent;
-            document.getElementById("model").value = targetRow.cells[1].textContent;
-            document.getElementById("size").value = targetRow.cells[2].textContent;
-            document.getElementById("color").value = targetRow.cells[3].textContent;
-            document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
-            document.getElementById("visor_type").value = targetRow.cells[5].textContent;
-            document.getElementById("price").value = targetRow.cells[6].textContent;
-            document.getElementById("quantity").value = 1;  // Default to 1 for new transactions
-        });
+    if (!productTable) {
+        console.error("❌ Product table not found. Make sure the table ID is correct.");
+        return;
     }
+
+    productTable.addEventListener("click", function (e) {
+        let targetRow = e.target.closest("tr");
+        if (!targetRow || targetRow.parentElement.tagName !== "TBODY") return;
+
+        // Select the row
+        selectRow(targetRow);
+
+        // Fill the form with the row data
+        document.getElementById("brand").value = targetRow.cells[0].textContent;
+        document.getElementById("model").value = targetRow.cells[1].textContent;
+        document.getElementById("size").value = targetRow.cells[2].textContent;
+        document.getElementById("color").value = targetRow.cells[3].textContent;
+        document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
+        document.getElementById("visor_type").value = targetRow.cells[5].textContent;
+        document.getElementById("price").value = targetRow.cells[6].textContent;
+        document.getElementById("quantity").value = 1; // Default to 1 for new transactions
+    });
 
     // Highlight low quantity items on page load
     highlightLowQuantity();
 });
+
 
     // Search functionality
     document.getElementById("searchInput").addEventListener("keyup", function () {
@@ -385,89 +388,112 @@ function addItem() {
 
  // Function to edit and update the row
  function editItem() {
-    console.log("Edit button clicked");
-    console.log("Selected Row:", selectedRow);
-
     if (!selectedRow) {
-        console.log("No row selected!");
         alert("Please select a row to edit.");
         return;
     }
 
-    // Check if the selected row is from the product table
+    // Ensure editing is from the Product Table
     if (selectedRow.closest("table").id !== "productTable") {
         alert("Please select a product from the Product Catalog table to edit.");
         return;
     }
 
-    // Get form values
-    let brand = document.getElementById("brand").value;
-    let model = document.getElementById("model").value;
-    let size = document.getElementById("size").value;
-    let color = document.getElementById("color").value;
-    let helmet_type = document.getElementById("helmet_type").value;
-    let visor_type = document.getElementById("visor_type").value;
-    let price = document.getElementById("price").value;
+    // Get the updated values from the form
+    let updatedBrand = document.getElementById("brand").value;
+    let updatedModel = document.getElementById("model").value;
+    let updatedSize = document.getElementById("size").value;
+    let updatedColor = document.getElementById("color").value;
+    let updatedHelmetType = document.getElementById("helmet_type").value;
+    let updatedVisorType = document.getElementById("visor_type").value;
+    let updatedPrice = document.getElementById("price").value;
 
-    // Keep the original quantity
-    let originalQuantity = selectedRow.cells[8].textContent;
+    // Keep the original quantity (not editable)
+    let originalQuantity = selectedRow.cells[7].textContent;
 
-    // Update the product row with new values, but preserve quantity
-    selectedRow.cells[0].textContent = brand;
-    selectedRow.cells[1].textContent = model;
-    selectedRow.cells[2].textContent = size;
-    selectedRow.cells[3].textContent = color; 
-    selectedRow.cells[4].textContent = helmet_type; 
-    selectedRow.cells[5].textContent = visor_type; 
-    selectedRow.cells[6].textContent = price;
-    // Do not update quantity (cell 6)
+    // Update table row with new values
+    selectedRow.cells[0].textContent = updatedBrand;
+    selectedRow.cells[1].textContent = updatedModel;
+    selectedRow.cells[2].textContent = updatedSize;
+    selectedRow.cells[3].textContent = updatedColor;
+    selectedRow.cells[4].textContent = updatedHelmetType;
+    selectedRow.cells[5].textContent = updatedVisorType;
+    selectedRow.cells[6].textContent = updatedPrice;
+    selectedRow.cells[7].textContent = originalQuantity; // Preserve Quantity
 
-    // Clear form
+    // Send update to JSON file
+    updateJSONFile(updatedBrand, updatedModel, updatedSize, updatedColor, updatedHelmetType, updatedVisorType, updatedPrice);
+
+    // Clear selection and form fields
     document.getElementById("transactionForm").reset();
-
-    // Remove selection highlight
     selectedRow.classList.remove("table-active");
     selectedRow = null;
-
-    // Update highlighting for low quantity products
-    setTimeout(function() {
-        highlightLowQuantity();
-    }, 0);
 
     showToast("Product updated successfully!", "success");
 }
 
+function updateJSONFile(brand, model, size, color, helmetType, visorType, price) {
+    fetch("/update-product/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            brand: brand,
+            model: model,
+            size: size,
+            color: color,
+            helmet_type: helmetType,
+            visor_type: visorType,
+            price: parseFloat(price)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Product saved to database!", "success");
+        } else {
+            showToast("Error updating product!", "danger");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        showToast("Failed to update JSON file.", "danger");
+    });
+}
+
+
 
 function highlightLowQuantity() {
     let table = document.getElementById("productTable");
-    if (!table) return;
+    if (!table) {
+        console.error("❌ highlightLowQuantity(): Table not found.");
+        return;
+    }
 
-    let tbody = table.querySelector("tbody");
-    if (!tbody) return;
+    let rows = table.querySelectorAll("tbody tr");
 
-    let rows = tbody.getElementsByTagName("tr");
+    rows.forEach((row, index) => {
+        let quantityCell = row.cells[7]; // Adjust if needed
+        if (!quantityCell) {
+            console.warn(`⚠️ Row ${index} has no quantity cell.`);
+            return;
+        }
 
-    for (let i = 0; i < rows.length; i++) {
-        let cells = rows[i].getElementsByTagName("td");
-        if (cells.length === 0) continue;
-
-        let quantityCell = cells[7]; // Adjust column index if necessary
-        if (!quantityCell) continue;
-
-        let quantity = parseInt(quantityCell.textContent.trim());
-
-        console.log(`Checking row ${i}: Quantity = ${quantity}`); // Debugging inside the loop
+        let quantity = parseInt(quantityCell.textContent.trim(), 10);
+        console.log(`🛑 Checking row ${index}: Quantity = ${quantity}`);
 
         if (!isNaN(quantity) && quantity <= 4) {
-            // Apply styles
-            rows[i].style.backgroundColor = "#FF8383"; // Light red
-            rows[i].style.fontWeight = "bold"; // Bold text
+            row.style.backgroundColor = "#FF8383"; // Red for low stock
+            row.style.fontWeight = "bold";
+            console.log(`⚠️ Row ${index} highlighted as low stock.`);
         } else {
-            // Reset styles
-            rows[i].style.backgroundColor = "";
-            rows[i].style.fontWeight = "";
+            row.style.backgroundColor = "";
+            row.style.fontWeight = "";
         }
-    }
+    });
+
+    console.log("✅ highlightLowQuantity() applied to table!");
 }
 
 // Ensure the function runs after the DOM is fully loaded
@@ -628,30 +654,6 @@ function confirmRestock() {
     // Close modal if applicable
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Update transaction date
-        updateTransactionDate();
-        // Set up product table click events
-        let table = document.getElementById("productTable");
-        if (table) {
-            table.addEventListener("click", function (e) {
-                let targetRow = e.target.closest("tr");
-                if (!targetRow || targetRow.rowIndex === 0) return;
-
-                // Adjust indices to account for hidden PID column
-                document.getElementById("brand").value = targetRow.cells[0].textContent;
-                document.getElementById("model").value = targetRow.cells[1].textContent;
-                document.getElementById("size").value = targetRow.cells[2].textContent;
-                document.getElementById("color").value = targetRow.cells[3].textContent;
-                document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
-                document.getElementById("visor_type").value = targetRow.cells[5].textContent;
-                document.getElementById("price").value = targetRow.cells[6].textContent;
-                document.getElementById("quantity").value = 1;
-            });
-        }
-    });
-
     function showToast(message, type = "success") {
     let toastContainer = document.getElementById("toast-container");
     let toast = document.createElement("div");
@@ -731,6 +733,62 @@ function printInventory() {
 document.getElementById("price").addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("🔍 Checking if productTable.html is loaded...");
+
+    let productTableCheck = setInterval(() => {
+        let productTable = document.getElementById("productTable");
+
+        if (productTable) {
+            clearInterval(productTableCheck); // ✅ Stop checking once table is found
+            console.log("✅ Product table is now available inside restock.html!");
+
+            // Ensure the table has a tbody before adding the event listener
+            let tableBody = productTable.querySelector("tbody");
+            if (tableBody) {
+                if (!productTable.dataset.listenerAdded) { 
+                    tableBody.addEventListener("click", function (e) {
+                        let targetRow = e.target.closest("tr");
+                        if (!targetRow || targetRow.parentElement.tagName !== "TBODY") return;
+
+                        selectRow(targetRow);
+
+                        document.getElementById("brand").value = targetRow.cells[0].textContent;
+                        document.getElementById("model").value = targetRow.cells[1].textContent;
+                        document.getElementById("size").value = targetRow.cells[2].textContent;
+                        document.getElementById("color").value = targetRow.cells[3].textContent;
+                        document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
+                        document.getElementById("visor_type").value = targetRow.cells[5].textContent;
+                        document.getElementById("price").value = targetRow.cells[6].textContent;
+                        document.getElementById("quantity").value = 1;
+                    });
+
+                    productTable.dataset.listenerAdded = "true"; // ✅ Prevent duplicate listeners
+                    console.log("✅ Product table event listener added!");
+                }
+            } else {
+                console.error("❌ Table body (`<tbody>`) is missing in `productTable`!");
+            }
+
+            // ✅ Ensure applyFilters() runs only after loadProducts()
+            let productsLoadedCheck = setInterval(() => {
+                
+            }, 500);
+            
+        } else {
+            console.warn("⚠️ Waiting for productTable to load...");
+        }
+    }, 500); // Check every 500ms until table is loaded
+
+    // Stop checking after 10 seconds to prevent infinite loop
+    setTimeout(() => {
+        if (!document.getElementById("productTable")) {
+            console.error("❌ productTable still never became available. Ensure productTable.html is included correctly.");
+        }
+    }, 10000);
+});
+
 </script>
 
 {% endblock %}

@@ -57,7 +57,33 @@
 </div>
 
 <script>
-    function loadProducts() {
+function highlightLowQuantity() {
+    let rows = document.querySelectorAll("#productTable tbody tr");
+
+    rows.forEach(row => {
+        let quantityCell = row.querySelector(".quantity");
+        if (quantityCell) {
+            let quantity = parseInt(quantityCell.textContent.trim()) || 0;
+            
+            // Set color based on stock level
+            if (quantity === 0) {
+                quantityCell.style.color = "red";  // Out of stock
+                quantityCell.style.fontWeight = "bold";
+            } else if (quantity > 0 && quantity <= 5) {
+                quantityCell.style.color = "orange";  // Low stock warning
+                quantityCell.style.fontWeight = "bold";
+            } else {
+                quantityCell.style.color = "black"; // Normal stock
+                quantityCell.style.fontWeight = "normal";
+            }
+        }
+    });
+
+    console.log("✅ highlightLowQuantity() applied to table!");
+}
+
+// ✅ Now put `loadProducts()` BELOW this function
+function loadProducts() {
     fetch("/get-products/")
     .then(response => response.json())
     .then(data => {
@@ -71,6 +97,7 @@
 
         data.forEach(item => {
             let row = `<tr 
+                data-category="helmet"
                 data-brand="${item.brand.toLowerCase()}"
                 data-color="${item.color ? item.color.toLowerCase() : ''}"
                 data-size="${item.size.toLowerCase()}"
@@ -85,18 +112,98 @@
                 <td>${item.helmet_type}</td>
                 <td>${item.visor_type}</td>
                 <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
-                <td>${item.quantity}</td>
+                <td class="quantity">${item.quantity}</td>
             </tr>`;
             tableBody.innerHTML += row;
         });
 
-        applyFilters(); // Apply filters after loading products
+        console.log("✅ Products Loaded Successfully!");
+
+        let categoryElement = document.getElementById("category");
+        if (typeof applyFilters === "function" && categoryElement) {
+            console.log("✅ applyFilters() is running inside productTable.html...");
+            applyFilters();
+        } else {
+            console.warn("⚠️ Skipping applyFilters() because filters are missing.");
+        }
+
+        if (typeof highlightLowQuantity === "function") {
+            console.log("🔍 Running highlightLowQuantity() after loading products...");
+            highlightLowQuantity();
+        } else {
+            console.warn("⚠️ highlightLowQuantity() function is missing!");
+        }
     })
     .catch(error => console.error("❌ Error loading products:", error));
 }
 
-    // Load products on page load
-    window.onload = loadProducts;
+// ✅ Load products when the page loads
+window.onload = function() {
+    loadProducts();
+};
 
-    setInterval(loadProducts, 5000); // Reloads every 5 seconds
+
+        // Load products on page load
+        window.onload = loadProducts;
+
+        setInterval(loadProducts, 5000); // Reloads every 5 seconds
+
+
+
+        function applyFilters() {
+    let category = document.getElementById("category").value.toLowerCase();
+    let brand = document.getElementById("brand").value.toLowerCase();
+    let color = document.getElementById("color").value.toLowerCase();
+    let inStock = document.getElementById("inStock").checked;
+
+    let minPrice = document.getElementById("minPrice").value.trim();
+    let maxPrice = document.getElementById("maxPrice").value.trim();
+    minPrice = minPrice !== "" ? parseFloat(minPrice) : Number.NEGATIVE_INFINITY;
+    maxPrice = maxPrice !== "" ? parseFloat(maxPrice) : Number.POSITIVE_INFINITY;
+
+    let selectedSizes = Array.from(document.querySelectorAll("input[id^='size']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
+    let selectedTypes = Array.from(document.querySelectorAll("input[id^='type']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
+    let selectedVisors = Array.from(document.querySelectorAll("input[id^='visor']:checked"))
+        .map(checkbox => checkbox.value.toLowerCase());
+
+    let rows = document.querySelectorAll("#productTable tbody tr");
+
+    rows.forEach(row => {
+        let rowCategory = row.getAttribute("data-category") || "";
+        let rowBrand = row.getAttribute("data-brand") || "";
+        let rowColor = row.getAttribute("data-color") || "";
+        let rowSize = row.getAttribute("data-size") || "";
+        let rowType = row.getAttribute("data-type") || "";
+        let rowVisor = row.getAttribute("data-visor") || "";
+        let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
+        let rowInStock = row.getAttribute("data-in-stock") === "true";
+
+        console.log(`Row: Size=${rowSize}, Type=${rowType}, Visor=${rowVisor}, Price=${rowPrice}`);
+
+        let matchesCategory = category === "" || rowCategory.includes(category);
+        let matchesBrand = brand === "" || rowBrand.includes(brand);
+        let matchesColor = color === "" || rowColor.includes(color);
+        let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
+        let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
+        let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
+        let matchesPrice = (minPrice <= rowPrice) && (rowPrice <= maxPrice);
+        let matchesInStock = !inStock || rowInStock;
+
+        let showRow = matchesCategory && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
+
+        row.style.display = showRow ? "" : "none";
+    });
+
+    console.log("Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
+}
+
+// ✅ Confirm applyFilters() is defined
+console.log("✅ applyFilters() function is now defined in productTable.html.");
+
+
+
 </script>
