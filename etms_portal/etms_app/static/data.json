@@ -7,7 +7,7 @@
             "color": "Matte Black",
             "helmet_type": "Full-Face",
             "visor_type": "Double",
-            "quantity": 3,
+            "quantity": 0,
             "price": 3500.0
         },
         {
@@ -27,7 +27,7 @@
             "color": "Pink",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 27,
+            "quantity": 23,
             "price": 4200.0
         },
         {
@@ -37,7 +37,7 @@
             "color": "Violet",
             "helmet_type": "Modular",
             "visor_type": "Single",
-            "quantity": 27,
+            "quantity": 26,
             "price": 4200.0
         },
         {
@@ -67,7 +67,7 @@
             "color": "White",
             "helmet_type": "Full-Face",
             "visor_type": "Tinted",
-            "quantity": 27,
+            "quantity": 40,
             "price": 4200.0
         },
         {
@@ -178,7 +178,7 @@
             "helmet_type": "Full-Face",
             "visor_type": "Tinted",
             "price": 5500,
-            "quantity": 3
+            "quantity": 4
         },
         {
             "brand": "HJC",
@@ -203,37 +203,28 @@
             "last_login": "2025-03-23T08:45:00"
         }
     ],
-    "restock_logs": [
+    "logs": [
         {
-            "timestamp": "2025-03-20T14:15:00",
-            "admin": "admin",
-            "items": [
-                {
-                    "brand": "LS2",
-                    "model": "Rapid",
-                    "size": "M",
-                    "color": "Matte Black",
-                    "added_quantity": 5
-                }
-            ]
-        }
-    ],
-    "transactions": [
+          "type": "Transaction",
+          "brand": "HNJ",
+          "model": "Ewan",
+          "color": "Black",
+          "helmet_type": "Full Face",
+          "visor_type": "Clear",
+          "quantity": 10,
+          "price": "Php 999",
+          "date": "2025-01-01"
+        },
         {
-            "transaction_id": "TXN1001",
-            "timestamp": "2025-03-22T09:30:00",
-            "cashier": "cashier1",
-            "items": [
-                {
-                    "brand": "HJC",
-                    "model": "CS-15",
-                    "size": "L",
-                    "color": "White",
-                    "quantity": 1,
-                    "price": 4200.0
-                }
-            ],
-            "total_amount": 4200.0
+          "type": "Restock",
+          "brand": "SPYDER",
+          "model": "Ewan",
+          "color": "Red",
+          "helmet_type": "Modular",
+          "visor_type": "Tinted",
+          "quantity": 10,
+          "price": "Php 4,000",
+          "date": "2025-01-01"
         }
-    ]
+      ]
 }

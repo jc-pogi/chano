@@ -12,6 +12,7 @@ from django.conf import settings
 import os
 
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_FILE = os.path.join(settings.BASE_DIR, "etms_app", "static", "data.json")
 
@@ -118,8 +119,51 @@ def restock(request):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+@csrf_exempt
+def process_transaction(request):
+    if request.method == "POST":
+        try:
+            # Load existing data
+            if not os.path.exists(DATA_FILE):
+                return JsonResponse({"success": False, "message": "Data file not found."})
 
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
 
+            transaction = json.loads(request.body)
+            items = transaction["items"]
+
+            # Update helmet stock
+            for transaction_item in items:
+                for helmet in data["helmets"]:
+                    if (
+                        helmet["brand"] == transaction_item["brand"]
+                        and helmet["model"] == transaction_item["model"]
+                        and helmet["size"] == transaction_item["size"]
+                        and helmet["color"] == transaction_item["color"]
+                        and helmet["helmet_type"] == transaction_item["helmet_type"]
+                        and helmet["visor_type"] == transaction_item["visor_type"]
+                    ):
+                        if helmet["quantity"] >= transaction_item["quantity"]:
+                            helmet["quantity"] -= transaction_item["quantity"]
+                        else:
+                            return JsonResponse(
+                                {"success": False, "message": f"Not enough stock for {transaction_item['brand']} {transaction_item['model']}!"}
+                            )
+
+            # Save updated stock back to data.json
+            with open(DATA_FILE, "w") as file:
+                json.dump(data, file, indent=4)
+
+            return JsonResponse({"success": True})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
+
+    elif request.method == "GET":
+        return render(request, "restock.html", {"current_tab": "restock"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 def revenue(request):
     return render(request, "revenue.html", context={"current_tab": "revenue"})

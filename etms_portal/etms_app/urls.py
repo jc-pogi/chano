@@ -26,6 +26,7 @@ urlpatterns = [
     path("transactions/", transactions, name="transactions"),
     path("restock/", restock, name="restock"),
     path("get-products/", get_products, name="get_products"),
+    path("process_transaction/", process_transaction, name="process_transaction"),
     path("revenue/", revenue, name="revenue"),
     path("accounts/", accounts, name="accounts"),
     path("login/", login_view, name="login"),  # Entransactionssure this exists
