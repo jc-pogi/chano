@@ -37,21 +37,29 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="model" class="form-label" style="color: #274C77; font-weight: 500;">Model</label>
-                                        <input type="text" id="model" name="model" class="form-control" required style="border-color: #8B8C89;">
+                                        <input type="text" id="model" name="model" class="form-control" required style="border-color: #8B8C89;"> 
                                     </div>
                                 </div>
-
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label for="size" class="form-label" style="color: #274C77; font-weight: 500;">Size</label>
-                                        <input type="text" id="size" name="size" class="form-control" required style="border-color: #8B8C89;">
+                                        <input type="text" id="size" name="size" class="form-control" required style="border-color: #8B8C89;"> 
                                     </div>
                                     <div class="col-md-6">
                                         <label for="color" class="form-label" style="color: #274C77; font-weight: 500;">Color</label>
                                         <input type="text" id="color" name="color" class="form-control" required style="border-color: #8B8C89;">
                                     </div>
                                 </div>
-
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="helmet_type" class="form-label" style="color: #274C77; font-weight: 500;">Helmet Type</label>
+                                        <input type="text" id="helmet_type" name="helmet_type" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="visor_type" class="form-label" style="color: #274C77; font-weight: 500;">Visor Type</label>
+                                        <input type="text" id="visor_type" name="visor_type" class="form-control" required style="border-color: #8B8C89;">
+                                    </div>
+                                </div>
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label for="quantity" class="form-label" style="color: #274C77; font-weight: 500;">Quantity</label>
@@ -62,7 +70,6 @@
                                         <input type="text" id="price" name="price" class="form-control" required style="border-color: #8B8C89;">
                                     </div>
                                 </div>
-                                
                                 <div class="row g-2 justify-content-center">
                                     <div class="col-12 col-md-6 text-center">
                                         <button type="button" class="btn mb-3 w-100" onclick="clearFields()" >
@@ -104,47 +111,49 @@
 
                 <!-- Right Panel: Tables -->
                 <div class="col-lg-8 col-md-6 col-12">
-    <!-- Products Table -->
-    <div class="card mb-4" style="border: none; border-radius: 8px;">
-        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-            <h5 class="card-title mb-0">Product Catalog</h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-            <div class="product-table">
-                {% include "productTable.html" with table_id="productTable" %}
-            </div>
-        </div>
-    </div>
-</div>
-
-       <!-- Added Items Table -->
-<div class="card" style="border: none; border-radius: 8px;">
-    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-        <h5 class="card-title mb-0">Current Transaction</h5>
-    </div>
-    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
-        <table class="table table-hover mb-0" id="addedItemsTable">
-            <thead style="position: sticky; top: 0; background-color: #274C77; color: white;">
-                <tr>
-                    <th>PID</th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Items will be added here -->
-            </tbody>
-        </table>
+                    <div class="card mb-4">
+                        <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                            <h5 class="card-title mb-0">Product Catalog</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <div class="product-table">
+                                    {% include "productTable.html" with table_id="productTable" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                            <h5 class="card-title mb-0">Current Transaction</h5>
+                        </div>
+                        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-hover mb-0" id="addedItemsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Brand</th>
+                                        <th>Model</th>
+                                        <th>Size</th>
+                                        <th>Color</th>
+                                        <th>Helmet Type</th>
+                                        <th>Visor Type</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Items will be added here -->
+                                </tbody>
+                            </table>
+                        
     </div>
     <div class="card-footer d-flex justify-content-between">
         <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
         <span class="fw-bold">Total Amount: <span id="totalAmountDisplay">₱ 0.00</span></span>
     </div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -254,12 +263,11 @@
         let rows = document.querySelectorAll("#productTable tbody tr");
 
         rows.forEach(row => {
-            let pid = row.cells[0]?.textContent.toLowerCase() || "";
-            let brand = row.cells[1]?.textContent.toLowerCase() || "";
-            let model = row.cells[2]?.textContent.toLowerCase() || "";
-
-            row.style.display = (pid.includes(filter) || brand.includes(filter) || model.includes(filter)) ? "" : "none";
-        });
+            let brand = row.cells[0]?.textContent.toLowerCase() || "";
+            let model = row.cells[1]?.textContent.toLowerCase() || "";
+            
+            row.style.display = brand.includes(filter) || model.includes(filter) ? "" : "none";
+        })
     
         // Reapply highlighting after search
         setTimeout(function() {
@@ -268,88 +276,83 @@
     });
 
     function addItem() {
-    let quantity = parseInt(document.getElementById("quantity").value);
-    let brand = document.getElementById("brand").value;
-    let model = document.getElementById("model").value;
-
-    if (!quantity || quantity <= 0) {
-        showToast("Quantity must be greater than zero.", "danger");
-        return;
-    }
-
-    // Check if this item exists in the product catalog
-    let availableStock = 0;
-    let productFound = false;
+        let quantity = parseInt(document.getElementById("quantity").value);
+        let brand = document.getElementById("brand").value;
+        let model = document.getElementById("model").value;
     
-    // Search for the product in the catalog table
-    let productRows = document.querySelectorAll("#productTable tbody tr");
-    productRows.forEach(row => {
-        let rowBrand = row.cells[1]?.textContent.trim() || "";
-        let rowModel = row.cells[2]?.textContent.trim() || "";
-        
-        if (rowBrand === brand && rowModel === model) {
-            productFound = true;
-            // Get the stock quantity from the product table (assuming stock is in the last column)
-            let stockCell = row.cells[row.cells.length - 1]; // Get the last cell which contains stock
-            availableStock = parseInt(stockCell.textContent.trim()) || 0;
+        if (!quantity || quantity <= 0) {
+            showToast("Quantity must be greater than zero.", "danger");
+            return;
         }
-    });
-
-    if (!productFound) {
-        showToast("Product not found in catalog.", "warning");
-        return;
-    }
-
-    // Check if we have enough stock
-    if (quantity > availableStock) {
-        showToast(`Not enough stock available. Only ${availableStock} items in stock.`, "danger");
-        return;
-    }
-
-    // Check if item is already in transaction table, if so, validate combined quantity
-    let currentQuantity = 0;
-    let transactionRows = document.querySelectorAll("#addedItemsTable tbody tr");
-    transactionRows.forEach(row => {
-        let rowBrand = row.cells[1]?.textContent.trim() || "";
-        let rowModel = row.cells[2]?.textContent.trim() || "";
-        
-        if (rowBrand === brand && rowModel === model) {
-            currentQuantity += parseInt(row.cells[6].textContent.trim()) || 0;
-        }
-    });
-
-    // Check if total quantity (current + new) exceeds available stock
-    if ((currentQuantity + quantity) > availableStock) {
-        showToast(`Cannot add ${quantity} more items. You already have ${currentQuantity} in your transaction. Only ${availableStock} available in stock.`, "danger");
-        return;
-    }
-
-    // If all validations pass, add the item to the transaction table
-    let table = document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0];
-    let newRow = table.insertRow();
-
-    // Add a placeholder for PID (hidden column)
-    let pidCell = newRow.insertCell(0);
-    pidCell.innerHTML = "AUTO"; // Or whatever placeholder you want
-
-    // Add the visible fields
-    let fields = ["brand", "model", "size", "color", "price", "quantity"];
-    fields.forEach((field) => {
-        let cell = newRow.insertCell();
-        cell.innerHTML = document.getElementById(field).value;
-    });
-
-    newRow.onclick = function () {
-        selectRow(this);
-    };
-
-    document.getElementById("transactionForm").reset();
-
-    // Update the summary after adding an item
-    updateSummary();
     
-    showToast(`Added ${quantity} ${brand} ${model} to transaction.`, "success");
-}
+        // Find available stock in the product catalog
+        let availableStock = 0;
+        let productFound = false;
+    
+        let productRows = document.querySelectorAll("#productTable tbody tr");
+        productRows.forEach(row => {
+            let rowBrand = row.cells[0]?.textContent.trim() || "";
+            let rowModel = row.cells[1]?.textContent.trim() || "";
+    
+            if (rowBrand === brand && rowModel === model) {
+                productFound = true;
+                let stockCell = row.cells[row.cells.length - 1]; // Get stock from last column
+                availableStock = parseInt(stockCell.textContent.trim()) || 0;
+            }
+        });
+    
+        // 🚀 Fix: Prevent adding items if stock is zero
+        if (!productFound || availableStock <= 0) {
+            showToast(`Cannot add ${brand} ${model}. No stock available.`, "danger");
+            return;
+        }
+    
+        // 🚀 Fix: Ensure entered quantity does not exceed stock
+        if (quantity > availableStock) {
+            showToast(`Not enough stock available. Only ${availableStock} items in stock.`, "danger");
+            return;
+        }
+    
+        // Check if item is already in transaction table
+        let currentQuantity = 0;
+        let transactionRows = document.querySelectorAll("#addedItemsTable tbody tr");
+        transactionRows.forEach(row => {
+            let rowBrand = row.cells[0]?.textContent.trim() || "";
+            let rowModel = row.cells[1]?.textContent.trim() || "";
+    
+            if (rowBrand === brand && rowModel === model) {
+                currentQuantity += parseInt(row.cells[7].textContent.trim()) || 0;
+            }
+        });
+    
+        // 🚀 Fix: Prevent exceeding total stock (existing + new)
+        if ((currentQuantity + quantity) > availableStock) {
+            showToast(`Cannot add ${quantity} more items. You already have ${currentQuantity} in your transaction. Only ${availableStock} available in stock.`, "danger");
+            return;
+        }
+    
+        // If all validations pass, add item to transaction table
+        let table = document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0];
+        let newRow = table.insertRow();
+    
+        let fields = ["brand", "model", "size", "color", "helmet_type", "visor_type", "price", "quantity"];
+        fields.forEach(field => {
+            let cell = newRow.insertCell();
+            cell.innerHTML = document.getElementById(field).value;
+        });
+    
+        newRow.onclick = function () {
+            selectRow(this);
+        };
+    
+        document.getElementById("transactionForm").reset();
+    
+        // Update summary after adding an item
+        updateSummary();
+    
+        showToast(`Added ${quantity} ${brand} ${model} to transaction.`, "success");
+    }
+    
     function selectRow(row) {
         if (selectedRow) {
             selectedRow.classList.remove("table-active");
@@ -357,13 +360,14 @@
         selectedRow = row;
         selectedRow.classList.add("table-active");
 
-        // Populate form fields with selected row data - adjusted for hidden PID
-        document.getElementById("brand").value = row.cells[1].innerText;
-        document.getElementById("model").value = row.cells[2].innerText;
-        document.getElementById("size").value = row.cells[3].innerText;
-        document.getElementById("color").value = row.cells[4].innerText;
-        document.getElementById("price").value = row.cells[5].innerText;
-        document.getElementById("quantity").value = row.cells[6].innerText;
+        document.getElementById("brand").value = row.cells[0].innerText;
+        document.getElementById("model").value = row.cells[1].innerText;
+        document.getElementById("size").value = row.cells[2].innerText;
+        document.getElementById("color").value = row.cells[3].innerText;
+        document.getElementById("helmet_type").value = row.cells[4].innerText;
+        document.getElementById("visor_type").value = row.cells[5].innerText;
+        document.getElementById("price").value = row.cells[6].innerText;
+        document.getElementById("quantity").value = row.cells[7].innerText;
     }
 
     function removeItem() {
@@ -392,8 +396,8 @@
 
         // Select all rows in the table body
         document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-            const quantity = parseInt(row.querySelector("td:nth-child(7)")?.textContent) || 0;
-            const price = parseFloat(row.querySelector("td:nth-child(6)")?.textContent) || 0;
+            const quantity = parseInt(row.querySelector("td:nth-child(8)")?.textContent) || 0;
+            const price = parseFloat(row.querySelector("td:nth-child(7)")?.textContent) || 0;
         
             totalItems += quantity;
             totalAmount += price * quantity;
@@ -425,8 +429,8 @@
 
         // Calculate total price from added items
         items.forEach(row => {
-            let price = parseInt(row.cells[5].innerText.replace(/[^0-9]/g, "")); // Remove non-numeric characters
-            let quantity = parseInt(row.cells[6].innerText);
+            let price = parseInt(row.cells[6].innerText.replace(/[^0-9]/g, "")); // Remove non-numeric characters
+            let quantity = parseInt(row.cells[7].innerText);
             totalPrice += price * quantity;
         });
 
@@ -440,53 +444,115 @@
     }
 
     function confirmPayment() {
-    // Correctly parse the total amount including decimals
-    let totalPrice = parseFloat(document.getElementById("totalAmount").innerText.replace(/[^0-9.]/g, ""));
-    let cash = parseFloat(document.getElementById("cashAmount").value);
-
-    if (isNaN(cash) || cash < totalPrice) {
-        alert("Cash amount must be equal to or greater than the total amount.");
-        return;
-    }
-
-    let change = cash - totalPrice;
-
-    // Store transaction data before clearing the table
-    let items = [];
-    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-        let rowData = [];
-        row.querySelectorAll("td").forEach(cell => {
-            rowData.push(cell.innerText);
+        let totalPrice = parseFloat(document.getElementById("totalAmount").innerText.replace(/[^0-9.]/g, ""));
+        let cash = parseFloat(document.getElementById("cashAmount").value);
+    
+        if (isNaN(cash) || cash < totalPrice) {
+            alert("Cash amount must be equal to or greater than the total amount.");
+            return;
+        }
+    
+        let change = cash - totalPrice;
+        let items = [];
+    
+        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+            let item = {
+                brand: row.cells[0].innerText,
+                model: row.cells[1].innerText,
+                size: row.cells[2].innerText,
+                color: row.cells[3].innerText,
+                helmet_type: row.cells[4].innerText,
+                visor_type: row.cells[5].innerText,
+                price: parseFloat(row.cells[6].innerText.replace(/[^0-9.]/g, "")),
+                quantity: parseInt(row.cells[7].innerText),
+            };
+            items.push(item);
         });
-        items.push(rowData);
-    });
+    
+        let transactionData = {
+            total_amount: totalPrice,
+            cash: cash,
+            change: change,
+            items: items
+        };
+    
+        console.log("📤 Sending Transaction Data:", JSON.stringify(transactionData, null, 2));
+    
+        fetch("/process_transaction/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken()
+            },
+            body: JSON.stringify(transactionData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("✅ Server Response:", JSON.stringify(data, null, 2));
+            if (!data.success) {
+                console.error("🚨 Transaction failed:", data.message);
+                alert("Error: " + data.message);
+                return;
+            }
+    
+            window.receiptData = {
+                transactionDate: document.getElementById("transactionDate").innerText,
+                totalPrice: totalPrice,
+                cash: cash,
+                change: change,
+                items: items
+            };
+    
+            document.getElementById("receiptTotal").innerText = `PHP ${totalPrice.toFixed(2)}`;
+            document.getElementById("receiptCash").innerText = `PHP ${cash.toFixed(2)}`;
+            document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+    
+            // 🚀 Ensure `paymentModal` is hidden correctly
+            let paymentModalElement = document.getElementById("paymentModal");
+            let paymentModal = bootstrap.Modal.getInstance(paymentModalElement) || new bootstrap.Modal(paymentModalElement);
+            paymentModal.hide();
+    
+            console.log("✅ Payment processed successfully. Showing success modal...");
+    
+            // 🚀 Ensure `paymentSuccessModal` is correctly initialized and displayed
+            let successModalElement = document.getElementById("paymentSuccessModal");
+            if (successModalElement) {
+                let successModal = new bootstrap.Modal(successModalElement);
+                successModal.show();
+                console.log("🎉 Success modal should now be visible.");
+            } else {
+                console.error("🚨 Error: paymentSuccessModal element not found!");
+            }
+    
+            showToast("Payment successful!", "success");
+    
+            voidTransaction();
+            updateSummary();
+        })
+        .catch(error => {
+            console.error("🚨 Fetch Error:", error);
+        });
 
-    // Store for printing later - FIX: Add items to receiptData
-    window.receiptData = {
-        transactionDate: document.getElementById("transactionDate").innerText,
-        totalPrice: totalPrice,
-        cash: cash,
-        change: change,
-        items: items  // Add the items array to the receiptData object
-    };
+// Function to get CSRF token from cookies
+function getCSRFToken() {
+    let cookieValue = null;
+    let cookies = document.cookie.split(";");
 
-    // Update receipt modal
-    document.getElementById("receiptTotal").innerText = `PHP ${totalPrice.toFixed(2)}`;
-    document.getElementById("receiptCash").innerText = `PHP ${cash.toFixed(2)}`;
-    document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith("csrftoken=")) {
+            cookieValue = cookie.substring("csrftoken=".length, cookie.length);
+            break;
+        }
+    }
+    return cookieValue;
 
-    // Hide payment modal & show success modal
-    let paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
-    paymentModal.hide();
-
-    let successModal = new bootstrap.Modal(document.getElementById("paymentSuccessModal"));
-    successModal.show();
-
-    // Clear the transaction only after storing data
-    voidTransaction();
+    
 }
 
-    document.addEventListener("DOMContentLoaded", function () {
+ }   
+ 
+ document.addEventListener("DOMContentLoaded", function () {
         // Update transaction date
         updateTransactionDate();
         
@@ -497,12 +563,13 @@
                 let targetRow = e.target.closest("tr");
                 if (!targetRow || targetRow.rowIndex === 0) return;
 
-                // Adjust indices to account for hidden PID column
-                document.getElementById("brand").value = targetRow.cells[1].textContent;
-                document.getElementById("model").value = targetRow.cells[2].textContent;
-                document.getElementById("size").value = targetRow.cells[3].textContent;
-                document.getElementById("color").value = targetRow.cells[4].textContent;
-                document.getElementById("price").value = targetRow.cells[5].textContent;
+                document.getElementById("brand").value = targetRow.cells[0].textContent;
+                document.getElementById("model").value = targetRow.cells[1].textContent;
+                document.getElementById("size").value = targetRow.cells[2].textContent;
+                document.getElementById("color").value = targetRow.cells[3].textContent;
+                document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
+                document.getElementById("visor_type").value = targetRow.cells[5].textContent;
+                document.getElementById("price").value = targetRow.cells[6].textContent;
                 document.getElementById("quantity").value = 1;
             });
         }
@@ -728,8 +795,8 @@
                 <div>`;
     
     items.forEach(item => {
-        const price = parseFloat(item[5].replace(/[^0-9.]/g, ""));
-        const quantity = parseInt(item[6]);
+        const price = parseFloat(item[6].replace(/[^0-9.]/g, ""));
+        const quantity = parseInt(item[7]);
         const itemTotal = price * quantity;
         
         // Display only brand and model (item[1] and item[2])
@@ -814,9 +881,6 @@ function showToast(message, type = "success") {
         background-color: #f8d7da !important;
     }
 
-    th:first-child, td:first-child {
-    display: none;
-}
 
     table td, table th {
         padding: 15px 10px; /* Adjust padding */
