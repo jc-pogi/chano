@@ -3,12 +3,62 @@
         {
             "brand": "LS2",
             "model": "Rapid",
-            "size": "M",
+            "size": "L",
             "color": "Matte Black",
             "helmet_type": "Full-Face",
-            "visor_type": "Clear",
-            "quantity": 10,
+            "visor_type": "Double",
+            "quantity": 3,
             "price": 3500.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "M",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "XL",
+            "color": "Pink",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 27,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "S",
+            "color": "Violet",
+            "helmet_type": "Modular",
+            "visor_type": "Single",
+            "quantity": 27,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "Std",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 27,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "K",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 27,
+            "price": 4200.0
         },
         {
             "brand": "HJC",
@@ -27,8 +77,118 @@
             "color": "White",
             "helmet_type": "Full-Face",
             "visor_type": "Tinted",
-            "price": null,
+            "quantity": 27,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 20,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "quantity": 0,
+            "price": 4200.0
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "price": 5500,
             "quantity": 3
+        },
+        {
+            "brand": "HJC",
+            "model": "CS-15",
+            "size": "L",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Tinted",
+            "price": null,
+            "quantity": 1
         }
     ],
     "users": [
