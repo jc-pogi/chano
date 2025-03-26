@@ -82,7 +82,6 @@
             <span>Elytra Technology</span>
         </a>
     </div> 
-
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'dashboard' %}active{% endif %}" href="/dashboard">
             <i class="bi bi-house-door" style="margin-right: 10px;"></i> Dashboard
@@ -101,11 +100,13 @@
                   <i class="bi bi-basket" style="margin-right: 10px;"></i> Products
                 </a>
               </li>
+              {% if user_role == "admin" %}
               <li>
                 <a class="nav-link {% if current_tab == 'restock' %}active{% endif %}" href="/restock">
                   <i class="bi bi-box-arrow-in-down" style="margin-right: 10px;"></i> Restock
                 </a>
               </li>
+              {% endif %}
             </ul>
           </div>
         </li>
@@ -116,16 +117,20 @@
             <i class="bi bi-receipt" style="margin-right: 10px;"></i> Transactions
           </a>
         </li>
+        {% if user_role == "admin" %}
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'revenue' %}active{% endif %}" href="/revenue">
             <i class="bi bi-graph-up" style="margin-right: 10px;"></i> Log Report
           </a>
         </li>
+        {% endif %}
+        {% if user_role == "admin" %}
         <li class="nav-item">
           <a class="nav-link {% if current_tab == 'accounts' %}active{% endif %}" href="/accounts">
             <i class="bi bi-people" style="margin-right: 10px;"></i> Accounts
           </a>
         </li>
+         {% endif %}
       </ul>
     
       <!-- Ensure Logout is always at the bottom but visible -->
