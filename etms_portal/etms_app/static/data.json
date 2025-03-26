@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 6,
+            "quantity": 15,
             "price": 3100.0
         },
         {
@@ -542,24 +542,24 @@
         },
         
     "users": [
-    {
-        "username": "admin",
-        "password": "admin123",
-        "role": "admin",
-        "last_login": "2025-03-24T10:30:00"
-    },
-    {
-        "username": "cashier1",
-        "password": "cashier123",
-        "role": "user",
-        "last_login": "2025-03-23T08:45:00"
-    },
-    {
-        "username": "cashier2",
-        "password": "cashier234",
-        "role": "user",
-        "last_login": "2025-03-23T07:6:00"
-    }
+        {
+            "username": "admin",
+            "password": "admin123",
+            "role": "admin",
+            "last_login": "2025-03-24T10:30:00"
+        },
+        {
+            "username": "cashier1",
+            "password": "cashier123",
+            "role": "user",
+            "last_login": "2025-03-23T08:45:00"
+        },
+        {
+            "username": "cashier2",
+            "password": "cashier234",
+            "role": "user",
+            "last_login": "2025-03-23T07:6:00"
+        }
     ],
     "logs": [
         {

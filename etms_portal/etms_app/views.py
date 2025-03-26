@@ -247,6 +247,8 @@ def accounts(request):
     return render(request, "accounts.html", context={"current_tab": "accounts", "user_role":user_role})
 
 def login_view(request):
+    request.session.flush()  # Clear session to avoid unwanted persistence
+
     if request.method == "POST":
         username = request.POST.get("employee_name", "").strip()  # Match form field name
         password = request.POST.get("password", "").strip()
