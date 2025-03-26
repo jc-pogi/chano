@@ -286,12 +286,42 @@
         document.getElementById("totalRestocks").innerText = restockCount;
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+   document.addEventListener("DOMContentLoaded", function() {
         updateTransactionDate();
+        fetchLogs();
+
         document.getElementById("logTypeFilter").addEventListener("change", filterLogs);
         document.getElementById("logFilter").addEventListener("change", filterLogs);
         document.getElementById("dateFilter").addEventListener("input", filterLogs);
     });
+
+    function fetchLogs() {
+        fetch("/get-logs/")
+        .then(response => response.json())
+        .then(data => {
+            const logTableBody = document.querySelector("#logTable tbody");
+            logTableBody.innerHTML = ""; // Clear existing rows
+
+            data.logs.forEach(log => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${log.type}</td>
+                    <td>${log.brand || 'N/A'}</td>
+                    <td>${log.model || 'N/A'}</td>
+                    <td>${log.color || 'N/A'}</td>
+                    <td>${log.quantity || 'N/A'}</td>
+                    <td>Php ${log.price || 'N/A'}</td>
+                    <td>${log.date || 'N/A'}</td>
+                `;
+                logTableBody.appendChild(row);
+            });
+
+            filterLogs(); // Apply existing filters after loading
+        })
+        .catch(error => {
+            console.error("Error fetching logs:", error);
+        });
+    }
 </script>
 
 {% endblock %}
