@@ -586,12 +586,15 @@ function getCSRFToken() {
     });
 
     function printReceipt() {
+    console.log("Print Receipt function called");
+    console.log("Receipt Data:", window.receiptData);
+
     if (!window.receiptData || window.receiptData.items.length === 0) {
         showToast("No receipt data available.", "danger");
         return;
     }
 
-    let { transactionDate, totalPrice, cash, change, items } = window.receiptData;
+    const { transactionDate, totalPrice, cash, change, items } = window.receiptData;
     
     const transactionId = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     const now = new Date();
@@ -770,10 +773,10 @@ function getCSRFToken() {
         </style>
     </head>
     <body>
-        <div class="receipt-container">
+       <div class="receipt-container">
             <div class="receipt">
                 <div class="logo">
-                    <img src="img/LOGO.jpg" alt="Elytra Tech Logo">
+                    <img src="/static/img/LOGO.jpg" alt="Elytra Tech Logo">
                 </div>
                 <div class="header">
                     <div class="store-name">ELYTRA TECH</div>
@@ -794,15 +797,14 @@ function getCSRFToken() {
                 <div class="divider"></div>
                 <div>`;
     
-    items.forEach(item => {
-        const price = parseFloat(item[6].replace(/[^0-9.]/g, ""));
-        const quantity = parseInt(item[7]);
+                    items.forEach(item => {
+        const price = parseFloat(item.price);
+        const quantity = item.quantity;
         const itemTotal = price * quantity;
         
-        // Display only brand and model (item[1] and item[2])
         receiptContent += `
                     <div class="item">
-                        <div>${item[1]} ${item[2]}</div>
+                        <div>${item.brand} ${item.model}</div>
                         <div class="item-detail">
                             <span>${quantity} x PHP ${price.toFixed(2)}</span>
                             <span>PHP ${itemTotal.toFixed(2)}</span>
