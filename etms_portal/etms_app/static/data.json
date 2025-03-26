@@ -157,7 +157,7 @@
             "color": "Matte Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 2,
+            "quantity": 7,
             "price": 3400.0
         },
         {
@@ -167,7 +167,7 @@
             "color": "Glossy Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 2,
+            "quantity": 68,
             "price": 3400.0
         },
         {
@@ -539,8 +539,8 @@
             "visor_type": "Single",
             "quantity": 0,
             "price": 3500.0
-        },
-        
+        }
+    ],
     "users": [
         {
             "username": "admin",
@@ -583,6 +583,28 @@
             "quantity": 10,
             "price": "Php 4,000",
             "date": "2025-01-01"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": null,
+            "date": "2025-03-26"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 66,
+            "price": 3400,
+            "date": "2025-03-26"
         }
     ]
 }

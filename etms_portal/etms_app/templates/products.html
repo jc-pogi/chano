@@ -134,13 +134,13 @@ body {
     overflow: hidden;
 }
 
-
-   #productTable {
+/* Ensure table styling remains consistent */
+#productTable {
     width: 100%;
     border-collapse: collapse;
 }
 
-
+/* Sticky header for table */
 .table-container thead {
     position: sticky;
     top: 0;
@@ -148,30 +148,28 @@ body {
     z-index: 2;
 }
 
-
 /* Ensure the table expands fully */
 .product-table {
     width: 100%;
     overflow-x: auto;
 }
 
-
-
-
-/* Fix table header */
-.table-container thead {
-    position: sticky;
-    top: 0;
-    background: rgb(255, 255, 255);
-    z-index: 2;
+/* Apply styles ONLY inside products.html */
+.custom-product-table {
+    height: 90vh !important; /* Allow it to grow dynamically */
+    max-height: 90vh !important;
+    overflow-y: auto !important; /* Ensure scrolling */
+    display: flex;
+    flex-direction: column;
 }
 
-
-table td, table th {
-    padding: 10px 10px;
+/* Make the table fill the available space */
+.custom-product-table table {
+    flex-grow: 1;
+    min-height: 100%;
 }
 
-
+/* Filter Sidebar */
 .filter-container {
     background-color: #ffffff;
     border-radius: 8px;
@@ -182,7 +180,7 @@ table td, table th {
     padding: 10px;
 }
 
-
+/* Layout Fixes */
 .container {
     display: flex;
     flex-wrap: wrap;
@@ -190,19 +188,17 @@ table td, table th {
     overflow: auto;
 }
 
-
 .card.mb-4.flex-grow-1 {
     flex: 2;
     min-width: 40%;
 }
 
-
+/* Ensure card-body fills its container */
 .card-body {
     flex-grow: 1;
-    max-height: 100vh;
     overflow-y: auto;
+    height: 100%;
 }
-
 
 /* Responsive for smaller screens */
 @media (max-width: 768px) {
@@ -210,12 +206,10 @@ table td, table th {
         flex-direction: column;
     }
 
-
     .filter-container, .card.mb-4.flex-grow-1 {
         max-width: 100%;
     }
 }
-
 
 /* Style text fields */
 .form-control {
@@ -224,11 +218,9 @@ table td, table th {
     transition: all 0.3s ease-in-out;
 }
 
-
 .form-control:focus {
     border-color: #000000; /* Darker blue on focus */
 }
-
 
 /* Style checkboxes */
 .form-check-input {
@@ -236,26 +228,25 @@ table td, table th {
     border-radius: 4px; /* Slight rounding */
 }
 
-
 .form-check-input:checked {
     background-color: #274C77;
     border-color: #1B3A57;
 }
 
-
+/* Main Content */
 .main-content {
     flex-grow: 1;
-    max-height: calc(100vh - [header height]); /* Adjust header height accordingly */
+    max-height: calc(100vh - 60px); /* Adjust header height accordingly */
     overflow-y: auto;
 }
 
-
+/* Fix Product Catalog Size */
 .product-catalog {
-    max-height: 20vh; /* Adjust based on layout */
+    max-height: 90vh; /* Allow it to grow dynamically */
     overflow-y: auto;
 }
 
-
+/* Remove Unnecessary Margin and Padding */
 .main-content > * {
     margin-bottom: 0;
     padding-bottom: 0;
