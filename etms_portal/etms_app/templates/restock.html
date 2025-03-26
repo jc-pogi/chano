@@ -518,18 +518,19 @@ function updateSummary() {
     let totalItems = 0;
     let totalAmount = 0;
 
-    // Select all rows in the table body
     document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
         const quantity = parseInt(row.querySelector("td:nth-child(8)")?.textContent) || 0;
-        const price = parseFloat(row.querySelector("td:nth-child(7)")?.textContent.replace(/,/g, '')) || 0;
+        const priceText = row.querySelector("td:nth-child(7)")?.textContent;
+
+        // Remove ₱ sign and commas before converting to number
+        const price = parseFloat(priceText.replace(/[^\d.]/g, "")) || 0;
 
         totalItems += quantity;
         totalAmount += price * quantity;
     });
 
-    // Update the footer display with comma formatting
     document.getElementById("totalItems").textContent = totalItems;
-    document.getElementById("totalAmountDisplay").textContent = `PHP ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    document.getElementById("totalAmountDisplay").textContent = `₱ ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function confirmRestock() {
@@ -679,7 +680,11 @@ function printInventory() {
 
 document.getElementById("price").addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    this.value = this.value.replace(/[^\d.]/g, ""); // Allow only numbers and decimal points
+
 });
+
+   
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("🔍 Checking if productTable.html is loaded...");
