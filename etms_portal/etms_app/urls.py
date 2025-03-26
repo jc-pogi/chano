@@ -30,5 +30,7 @@ urlpatterns = [
     path("revenue/", revenue, name="revenue"),
     path("accounts/", accounts, name="accounts"),
     path("login/", login_view, name="login"),  # Entransactionssure this exists
-    
+     path("get-logs/", get_logs, name="get_logs"),
 ]
+
+
