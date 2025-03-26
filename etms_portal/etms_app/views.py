@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .decorators import admin_required, user_required
 from .models import Helmet
 from django.contrib import admin
 from django.http import HttpResponse
@@ -24,27 +25,34 @@ if not os.path.exists(DATA_FILE):
         json.dump([], file)
 
 # Create your views here.
+@admin_required
 def dashboard(request):
-    return render(request, "dashboard.html", context={"current_tab": "dashboard"})
+    user_role = request.session.get("role", "user")  # Default to "user" if missing
+    return render(request, "dashboard.html", context={"current_tab": "dashboard", "user_role": user_role})
 
+@user_required
 def products(request):
+    user_role = request.session.get("role", "user")
     helmets = Helmet.objects.all()
     context = {
         "helmets": helmets,
-        "current_tab": "products"
+        "current_tab": "products",
+        "user_role": user_role,
     }
     return render(request, "products.html", context)
 
-
+@user_required
 def transactions(request):
     helmets = Helmet.objects.all()
+    user_role = request.session.get("role", "user")
     context = {
         "current_tab": "transactions",
         "helmets": helmets,  # Include helmets inside the same context dictionary
+        "user_role": user_role,
     }
     return render(request, "transactions.html", context)
 
-
+@user_required
 @csrf_exempt
 def restock(request):
     if request.method == "POST":
@@ -115,10 +123,12 @@ def restock(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     elif request.method == "GET":
-        return render(request, "restock.html", {"current_tab": "restock"})
+        user_role = request.session.get("role", "user")  # Default to "user" if missing
+        return render(request, "restock.html", context={"current_tab": "restock", "user_role":user_role})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+@user_required
 @csrf_exempt
 def process_transaction(request):
     if request.method == "POST":
@@ -161,29 +171,48 @@ def process_transaction(request):
             return JsonResponse({"success": False, "message": str(e)})
 
     elif request.method == "GET":
-        return render(request, "restock.html", {"current_tab": "restock"})
+        user_role = request.session.get("role", "user")  # Default to "user" if missing
+        return render(request, "transaction.html", context={"current_tab": "transction", "user_role":user_role})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+@user_required
 def revenue(request):
-    return render(request, "revenue.html", context={"current_tab": "revenue"})
+    user_role = request.session.get("role", "user")  # Default to "user" if missing
+    return render(request, "revenue.html", context={"current_tab": "revenue", "user_role":user_role})
 
+@admin_required
 def accounts(request):
-    return render(request, "accounts.html", context={"current_tab": "accounts"})
+    user_role = request.session.get("role", "user")  # Default to "user" if missing
+    return render(request, "accounts.html", context={"current_tab": "accounts", "user_role":user_role})
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("employee_name")  # Get username from form
-        password = request.POST.get("password")  # Get password from form
-        
-        # Check if username and password match "admin"
-        if username == "admin" and password == "admin":
-            return render(request, "dashboard.html", context={"current_tab": "dashboard"})
-        
-        else:
-            messages.error(request, "Invalid username or password")  # Show error message
-    
-    return render(request, "login.html")  # Render login page
+        username = request.POST.get("employee_name", "").strip()  # Match form field name
+        password = request.POST.get("password", "").strip()
+
+        print(f"🛠️ Debug: Login Attempt - Username: {username}")
+
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+            users = data.get("users", [])
+
+        for user in users:
+            print(f"Checking user: {user['username']}")  # Debug
+            if user["username"] == username:
+                print(f"✅ Found username: {username}, Checking password...")
+                if user["password"] == password:  # Check password match
+                    request.session["username"] = username
+                    request.session["role"] = user["role"]
+
+                    print(f"✅ User Logged In - Username: {username}, Role: {user['role']}")
+                    return redirect("dashboard" if user["role"] == "admin" else "transactions")
+
+        print("❌ Invalid credentials, returning to login")
+        return render(request, "login.html", {"error": "Invalid credentials"})
+
+    return render(request, "login.html")
+
 
 def get_products(request):
     try:
@@ -219,3 +248,25 @@ def update_product(request):
             return JsonResponse({"success": True})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+
+
+def get_user_role(username, password):
+    """Fetch user role from JSON database, validating username and password."""
+    if not os.path.exists(DATA_FILE):
+        return None  # No data file means no users
+
+    with open(DATA_FILE, "r") as file:
+        data = json.load(file)
+
+    for user in data.get("users", []):  # Ensure "users" exists
+        if user["username"] == username and user["password"] == password:
+            return user.get("role")  # ✅ Return role if credentials match
+
+    return None  # No match found
+
+def index(request):
+    """Render index.html with user role info."""
+    if request.user.is_authenticated:
+        role = get_user_role(request.user.username)
+        return render(request, "index.html", {"user_role": role})
+    return render(request, "index.html", {"user_role": None})
