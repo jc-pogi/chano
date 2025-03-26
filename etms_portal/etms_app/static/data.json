@@ -27,7 +27,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 6,
+            "quantity": 7,
             "price": 4500.0
         },
         {
@@ -2049,6 +2049,46 @@
             "visor_type": "Single",
             "quantity": 8,
             "price": 3000.0
+        },
+        {
+            "brand": "AXXIS",
+            "model": "-",
+            "size": "M",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "price": null,
+            "quantity": 1
+        },
+        {
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "size": "XL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "price": null,
+            "quantity": 1
+        },
+        {
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "size": "L",
+            "color": "Black-Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "price": null,
+            "quantity": 10
+        },
+        {
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "size": "XL",
+            "color": "Black-Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "price": null,
+            "quantity": 8
         }
     ],
     "users": [
@@ -2065,26 +2105,26 @@
     ],
     "logs": [
         {
-          "type": "Transaction",
-          "brand": "HNJ",
-          "model": "Ewan",
-          "color": "Black",
-          "helmet_type": "Full Face",
-          "visor_type": "Clear",
-          "quantity": 10,
-          "price": "Php 999",
-          "date": "2025-01-01"
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "Ewan",
+            "color": "Black",
+            "helmet_type": "Full Face",
+            "visor_type": "Clear",
+            "quantity": 10,
+            "price": "Php 999",
+            "date": "2025-01-01"
         },
         {
-          "type": "Restock",
-          "brand": "SPYDER",
-          "model": "Ewan",
-          "color": "Red",
-          "helmet_type": "Modular",
-          "visor_type": "Tinted",
-          "quantity": 10,
-          "price": "Php 4,000",
-          "date": "2025-01-01"
+            "type": "Restock",
+            "brand": "SPYDER",
+            "model": "Ewan",
+            "color": "Red",
+            "helmet_type": "Modular",
+            "visor_type": "Tinted",
+            "quantity": 10,
+            "price": "Php 4,000",
+            "date": "2025-01-01"
         }
-      ]
+    ]
 }

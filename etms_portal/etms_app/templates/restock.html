@@ -7,7 +7,8 @@
 <body>
 
     <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </body>
 
 <style>
@@ -195,27 +196,24 @@ button:hover {
 
             <div class="row g-2 mt-2">
                 <div class="col-6">
-                    <button type="button" class="btn w-100" onclick="editItem()">
-                        <i class="fas fa-edit me-1"></i> Edit
+                    <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#restockModal">
+                        <i class="fas fa-boxes me-1"></i> Restock
                     </button>
                 </div>
              <div class="col-6">
                 <button type="button" class="btn w-100" onclick="voidTransaction()" >
                     <i class="fas fa-ban me-1"></i> Void
                 </button>
-                   
-                </div>   
+            </div>   
+
+
             </div>
             <div class="row g-2 mt-2">
-                <div class="col-6">
-                    <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#restockModal">
-                        <i class="fas fa-boxes me-1"></i> Restock
-                    </button>
-                </div>
-             <div class="col-6">
+                
+             <div class="col-12">
                 <button type="button" class="btn w-100" onclick="printInventory()">
                     <i class="fas fa-print me-1"></i> Print Inventory
-                    </button>
+                </button>
                 </div>   
             </div>
         </div>
@@ -386,51 +384,7 @@ function addItem() {
     updateSummary();
 }
 
- // Function to edit and update the row
- function editItem() {
-    if (!selectedRow) {
-        alert("Please select a row to edit.");
-        return;
-    }
 
-    // Ensure editing is from the Product Table
-    if (selectedRow.closest("table").id !== "productTable") {
-        alert("Please select a product from the Product Catalog table to edit.");
-        return;
-    }
-
-    // Get the updated values from the form
-    let updatedBrand = document.getElementById("brand").value;
-    let updatedModel = document.getElementById("model").value;
-    let updatedSize = document.getElementById("size").value;
-    let updatedColor = document.getElementById("color").value;
-    let updatedHelmetType = document.getElementById("helmet_type").value;
-    let updatedVisorType = document.getElementById("visor_type").value;
-    let updatedPrice = document.getElementById("price").value;
-
-    // Keep the original quantity (not editable)
-    let originalQuantity = selectedRow.cells[7].textContent;
-
-    // Update table row with new values
-    selectedRow.cells[0].textContent = updatedBrand;
-    selectedRow.cells[1].textContent = updatedModel;
-    selectedRow.cells[2].textContent = updatedSize;
-    selectedRow.cells[3].textContent = updatedColor;
-    selectedRow.cells[4].textContent = updatedHelmetType;
-    selectedRow.cells[5].textContent = updatedVisorType;
-    selectedRow.cells[6].textContent = updatedPrice;
-    selectedRow.cells[7].textContent = originalQuantity; // Preserve Quantity
-
-    // Send update to JSON file
-    updateJSONFile(updatedBrand, updatedModel, updatedSize, updatedColor, updatedHelmetType, updatedVisorType, updatedPrice);
-
-    // Clear selection and form fields
-    document.getElementById("transactionForm").reset();
-    selectedRow.classList.remove("table-active");
-    selectedRow = null;
-
-    showToast("Product updated successfully!", "success");
-}
 
 function updateJSONFile(brand, model, size, color, helmetType, visorType, price) {
     fetch("/update-product/", {
@@ -685,50 +639,43 @@ function confirmRestock() {
 
 
 function printInventory() {
-    let printContents = document.querySelector(".product-table").outerHTML;
-    let originalTitle = document.title;
+    fetch("/static/data.json")  // ✅ Ensure correct fetch path
+        .then(response => response.json())
+        .then(data => {
+            console.log("✅ Data Loaded:", data);
 
-    let printWindow = window.open('', '', 'width=800,height=600');
-    printWindow.document.write(`
-        <html>
-        <head>
-            <title>ElytraTech</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    border: 1px solid black;
-                    padding: 8px;
-                    text-align: left;
-                }
-                th {
-                    background-color: #f2f2f2;
-                }
-                @media print {
-                    body {
-                        margin: 20px;
-                    }
-                    .no-print {
-                        display: none;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <h2>ElytraTech Inventory Report</h2>
-            ${printContents}
-        </body>
-        </html>
-    `);
-    printWindow.document.close();
-    printWindow.print();
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "A4" });
+
+            doc.text("Product Inventory", 40, 30);
+
+            let headers = ["Brand", "Model", "Size", "Color", "Helmet Type", "Visor Type", "Price", "Quantity"];
+            let rows = data.helmets.map(helmet => [
+                helmet.brand || "N/A",
+                helmet.model || "N/A",
+                helmet.size || "N/A",
+                helmet.color || "N/A",
+                helmet.helmet_type || "N/A",
+                helmet.visor_type || "N/A",
+                `₱${helmet.price ? helmet.price.toLocaleString() : "0.00"}`,  // ✅ Fix: Handle null/undefined prices
+                helmet.quantity ?? "0"  // ✅ Fix: Handle missing quantity
+            ]);
+
+            doc.autoTable({
+                head: [headers],
+                body: rows,
+                startY: 50,
+                styles: { fontSize: 8, cellPadding: 4 },
+                headStyles: { fillColor: [39, 76, 119] } // Header styling
+            });
+
+            doc.save("inventory.pdf");
+        })
+        .catch(error => console.error("❌ Error loading inventory data:", error));
 }
+
+
+
 
 document.getElementById("price").addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
