@@ -2099,10 +2099,16 @@
         "last_login": "2025-03-24T10:30:00"
     },
     {
-        "username": "cashier",
+        "username": "cashier1",
         "password": "cashier123",
         "role": "user",
         "last_login": "2025-03-23T08:45:00"
+    },
+    {
+        "username": "cashier2",
+        "password": "cashier234",
+        "role": "user",
+        "last_login": "2025-03-23T07:6:00"
     }
     ],
     "logs": [
