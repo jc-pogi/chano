@@ -25,7 +25,7 @@ if not os.path.exists(DATA_FILE):
         json.dump([], file)
 
 # Create your views here.
-@admin_required
+@user_required
 def dashboard(request):
     user_role = request.session.get("role", "user")  # Default to "user" if missing
     return render(request, "dashboard.html", context={"current_tab": "dashboard", "user_role": user_role})
@@ -52,7 +52,7 @@ def transactions(request):
     }
     return render(request, "transactions.html", context)
 
-@user_required
+@admin_required
 @csrf_exempt
 def restock(request):
     if request.method == "POST":
@@ -176,7 +176,7 @@ def process_transaction(request):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-@user_required
+@admin_required
 def revenue(request):
     user_role = request.session.get("role", "user")  # Default to "user" if missing
     return render(request, "revenue.html", context={"current_tab": "revenue", "user_role":user_role})
@@ -206,7 +206,7 @@ def login_view(request):
                     request.session["role"] = user["role"]
 
                     print(f"✅ User Logged In - Username: {username}, Role: {user['role']}")
-                    return redirect("dashboard" if user["role"] == "admin" else "transactions")
+                    return redirect("dashboard" )
 
         print("❌ Invalid credentials, returning to login")
         return render(request, "login.html", {"error": "Invalid credentials"})
