@@ -3,11 +3,17 @@ from functools import wraps
 
 def admin_required(view_func):
     """Restrict page access to admin users only."""
+    @wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        print(f"🛑 Access Check - Required: Admin, Found: {request.session.get('role')}")
-        if request.session.get("role") != "admin":
+        user_role = request.session.get("role")
+        print(f"🛑 Access Check - Required: Admin, Found: {user_role}")
+
+        # ✅ Allow access only if the user is an admin
+        if user_role != "admin":
             return HttpResponseForbidden("Access Denied: Admins only.")
-        return view_func(request, *args, **kwargs)
+        
+        return view_func(request, *args, **kwargs)  # ✅ Allow GET & POST for admins
+
     return wrapper
 
 def user_required(view_func):

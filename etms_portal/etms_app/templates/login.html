@@ -47,6 +47,9 @@
               </div>
             </div>
             <button type="submit">Login</button>
+            {% if error %}
+              <p style="color: red;">{{ error }}</p>
+            {% endif %}
             <span>or use your social account</span>
             <div class="social-container">
               <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>
