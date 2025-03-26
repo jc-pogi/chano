@@ -27,7 +27,17 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 10,
+            "quantity": 7,
+            "price": 4500.0
+        },
+        {
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "size": "XL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 12,
             "price": 4500.0
         },
         {
@@ -504,7 +514,7 @@
             "brand": "SPYDER",
             "model": "FURY",
             "size": "L",
-            "color": "White",
+            "color": "Matte Black",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
             "quantity": 4,
@@ -530,107 +540,7 @@
             "quantity": 0,
             "price": 3500.0
         },
-        {
-            "brand": "SPYDER",
-            "model": "RADAR",
-            "size": "L",
-            "color": "White",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 0,
-            "price": 3500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "L",
-            "color": "Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 0,
-            "price": 2800.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "XL",
-            "color": "Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 0,
-            "price": 2800.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "M",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 5,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "L",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 8,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "XL",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 4,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "M",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 5,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "L",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 8,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "-",
-            "size": "XL",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 6,
-            "price": 2500.0
-        },
-        {
-            "brand": "ZEBRA",
-            "model": "RITZY",
-            "size": "M",
-            "color": "Black-Red",
-            "helmet_type": "Modular",
-            "visor_type": "Single",
-            "quantity": 10,
-            "price": 3000.0
-        }
-    ],
+        
     "users": [
     {
         "username": "admin",
@@ -673,94 +583,6 @@
             "quantity": 10,
             "price": "Php 4,000",
             "date": "2025-01-01"
-        },
-        {
-            "type": "Restock",
-            "brand": "ZEBRA",
-            "model": "-",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 2,
-            "price": 2500,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Restock",
-            "brand": "ZEBRA",
-            "model": "-",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 3,
-            "price": 2500,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "RX5",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 2,
-            "price": 3400,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Restock",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 3100,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 4500,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Transaction",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 3100,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Restock",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 3100,
-            "date": "2025-03-26"
-        },
-        {
-            "type": "Transaction",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 3100,
-            "date": "2025-03-26"
         }
     ]
 }
