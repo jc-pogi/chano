@@ -57,7 +57,7 @@
             "color": "White",
             "helmet_type": "Full-Face",
             "visor_type": "Tinted",
-            "quantity": 27,
+            "quantity": 26,
             "price": 4200.0
         },
         {
@@ -205,26 +205,26 @@
     ],
     "logs": [
         {
-          "type": "Transaction",
-          "brand": "HNJ",
-          "model": "Ewan",
-          "color": "Black",
-          "helmet_type": "Full Face",
-          "visor_type": "Clear",
-          "quantity": 10,
-          "price": "Php 999",
-          "date": "2025-01-01"
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "Ewan",
+            "color": "Black",
+            "helmet_type": "Full Face",
+            "visor_type": "Clear",
+            "quantity": 10,
+            "price": "Php 999",
+            "date": "2025-01-01"
         },
         {
-          "type": "Restock",
-          "brand": "SPYDER",
-          "model": "Ewan",
-          "color": "Red",
-          "helmet_type": "Modular",
-          "visor_type": "Tinted",
-          "quantity": 10,
-          "price": "Php 4,000",
-          "date": "2025-01-01"
+            "type": "Restock",
+            "brand": "SPYDER",
+            "model": "Ewan",
+            "color": "Red",
+            "helmet_type": "Modular",
+            "visor_type": "Tinted",
+            "quantity": 10,
+            "price": "Php 4,000",
+            "date": "2025-01-01"
         }
-      ]
+    ]
 }
