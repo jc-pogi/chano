@@ -6,31 +6,44 @@
 <div class="container my-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Revenue Report</h1>
+        <h1 class="mb-0" style="color: #274C77; font-weight: 600;">Log Reports</h1>
     
         <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
-
             <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important; font-size: 1rem;">
-                <i class="bi bi-calendar"></i> <span>Date of Transaction:</span>
+                <i class="bi bi-calendar"></i> <span>Date of Log:</span>
             </h5>
-
         </div>
-        
     </div>
 
-    <!-- Product Table Section -->
+    <!-- Log Table Section -->
     <div class="mt-4">
-        <h3>Product Sales</h3>
+        <h3>Transaction & Restock History</h3>
         <div class="card mb-4" style="border: none; border-radius: 8px;">
-            <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
-                <h5 class="card-title mb-0">Product Catalog</h5>
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
+                <h5 class="card-title mb-0">Log Entries</h5>
+                <div class="d-flex">
+                    <select id="logTypeFilter" class="form-select w-auto me-2">
+                        <option value="all" selected>All Types</option>
+                        <option value="Transaction">Transaction</option>
+                        <option value="Restock">Restock</option>
+                    </select>
+                    <select id="logFilter" class="form-select w-auto me-2">
+                        <option value="day">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                        <option value="all" selected>All</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="form-control w-auto">
+                </div>
             </div>
-        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
-        
+        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+            
             <div class="table-container">
-            <table class="table table-hover" id="reportTable">
-                <thead class="table-light">
+            <table class="table table-hover" id="logTable">
+                <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 2;">
                     <tr>
+                        <th scope="col">Type</th>
                         <th scope="col">Brand</th>
                         <th scope="col">Model</th>
                         <th scope="col">Color</th>
@@ -41,16 +54,18 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">HNJ</th>
-                        <td>TITAN</td>
+                        <td>Transaction</td>
+                        <td>HNJ</td>
+                        <td>Ewan</td>
                         <td>Black</td>
                         <td>10</td>
                         <td>Php 999</td>
                         <td>2025-01-01</td>
                     </tr>
+
                     <tr>
-                        </th>
-                        <th scope="row">EVO</td>
+                        <td>Transaction</td>
+                        <td>EVO</td>
                         <td>GT PRO</td>
                         <td>Black</td>
                         <td>10</td>
@@ -58,7 +73,62 @@
                         <td>2025-01-01</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4,000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4,000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Restock</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4,000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4,000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Restock</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
+                        <td>Red</td>
+                        <td>10</td>
+                        <td>Php 4,000</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Restock</td>
+                        <td>EVO</td>
+                        <td>GT PRO</td>
+                        <td>Black</td>
+                        <td>10</td>
+                        <td>Php 999</td>
+                        <td>2025-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
                         <td>RADAR</td>
                         <td>Red</td>
                         <td>10</td>
@@ -66,7 +136,8 @@
                         <td>2025-01-03</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
                         <td>FURY</td>
                         <td>Red</td>
                         <td>10</td>
@@ -74,15 +145,17 @@
                         <td>2025-02-03</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
-                        <td>FUEL</td>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
                         <td>Php 4,000</td>
                         <td>2025-01-06</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
                         <td>REBOOT 2</td>
                         <td>Red</td>
                         <td>10</td>
@@ -90,7 +163,8 @@
                         <td>2025-02-06</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
                         <td>FURY</td>
                         <td>Red</td>
                         <td>10</td>
@@ -98,7 +172,8 @@
                         <td>2025-02-09</td>
                     </tr>
                     <tr>
-                        <th scope="row">EVO</th>
+                        <td>Restock</td>
+                        <td>EVO</td>
                         <td>GT PRO</td>
                         <td>Black</td>
                         <td>10</td>
@@ -106,7 +181,8 @@
                         <td>2025-02-09</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
                         <td>FUEL</td>
                         <td>Red</td>
                         <td>10</td>
@@ -114,47 +190,37 @@
                         <td>2025-03-18</td>
                     </tr>
                     <tr>
-                        <th scope="row">SPYDER</th>
-                        <td>-</td>
+                        <td>Transaction</td>
+                        <td>SPYDER</td>
+                        <td>Ewan</td>
                         <td>Red</td>
                         <td>10</td>
                         <td>Php 4,000</td>
                         <td>2025-03-18</td>
-                </tbody>
+                    </tr>
+                </tbody>                
             </table>
         </div>
     </div>
 </div>
 </div>
-    <!-- Revenue Section -->
-    <div class="d-flex justify-content-center mt-4">
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm w-100 text-center" style="height: 100px;">
-                <h6>Total Revenue</h6>
-                <h3>30,997</h3>
-            </div>
-        </div>
-    </div>
 </div>
 
 <style>
     body {
-    background: linear-gradient(to right, #d9dde4, #7196b3); /* Subtle gradient */
+        background: linear-gradient(to right, #d9dde4, #7196b3);
     }
 
-    #reportTable {
+    #logTable {
         margin: 0;
         padding: 0;
         width: 100%;
         border-collapse: collapse;
     }
 
-    /* Fix table header */
-    .table-container thead {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 2;
+    .card-body {
+        max-height: 400px;
+        overflow-y: auto;
     }
 </style>
 
@@ -170,7 +236,62 @@
         }).format(now);
         document.querySelector("#transactionDate span").innerText = formattedDate;
     }
-    document.addEventListener("DOMContentLoaded", updateTransactionDate);
+
+    function filterLogs() {
+        let typeFilter = document.getElementById("logTypeFilter").value;
+        let filter = document.getElementById("logFilter").value;
+        let dateFilter = document.getElementById("dateFilter").value;
+        let rows = document.querySelectorAll("#logTable tbody tr");
+        let now = new Date();
+
+        rows.forEach(row => {
+            let logType = row.cells[0].innerText;
+            let dateText = row.cells[6].innerText;
+            let logDate = new Date(dateText);
+            let showRow = false;
+
+            if (typeFilter === "all" || logType === typeFilter) {
+                if (filter === "all") showRow = true;
+                else if (filter === "day" && logDate.toDateString() === now.toDateString()) showRow = true;
+                else if (filter === "week") {
+                    let startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+                    let endOfWeek = new Date(startOfWeek);
+                    endOfWeek.setDate(endOfWeek.getDate() + 6);
+                    showRow = logDate >= startOfWeek && logDate <= endOfWeek;
+                }
+                else if (filter === "month" && logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear()) showRow = true;
+                else if (filter === "year" && logDate.getFullYear() === now.getFullYear()) showRow = true;
+            }
+            
+            if (dateFilter && logDate.toISOString().split('T')[0] !== dateFilter) {
+                showRow = false;
+            }
+
+            row.style.display = showRow ? "" : "none";
+        });
+    }
+
+    function updateSummary() {
+        let rows = document.querySelectorAll("#logTable tbody tr");
+        let transactionCount = 0;
+        let restockCount = 0;
+        
+        rows.forEach(row => {
+            let logType = row.cells[0].innerText;
+            if (logType === "Transaction") transactionCount++;
+            if (logType === "Restock") restockCount++;
+        });
+
+        document.getElementById("totalTransactions").innerText = transactionCount;
+        document.getElementById("totalRestocks").innerText = restockCount;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        updateTransactionDate();
+        document.getElementById("logTypeFilter").addEventListener("change", filterLogs);
+        document.getElementById("logFilter").addEventListener("change", filterLogs);
+        document.getElementById("dateFilter").addEventListener("input", filterLogs);
+    });
 </script>
 
 {% endblock %}
