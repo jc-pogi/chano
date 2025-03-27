@@ -44,11 +44,25 @@
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Last Login</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="accountTable">
-                            <!-- Dynamic content -->
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.role }}</td>
+                                <td>{{ user.status }}</td>
+                                <td>{{ user.lastLogin }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No users found.</td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>                
@@ -64,6 +78,7 @@
             <span class="close" onclick="closeAccountModal()">&times;</span>
         </div>
         <div class="modal-body">
+            {% csrf_token %}
             <form id="accountForm">
                 <input type="hidden" id="editIndex">
                 
@@ -75,10 +90,8 @@
                 
                 <label for="role">Role</label>
                 <select id="role" class="form-control">
-                    <option>Admin</option>
-                    <option>Manager</option>
-                    <option>Cashier</option>
-                    <option>Staff</option>
+                    <option>admin</option>
+                    <option>user</option>
                 </select>
                 
                 <label for="status">Status</label>
@@ -240,29 +253,31 @@
 </style>
 
 <script>
-    let accounts = [
-        { username: "admin", password: "admin123", role: "Admin", status: "Active", lastLogin: "2025-03-18" },
-        { username: "cashier", password: "cashier123", role: "Cashier", status: "Active", lastLogin: "2025-03-16" },
-        { username: "Saerelety", password: "1234", role: "Manager", status: "Active", lastLogin: "2025-03-16" },
-        { username: "Camille", password: "abcd", role: "Manager", status: "Active", lastLogin: "2025-03-15" },
-        { username: "Niño", password: "pass1", role: "Manager", status: "Active", lastLogin: "2025-03-14" },
-        { username: "JC", password: "pogi123", role: "Manager", status: "Active", lastLogin: "2025-03-14" },
-        { username: "Dominique", password: "siopao<3", role: "Manager", status: "Inactive", lastLogin: "2025-03-10" },
-    ];
 
-    function openAccountModal(index = null) {
-        if (index !== null) {
-            document.getElementById("editIndex").value = index;
-            document.getElementById("username").value = accounts[index].username;
-            document.getElementById("password").value = accounts[index].password;
-            document.getElementById("role").value = accounts[index].role;
-            document.getElementById("status").value = accounts[index].status;
-        } else {
-            document.getElementById("editIndex").value = "";
-            document.getElementById("accountForm").reset();
-        }
-        document.getElementById("accountModal").style.display = "block";
+    let accounts = [
+    {% for user in users %}
+    {
+        username: "{{ user.username }}",
+        role: "{{ user.role }}",
+        status: "{{ user.status }}",
+        lastLogin: "{{ user.lastLogin }}"
+    },
+    {% endfor %}
+];
+
+function openAccountModal(index = null) {
+    if (index !== null) {
+        document.getElementById("editIndex").value = index;
+        document.getElementById("username").value = accounts[index].username;
+        document.getElementById("password").value = accounts[index].password;
+        document.getElementById("role").value = accounts[index].role;
+        document.getElementById("status").value = accounts[index].status;
+    } else {
+        document.getElementById("editIndex").value = "";
+        document.getElementById("accountForm").reset();
     }
+    document.getElementById("accountModal").style.display = "block";
+}
 
     function closeAccountModal() {
         document.getElementById("accountModal").style.display = "none";
@@ -274,16 +289,28 @@
         const password = document.getElementById("password").value;
         const role = document.getElementById("role").value;
         const status = document.getElementById("status").value;
-
-        if (username && password) {
-            if (index !== "") {
-                accounts[index] = { username, password, role, status, lastLogin: accounts[index].lastLogin };
+    
+        const payload = { username, password, role, status };
+    
+        fetch(index !== "" ? "/update_account/" : "/add_account/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (index !== "") {
+                    accounts[index] = payload;
+                } else {
+                    accounts.push(payload);
+                }
+                updateTable();
+                closeAccountModal();
             } else {
-                accounts.push({ username, password, role, status, lastLogin: "Never" });
+                alert("Error saving account");
             }
-            updateTable();
-            closeAccountModal();
-        }
+        });
     }
 
     let deleteIndex = null;
@@ -300,10 +327,22 @@
 
     function confirmDeleteAccount() {
         if (deleteIndex !== null) {
-            accounts.splice(deleteIndex, 1);
-            updateTable();
+            fetch(`/delete_account/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: accounts[deleteIndex].username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    accounts.splice(deleteIndex, 1);
+                    updateTable();
+                } else {
+                    alert("Error deleting account");
+                }
+                closeDeleteModal();
+            });
         }
-        closeDeleteModal();
     }
 
     function updateTable() {
@@ -324,16 +363,7 @@
         });
         document.getElementById("totalAccounts").innerText = accounts.length;
         document.getElementById("activeUsers").innerText = accounts.filter(a => a.status === "Active").length;
-        document.getElementById("adminCount").innerText = accounts.filter(a => a.role === "Admin").length;
-    }
-
-    function togglePassword(index) {
-        const passwordSpan = document.getElementById(`password-${index}`);
-        if (passwordSpan.innerText === "****") {
-            passwordSpan.innerText = accounts[index].password; //for local display lang
-        } else {
-            passwordSpan.innerText = "****";
-        }
+        document.getElementById("adminCount").innerText = accounts.filter(a => a.role === "admin").length;
     }
 
     function searchAccounts() {

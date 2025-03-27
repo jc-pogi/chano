@@ -1,17 +1,15 @@
 from django.shortcuts import render
 from .decorators import admin_required, user_required
 from .models import Helmet
-from django.contrib import admin
-from django.http import HttpResponse
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import os
 from datetime import datetime
+
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_FILE = os.path.join(settings.BASE_DIR, "etms_app", "static", "data.json")
@@ -242,9 +240,28 @@ def revenue(request):
     return render(request, "revenue.html", context={"current_tab": "revenue", "user_role":user_role})
 
 @admin_required
-def accounts(request):
-    user_role = request.session.get("role", "user")  # Default to "user" if missing
-    return render(request, "accounts.html", context={"current_tab": "accounts", "user_role":user_role})
+def accounts_view(request):
+    user_role = request.session.get("role", "user")  # Default to "user"
+
+    try:
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+
+            # If data is a list, assume it's already user data
+            if isinstance(data, list):
+                users = data
+            elif isinstance(data, dict):
+                users = data.get("users", [])  # Extract users from dictionary
+            else:
+                users = []
+
+            print("Loaded Users:", users)  # Debugging output
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print("Error loading JSON:", e)
+        users = []
+
+    return render(request, "accounts.html", {"current_tab": "accounts", "user_role": user_role, "users": users})
+
 
 def login_view(request):
     request.session.flush()  # Clear session to avoid unwanted persistence
@@ -255,26 +272,35 @@ def login_view(request):
 
         print(f"🛠️ Debug: Login Attempt - Username: {username}")
 
-        with open(DATA_FILE, "r") as file:
+        # Load JSON data
+        with open(DATA_FILE, "r+") as file:
             data = json.load(file)
             users = data.get("users", [])
 
-        for user in users:
-            print(f"Checking user: {user['username']}")  # Debug
-            if user["username"] == username:
-                print(f"✅ Found username: {username}, Checking password...")
-                if user["password"] == password:  # Check password match
-                    request.session["username"] = username
-                    request.session["role"] = user["role"]
+            for user in users:
+                print(f"Checking user: {user['username']}")  # Debug
+                if user["username"] == username:
+                    print(f"✅ Found username: {username}, Checking password...")
 
-                    print(f"✅ User Logged In - Username: {username}, Role: {user['role']}")
-                    return redirect("dashboard" )
+                    if user["password"] == password:  # Check password match
+                        request.session["username"] = username
+                        request.session["role"] = user["role"]
+
+                        # ✅ Update lastLogin with current timestamp
+                        user["lastLogin"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                        # Save the updated JSON file
+                        file.seek(0)
+                        json.dump(data, file, indent=4)
+                        file.truncate()
+
+                        print(f"✅ User Logged In - Username: {username}, Role: {user['role']}, Last Login Updated!")
+                        return redirect("dashboard")
 
         print("❌ Invalid credentials, returning to login")
         return render(request, "login.html", {"error": "Invalid credentials"})
 
     return render(request, "login.html")
-
 
 def get_products(request):
     try:
@@ -355,3 +381,101 @@ def index(request):
         return render(request, "index.html", {"user_role": role})
     return render(request, "index.html", {"user_role": None})
 
+@csrf_exempt
+def delete_account(request):
+    if request.method == "POST":
+        try:
+            # Load request data
+            data = json.loads(request.body)
+            username_to_delete = data.get("username")
+
+            # Read the JSON file
+            with open(DATA_FILE, "r+") as file:
+                existing_data = json.load(file)
+
+                # Ensure "users" exists and is a list
+                if "users" not in existing_data or not isinstance(existing_data["users"], list):
+                    return JsonResponse({"success": False, "error": "Invalid data format"}, status=400)
+
+                # Filter out the user to delete
+                existing_data["users"] = [user for user in existing_data["users"] if isinstance(user, dict) and user.get("username") != username_to_delete]
+
+                # Write updated data back to the file
+                file.seek(0)
+                json.dump(existing_data, file, indent=4)
+                file.truncate()
+
+            return JsonResponse({"success": True})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False}, status=400)
+
+@csrf_exempt
+def add_account(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            data["lastLogin"] = None  # Set default last login for new users
+            
+            # Load existing data
+            if os.path.exists(DATA_FILE) and os.path.getsize(DATA_FILE) > 0:
+                with open(DATA_FILE, "r+") as file:
+                    try:
+                        existing_data = json.load(file)  # Load full JSON
+                    except json.JSONDecodeError:
+                        existing_data = {}  # If file is corrupted, reset to empty dict
+            else:
+                existing_data = {}  # If file doesn't exist, create empty structure
+            
+            # Ensure "users" key exists
+            if "users" not in existing_data:
+                existing_data["users"] = []
+            
+            # Append new user
+            existing_data["users"].append(data)
+
+            # Save updated data (without overwriting other keys)
+            with open(DATA_FILE, "w") as file:
+                json.dump(existing_data, file, indent=4)
+
+            return JsonResponse({"success": True})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False}, status=400)
+
+
+@csrf_exempt
+def update_account(request):
+    if request.method == "POST":
+        try:
+            # Load request data
+            data = json.loads(request.body)
+
+            # Read existing JSON data
+            with open(DATA_FILE, "r+") as file:
+                existing_data = json.load(file)
+
+                # Ensure "users" exists
+                if "users" not in existing_data or not isinstance(existing_data["users"], list):
+                    return JsonResponse({"success": False, "error": "Invalid data format"}, status=400)
+
+                # Update the user
+                for user in existing_data["users"]:
+                    if isinstance(user, dict) and user.get("username") == data["username"]:
+                        user.update(data)  # Update user info
+
+                # Save the updated data
+                file.seek(0)
+                json.dump(existing_data, file, indent=4)
+                file.truncate()
+
+            return JsonResponse({"success": True})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False}, status=400)
