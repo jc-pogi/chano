@@ -13,13 +13,42 @@ from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_FILE = os.path.join(settings.BASE_DIR, "etms_app", "static", "data.json")
+LOGS_FILE = os.path.join(settings.BASE_DIR, "etms_app", "static", "logs.json")
 
 print("📂 JSON Data File Path:", DATA_FILE)  # Debugging log
+print("📂 Logs File Path:", LOGS_FILE)  # Debugging log
 
-if not os.path.exists(DATA_FILE):
-    print("⚠️ Data file does not exist. Creating a new one.")
-    with open(DATA_FILE, "w") as file:
-        json.dump([], file)
+def create_log_entry(log_type, details):
+    """
+    Create a log entry and save it to logs.json
+    """
+    try:
+        # Ensure logs file exists
+        if not os.path.exists(LOGS_FILE):
+            with open(LOGS_FILE, "w") as file:
+                json.dump([], file)
+
+        # Read existing logs
+        with open(LOGS_FILE, "r") as file:
+            logs = json.load(file)
+
+        # Create new log entry
+        log_entry = {
+            "id": len(logs) + 1,
+            "timestamp": datetime.now().isoformat(),
+            "type": log_type,
+            "details": details
+        }
+
+        # Add new log
+        logs.append(log_entry)
+
+        # Write back to logs file
+        with open(LOGS_FILE, "w") as file:
+            json.dump(logs, file, indent=4)
+
+    except Exception as e:
+        print(f"Error creating log entry: {e}")
 
 # Create your views here.
 @user_required
@@ -37,6 +66,7 @@ def products(request):
         "user_role": user_role,
     }
     return render(request, "products.html", context)
+
 
 @user_required
 def transactions(request):
@@ -77,43 +107,60 @@ def restock(request):
             if not os.path.exists(DATA_FILE):
                 print("⚠️ Data file not found. Creating a new one.")
                 with open(DATA_FILE, "w") as file:
-                    json.dump({"helmets": []}, file)
+                    json.dump({"helmets": [], "logs": []}, file)
 
             with open(DATA_FILE, "r") as file:
                 data = json.load(file)
 
-            # Ensure data has a "helmets" list
+            # Ensure data has "helmets" and "logs" lists
             if "helmets" not in data:
                 data["helmets"] = []
+            if "logs" not in data:
+                data["logs"] = []
 
-            # Merge new items with existing ones
+            # Process each new item
             for new_item in new_items:
-                found = False
-                for existing_item in data["helmets"]:
-                    if (
-                        existing_item["brand"] == new_item["brand"]
-                        and existing_item["model"] == new_item["model"]
-                        and existing_item["size"] == new_item["size"]
-                        and existing_item["color"] == new_item["color"]
-                        and existing_item["helmet_type"] == new_item["helmet_type"]
-                        and existing_item["visor_type"] == new_item["visor_type"]
-                        and existing_item["price"] == new_item["price"]
-                    ):
-                        # ✅ Update quantity instead of adding duplicate
-                        existing_item["quantity"] += new_item["quantity"]
-                        found = True
-                        break
+                # Try to find matching existing product
+                matching_product = next((
+                    helmet for helmet in data["helmets"]
+                    if (helmet["brand"] == new_item["brand"] and
+                        helmet["model"] == new_item["model"] and
+                        helmet["size"] == new_item["size"] and
+                        helmet["color"] == new_item["color"] and
+                        helmet["helmet_type"] == new_item["helmet_type"] and
+                        helmet["visor_type"] == new_item["visor_type"])
+                ), None)
 
-                if not found:
-                    # ✅ Add new item if it doesn't exist
+                if matching_product:
+                    # Update quantity of existing product
+                    old_quantity = matching_product["quantity"]
+                    matching_product["quantity"] += new_item["quantity"]
+                else:
+                    # Add new product if no match found
                     data["helmets"].append(new_item)
+
+                # Create log entry for restock
+                log_entry = {
+                    "type": "Restock",
+                    "brand": new_item["brand"],
+                    "model": new_item["model"],
+                    "color": new_item["color"],
+                    "helmet_type": new_item["helmet_type"],
+                    "visor_type": new_item["visor_type"],
+                    "quantity": new_item["quantity"],
+                    "price": new_item.get("price", "N/A"),
+                    "date": datetime.now().strftime("%Y-%m-%d")
+                }
+                data["logs"].append(log_entry)
 
             # Save updated data
             with open(DATA_FILE, "w") as file:
                 json.dump(data, file, indent=4)
 
             print("✅ Products Restocked Successfully!")
-            return JsonResponse({"message": "Products restocked successfully!"})
+            return JsonResponse({
+                "message": "Products restocked successfully!"
+            })
 
         except Exception as e:
             print("⚠️ Unexpected Error:", str(e))
@@ -140,7 +187,7 @@ def process_transaction(request):
             transaction = json.loads(request.body)
             items = transaction["items"]
 
-            # Update helmet stock
+            # Update helmet stock and create logs
             for transaction_item in items:
                 for helmet in data["helmets"]:
                     if (
@@ -153,6 +200,20 @@ def process_transaction(request):
                     ):
                         if helmet["quantity"] >= transaction_item["quantity"]:
                             helmet["quantity"] -= transaction_item["quantity"]
+                            
+                            # Create log entry for transaction
+                            log_entry = {
+                                "type": "Transaction",
+                                "brand": transaction_item["brand"],
+                                "model": transaction_item["model"],
+                                "color": transaction_item["color"],
+                                "helmet_type": transaction_item["helmet_type"],
+                                "visor_type": transaction_item["visor_type"],
+                                "quantity": transaction_item["quantity"],
+                                "price": transaction_item.get("price", "N/A"),
+                                "date": datetime.now().strftime("%Y-%m-%d")
+                            }
+                            data["logs"].append(log_entry)
                         else:
                             return JsonResponse(
                                 {"success": False, "message": f"Not enough stock for {transaction_item['brand']} {transaction_item['model']}!"}
@@ -252,7 +313,6 @@ def get_products(request):
         return JsonResponse(data.get("helmets", []), safe=False)  # ✅ Return only the helmets list
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-import json
 
 def update_product(request):
     if request.method == "POST":
@@ -276,6 +336,29 @@ def update_product(request):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
 
+# New view to retrieve logs
+def get_logs(request):
+    try:
+        # First, check if logs exist in DATA_FILE (previous implementation)
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
+                logs = data.get("logs", [])
+        
+        # Then, check if logs exist in LOGS_FILE (new implementation)
+        elif os.path.exists(LOGS_FILE):
+            with open(LOGS_FILE, "r") as file:
+                logs = json.load(file)
+        
+        else:
+            return JsonResponse({"logs": []})
+        
+        # Sort logs by date in descending order (most recent first)
+        logs = sorted(logs, key=lambda x: x.get('date', ''), reverse=True)
+        
+        return JsonResponse({"logs": logs})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 def get_user_role(username, password):
     """Fetch user role from JSON database, validating username and password."""
