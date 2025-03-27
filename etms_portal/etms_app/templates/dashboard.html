@@ -3,16 +3,93 @@
 {% load static %}
 
 {% block main_contents %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
 <style>
 body {
-    background: linear-gradient(to right, #d9dde4, #7196b3); /* Subtle gradient */
+    background: linear-gradient(to right, #d9dde4, #7196b3);
 }
 
+.chart-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    flex-grow: 1;
+    max-height: 250px; 
+}
+
+.pie-chart-container {
+    height: 300px;
+}
+
+.pie-chart-container canvas {
+    max-height: 250px;
+    width: 100% !important;
+}
+
+.dashboard-card {
+    min-height: 120px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-card h6 {
+    margin-bottom: 10px;
+    color: #274C77;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center; 
+}
+
+.dashboard-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#productCarousel {
+    max-height: 300px; 
+    overflow: hidden;
+}
+
+#productCarousel .carousel-item {
+    height: 255px; 
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#productCarousel .carousel-item img {
+    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    border-radius: 12px; 
+}
+
+.chart-container h6 {
+    margin-bottom: 10px;
+    color: #274C77; 
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px; 
+    padding-top: 5px;
+}
 </style>
 
-
 <div class="container mt-4">
-    <!-- Introduction Section -->
+    <!-- Introduction Section (Retained) -->
     <div class="row align-items-center">
         <div class="col-md-3">
             <img src="{% static '/db-logo.png' %}" class="rounded float-start" alt="db" height="250px" width="250px">
@@ -28,73 +105,229 @@ body {
         </div>
     </div>
     
-        <!-- Dashboard Section -->
-        <div class="row mt-4">
-            <!-- Text Boxes (Left Section) -->
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Total Products:</h6>
-                            <h3>137</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Low Stock Alert</h6>
-                            <h3>3</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Today's Sales</h6>
-                            <h3>Php 8,000.00</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Top-Selling Product</h6>
-                            <h3>SPYDER</h3>
-                        </div>
-                    </div>
-                    <!-- Recent Transactions Below Today's Sales -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Recent Transactions:</h6>
-                            <p style="font-size: 14px;"><strong>SPYDER FUEL</strong> - PHP 4,000.00</p>
-                            <p style="font-size: 14px;"><strong>SPYDER</strong>- PHP 4,000.00</p>
-                        </div>
-                    </div>
-                    <!-- Low Stock Below Top-Selling Product -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card p-3 shadow-sm h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
-                            <h6>Low Stock:</h6>
-                            <p style="font-size: 14px;"><strong>SEC CYCLONE</strong></p>
-                            <p style="font-size: 14px;"><strong>HNJ TITAN</strong></p>
-                            <p style="font-size: 14px;"><strong>SEC Alloy Top Box</strong></p>
+    <!-- Dashboard Section with Slideshow -->
+    <div class="row mt-4">
+        <!-- Existing Text Boxes (Left Section) -->
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>Total Products:</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 24px; color: #333; font-weight: bold;">360</h4>
                         </div>
                     </div>
                 </div>
-            </div>
-    
-            <!-- Carousel (Slideshow) -->
-            <div class="col-md-6 d-flex align-items-start justify-content-center">
-                <div id="productCarousel" class="carousel slide w-100" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div class="carousel-inner" style="height: 410px; border-radius: 10px;">
-                        <div class="carousel-item active">
-                            <img src="{% static '/p1.jpg' %}" class="d-block w-100 h-100" alt="slideshow 1" style="object-fit: cover;">
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>Products with Low Stock Alert</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 14px; color: #333;">EVO RX5</h4>
+                            <h4 style="font-size: 14px; color: #333;">HNJ Half-Face</h4>
                         </div>
-                        <div class="carousel-item">
-                            <img src="{% static '/p2.jpg' %}" class="d-block w-100 h-100" alt="slideshow 2" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>Today Total Sale</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;">Php 17,499.00</h4>
                         </div>
-                        <div class="carousel-item">
-                            <img src="{% static '/p3.jpg' %}" class="d-block w-100 h-100" alt="slideshow 3" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>Top-Selling Brand</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;">EVO</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>New Products</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 14px; color: #333;">AXXIS Full-Face</h4>
+                            <h4 style="font-size: 14px; color: #333;">EVO NEXUS</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-2 shadow-sm h-100 dashboard-card">
+                        <h6>No. of Helmets Sold Today</h6>
+                        <div class="dashboard-card-content">
+                            <h4 style="font-size: 24px; color: #333; font-weight: bold;">5</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     
+        <!-- Larger Carousel (Slideshow) -->
+        <div class="col-md-4 d-flex align-items-start justify-content-center">
+            <div id="productCarousel" class="carousel slide w-100" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{% static '/p1.jpg' %}" class="d-block w-100 h-100" alt="slideshow 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static '/p2.jpg' %}" class="d-block w-100 h-100" alt="slideshow 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static '/p3.jpg' %}" class="d-block w-100 h-100" alt="slideshow 3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphs Section with Aligned Graphs -->
+    <div class="row mt-4">
+        <!-- Monthly Sales Line Chart -->
+        <div class="col-md-4">
+            <div class="chart-container">
+                <h6>Monthly Sales</h6>
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Product Distribution Pie Chart -->
+        <div class="col-md-4">
+            <div class="chart-container pie-chart-container">
+                <h6>Product Distribution</h6>
+                <canvas id="productDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Stock Levels Bar Chart -->
+        <div class="col-md-4">
+            <div class="chart-container">
+                <h6>Stock Levels</h6>
+                <canvas id="stockLevelsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Monthly Sales Line Chart
+    const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+    new Chart(monthlySalesCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Monthly Sales (PHP)',
+                data: [50000, 65000, 45000, 55000, 68000, 72000],
+                borderColor: 'rgba(39, 76, 119, 0.8)',
+                backgroundColor: 'rgba(39, 76, 119, 0.2)',
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                padding: 0
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    padding: 0
+                },
+                x: {
+                    padding: 0
+                }
+            }
+        }
+    });
+
+    // Product Distribution Pie Chart
+    const productDistributionCtx = document.getElementById('productDistributionChart').getContext('2d');
+    new Chart(productDistributionCtx, {
+        type: 'pie',
+        data: {
+            labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
+            datasets: [{
+                data: [15, 185, 88, 44, 25, 3],
+                backgroundColor: [
+                    'rgba(39, 76, 119, 0.7)',   
+                    'rgba(113, 150, 179, 0.7)', 
+                    'rgba(217, 221, 228, 0.7)', 
+                    'rgba(22, 22, 22, 0.7)',   
+                    'rgba(190, 190, 190, 0.7)' 
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 0
+            },
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: { size: 9 },
+                        padding: 2
+                    }
+                }
+            }
+        }
+    });
+    
+    // Stock Levels Bar Chart
+    const stockLevelsCtx = document.getElementById('stockLevelsChart').getContext('2d');
+    new Chart(stockLevelsCtx, {
+        type: 'bar',
+        data: {
+            labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
+            datasets: [{
+                label: 'Stock Levels',
+                data: [15, 185, 88, 44, 25, 3],
+                backgroundColor: 'rgba(113, 150, 179, 0.7)',
+                borderColor: 'rgba(39, 76, 119, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            layout: {
+                padding: 0
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    padding: 0,
+                    title: {
+                        display: true,
+                        text: 'Quantity',
+                        padding: 0
+                    }
+                },
+                x: {
+                    padding: 0
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                padding: 0
+            }
+        }
+    });
+});
+</script>
 
 {% endblock %}
