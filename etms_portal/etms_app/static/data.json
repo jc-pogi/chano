@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 15,
+            "quantity": 59,
             "price": 3100.0
         },
         {
@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 10,
+            "quantity": 8,
             "price": 4500.0
         },
         {
@@ -27,7 +27,17 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 7,
+            "quantity": 9,
+            "price": 4500.0
+        },
+        {
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "size": "XL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 13,
             "price": 4500.0
         },
         {
@@ -72,356 +82,6 @@
         },
         {
             "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "M",
-            "color": "Black-Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 12,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "L",
-            "color": "Black-Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 2,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "XL",
-            "color": "Black-Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "M",
-            "color": "Black-Mint Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 10,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "L",
-            "color": "Black-Mint Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 2,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "XL",
-            "color": "Black-Mint Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 6,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "M",
-            "color": "Black-Yellow Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 11,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "L",
-            "color": "Black-Yellow Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 10,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO ASSAULT",
-            "size": "XL",
-            "color": "Black-Yellow Green",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "M",
-            "color": "Matte Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "L",
-            "color": "Matte Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 2,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "XL",
-            "color": "Matte Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "M",
-            "color": "White",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 2,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "L",
-            "color": "White",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 3,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "XL",
-            "color": "White",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 6,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "M",
-            "color": "Glossy Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 0,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "L",
-            "color": "Glossy Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 3,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "XL",
-            "color": "Glossy Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "M",
-            "color": "Matte Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "L",
-            "color": "Matte Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "XL",
-            "color": "Matte Black",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 6,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "M",
-            "color": "Magenta",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 9,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "L",
-            "color": "Magenta",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 7,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO MONO COLORS",
-            "size": "XL",
-            "color": "Magenta",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 4200.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO RIOT",
-            "size": "M",
-            "color": "Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 7,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO RIOT",
-            "size": "L",
-            "color": "Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO RIOT",
-            "size": "XL",
-            "color": "Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 3,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO SHINOBI",
-            "size": "M",
-            "color": "White-Violet",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 9,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO SHINOBI",
-            "size": "L",
-            "color": "White-Violet",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 3,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO SHINOBI",
-            "size": "XL",
-            "color": "White-Violet",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO SHINOBI",
-            "size": "M",
-            "color": "White-Violet",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 9,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO TREMOR",
-            "size": "M",
-            "color": "Blue-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO TREMOR",
-            "size": "L",
-            "color": "Blue-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 6,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT PRO TREMOR",
-            "size": "XL",
-            "color": "Blue-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "NEXUS",
-            "size": "M",
-            "color": "Pink-Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 10,
-            "price": 3500.0
-        },
-        {
-            "brand": "EVO",
             "model": "NEXUS",
             "size": "L",
             "color": "Pink-Black",
@@ -467,7 +127,7 @@
             "color": "Red-Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 7,
+            "quantity": 6,
             "price": 3500.0
         },
         {
@@ -477,17 +137,7 @@
             "color": "Matte Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 5,
-            "price": 3400.0
-        },
-        {
-            "brand": "EVO",
-            "model": "RX5",
-            "size": "L",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 6,
+            "quantity": 4,
             "price": 3400.0
         },
         {
@@ -497,7 +147,7 @@
             "color": "Matte Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 2,
+            "quantity": 8,
             "price": 3400.0
         },
         {
@@ -507,7 +157,7 @@
             "color": "Glossy Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 0,
+            "quantity": 69,
             "price": 3400.0
         },
         {
@@ -517,7 +167,7 @@
             "color": "Matte Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 2,
+            "quantity": 7,
             "price": 3400.0
         },
         {
@@ -527,38 +177,385 @@
             "color": "Matte Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
+            "quantity": 5,
+            "price": 3400.0
+        },
+        {
+            "brand": "EVO",
+            "model": "RX5",
+            "size": "M",
+            "color": "Pearl White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 7,
+            "price": 3400.0
+        },
+        {
+            "brand": "EVO",
+            "model": "RX5",
+            "size": "L",
+            "color": "Pearl White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
             "quantity": 6,
             "price": 3400.0
+        },
+        {
+            "brand": "EVO",
+            "model": "RX5",
+            "size": "XL",
+            "color": "Pearl White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 8,
+            "price": 3400.0
+        },
+        {
+            "brand": "EVO",
+            "model": "TRX",
+            "size": "M",
+            "color": "Black-Gray",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 9,
+            "price": 3500.0
+        },
+        {
+            "brand": "EVO",
+            "model": "TRX",
+            "size": "L",
+            "color": "Black-Gray",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 3500.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "L",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 7,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "XL",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "M",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 4,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "L",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 6,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "XL",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 4,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "M",
+            "color": "Glossy Gray",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 7,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "L",
+            "color": "Glossy Gray",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 6,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "size": "L",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 3,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "size": "XL",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 7,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "LIGHTNING",
+            "size": "M",
+            "color": "Pink-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 7,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "LIGHTNING",
+            "size": "L",
+            "color": "Pink-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 9,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "LIGHTNING",
+            "size": "XL",
+            "color": "Pink-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 9,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "RACING",
+            "size": "M",
+            "color": "Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "RACING",
+            "size": "L",
+            "color": "Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 2,
+            "price": 1499.0
+        },
+        {
+            "brand": "SEC",
+            "model": "ELEMENT",
+            "size": "XL",
+            "color": "Black-Red",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "M",
+            "color": "Black-Gray",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "L",
+            "color": "Black-Gray",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "XL",
+            "color": "Black-Gray",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 6,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "M",
+            "color": "Black-White",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 6,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "L",
+            "color": "Black-White",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 4,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "size": "XL",
+            "color": "Black-White",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 8,
+            "price": 3600.0
+        },
+        {
+            "brand": "SEC",
+            "model": "REFLUX",
+            "size": "M",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 9,
+            "price": 2900.0
+        },
+        {
+            "brand": "SEC",
+            "model": "REFLUX",
+            "size": "L",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 2900.0
+        },
+        {
+            "brand": "SEC",
+            "model": "REFLUX",
+            "size": "XL",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 2900.0
+        },
+        {
+            "brand": "SEC",
+            "model": "REFLUX",
+            "size": "M",
+            "color": "Glossy White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 9,
+            "price": 2900.0
+        },
+        {
+            "brand": "SPYDER",
+            "model": "FURY",
+            "size": "XL",
+            "color": "Matte Black",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 4500.0
+        },
+        {
+            "brand": "SPYDER",
+            "model": "FURY",
+            "size": "M",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 7,
+            "price": 4500.0
+        },
+        {
+            "brand": "SPYDER",
+            "model": "FURY",
+            "size": "L",
+            "color": "Matte Black",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 9,
+            "price": 4500.0
+        },
+        {
+            "brand": "SPYDER",
+            "model": "FURY",
+            "size": "XL",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 0,
+            "price": 4500.0
+        },
+        {
+            "brand": "SPYDER",
+            "model": "RADAR",
+            "size": "M",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 43,
+            "price": 3500.0
         }
     ],
     "users": [
         {
             "username": "admin",
-            "password": "admin",
+            "password": "admin123",
             "role": "admin",
-            "status": "Active",
-            "lastLogin": "2025-03-27 12:10:05"
+            "last_login": "2025-03-24T10:30:00"
         },
         {
-            "username": "Saerelety",
-            "password": "1234",
-            "role": "user",
-            "status": "Active",
-            "lastLogin": "2025-03-27 12:09:56"
-        },
-        {
-            "username": "cashier",
+            "username": "cashier1",
             "password": "cashier123",
             "role": "user",
-            "status": "Active",
-            "lastLogin": "2025-03-27 12:09:24"
+            "last_login": "2025-03-23T08:45:00"
+        },
+        {
+            "username": "cashier2",
+            "password": "cashier234",
+            "role": "user",
+            "last_login": "2025-03-23T07:06:00"
         }
     ],
     "logs": [
         {
             "type": "Transaction",
             "brand": "HNJ",
-            "model": "Ewan",
+            "model": "-",
             "color": "Black",
             "helmet_type": "Full Face",
             "visor_type": "Clear",
@@ -569,13 +566,90 @@
         {
             "type": "Restock",
             "brand": "SPYDER",
-            "model": "Ewan",
+            "model": "-",
             "color": "Red",
             "helmet_type": "Modular",
             "visor_type": "Tinted",
             "quantity": 10,
             "price": "Php 4,000",
             "date": "2025-01-01"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Restock",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Restock",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 3400,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 3400,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Restock",
+            "brand": "SEC",
+            "model": "WHIRLWIND",
+            "color": "Black-White",
+            "helmet_type": "Modular",
+            "visor_type": "Double",
+            "quantity": 3,
+            "price": 3600,
+            "date": "2025-03-27"
         }
     ]
 }
