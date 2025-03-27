@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import os
-import datetime
 from datetime import datetime
 
 
