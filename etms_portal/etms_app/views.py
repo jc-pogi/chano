@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .decorators import admin_required, user_required
 from .models import Helmet
-from django.http import HttpResponse
 from django.shortcuts import render,redirect
 import json
 from django.http import JsonResponse
