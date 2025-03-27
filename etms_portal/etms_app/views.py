@@ -267,7 +267,7 @@ def login_view(request):
     request.session.flush()  # Clear session to avoid unwanted persistence
 
     if request.method == "POST":
-        username = request.POST.get("employee_name", "").strip()  # Match form field name
+        username = request.POST.get("employee_name", "").strip()
         password = request.POST.get("password", "").strip()
 
         print(f"🛠️ Debug: Login Attempt - Username: {username}")
@@ -279,10 +279,16 @@ def login_view(request):
 
             for user in users:
                 print(f"Checking user: {user['username']}")  # Debug
+                
                 if user["username"] == username:
                     print(f"✅ Found username: {username}, Checking password...")
 
-                    if user["password"] == password:  # Check password match
+                    # 🚫 Block login if user is inactive
+                    if user["status"] == "Inactive":
+                        print(f"❌ Login Blocked - {username} is Inactive")
+                        return render(request, "login.html", {"error": "Your account is inactive. Contact admin."})
+
+                    if user["password"] == password:  # ⚠️ Hash passwords in production!
                         request.session["username"] = username
                         request.session["role"] = user["role"]
 
@@ -452,21 +458,21 @@ def add_account(request):
 def update_account(request):
     if request.method == "POST":
         try:
-            # Load request data
-            data = json.loads(request.body)
+            data = json.loads(request.body)  # Load request data
 
-            # Read existing JSON data
             with open(DATA_FILE, "r+") as file:
                 existing_data = json.load(file)
 
-                # Ensure "users" exists
                 if "users" not in existing_data or not isinstance(existing_data["users"], list):
                     return JsonResponse({"success": False, "error": "Invalid data format"}, status=400)
 
                 # Update the user
                 for user in existing_data["users"]:
                     if isinstance(user, dict) and user.get("username") == data["username"]:
-                        user.update(data)  # Update user info
+                        # ✅ Only update fields that exist in `data`
+                        user["status"] = data.get("status", user["status"])
+                        user["password"] = data.get("password", user["password"])  # Only update if provided
+                        user["role"] = data.get("role", user["role"])  # 🔥 Fix: Prevent role from changing unexpectedly
 
                 # Save the updated data
                 file.seek(0)
