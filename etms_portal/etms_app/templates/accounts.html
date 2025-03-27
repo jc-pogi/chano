@@ -269,7 +269,7 @@ function openAccountModal(index = null) {
     if (index !== null) {
         document.getElementById("editIndex").value = index;
         document.getElementById("username").value = accounts[index].username;
-        document.getElementById("password").value = accounts[index].password;
+        document.getElementById("password").value = "********";  // Placeholder
         document.getElementById("role").value = accounts[index].role;
         document.getElementById("status").value = accounts[index].status;
     } else {
@@ -278,6 +278,7 @@ function openAccountModal(index = null) {
     }
     document.getElementById("accountModal").style.display = "block";
 }
+
 
     function closeAccountModal() {
         document.getElementById("accountModal").style.display = "none";
@@ -290,7 +291,15 @@ function openAccountModal(index = null) {
         const role = document.getElementById("role").value;
         const status = document.getElementById("status").value;
     
-        const payload = { username, password, role, status };
+        // Keep lastLogin if it's an existing account
+        const lastLogin = (index !== "" ? accounts[index].lastLogin : new Date().toISOString());
+    
+        const payload = { username, role, status, lastLogin };  // Include lastLogin
+    
+        // Only send password if it's not empty or placeholder
+        if (password !== "********" && password !== "") {
+            payload.password = password;
+        }
     
         fetch(index !== "" ? "/update_account/" : "/add_account/", {
             method: "POST",
@@ -312,6 +321,8 @@ function openAccountModal(index = null) {
             }
         });
     }
+    
+    
 
     let deleteIndex = null;
 
