@@ -147,92 +147,66 @@ body {
     background: white;
     z-index: 2;
 }
-#productTable td:nth-child(2), /* Model column */
-    #productTable td:nth-child(4) { /* Color column */
-        font-size: 0.9em; /* Slightly smaller font */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: visible; /* Show full text */
-        text-overflow: clip; /* Disable ellipsis */
-        max-width: 0; /* Allow horizontal expansion */
-    }
 
-    /* Horizontal scrolling for overflow */
-    .table-container {
-        overflow-x: auto;
-    }
+/* Model column specific styling */
+#productTable td:nth-child(2) {
+    font-size: 0.9em;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 150px;
+    max-width: 250px;
+}
 
-    /* Ensure table maintains full width */
-    #productTable {
-        min-width: 100%;
-        width: auto;
-    }
-#productTable td:nth-child(2), /* Model column */
-    #productTable td:nth-child(4) { /* Color column */
-        font-size: 0.9em; /* Slightly smaller font */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Show ellipsis for overflow */
-        max-width: 0; /* Help with ellipsis */
-    }
-
-    /* Tooltip for full text on hover */
-    #productTable td:hover {
-        position: relative;
-    }
-    #productTable td:hover::after {
-        content: attr(data-fulltext);
-        position: absolute;
-        left: 0;
-        top: 100%;
-        background: white;
-        border: 1px solid #ddd;
-        padding: 5px;
-        z-index: 100;
-        width: auto;
-        min-width: 150px;
-        font-size: 1em;
-    }
+/* Horizontal scrolling for overflow */
 .table-container {
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-    }
+    overflow-x: auto;
+}
 
-    /* Table styling - critical fix */
-    #productTable {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed; /* This enforces equal column distribution */
-    }
+/* Ensure table maintains full width */
+#productTable {
+    min-width: 100%;
+    width: auto;
+}
 
-    /* Header row styling */
-    #productTable thead tr {
-        position: sticky;
-        top: 0;
-        background-color: white;
-        z-index: 2;
-        display: table;
-        width: 100%;
-    }
+.table-container {
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
 
-    /* Cell styling - ensures consistent appearance */
-    #productTable th, #productTable td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+/* Table styling - critical fix */
+#productTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
-    /* Force equal width columns */
-    #productTable colgroup {
-        display: table-column-group;
-    }
-    #productTable col {
-        display: table-column;
-        width: 12.5%; /* 100% / 8 columns */
-    }
+/* Header row styling */
+#productTable thead tr {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    display: table;
+    width: 100%;
+}
+
+/* Cell styling - ensures consistent appearance */
+#productTable th, #productTable td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Force equal width columns */
+#productTable colgroup {
+    display: table-column-group;
+}
+#productTable col {
+    display: table-column;
+    width: 12.5%; /* 100% / 8 columns */
+}
 
 /* Ensure the table expands fully */
 .product-table {
@@ -241,45 +215,45 @@ body {
 }
 
 #productTable tbody {
-        display: block;
-        overflow-y: auto;
-    }
+    display: block;
+    overflow-y: auto;
+}
 
-    #productTable tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        height: auto !important;
-    }
+#productTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: auto !important;
+}
 
-    #productTable tbody tr[style*="display: none"] {
-        display: none !important;
-        height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        border: none !important;
-    }
+#productTable tbody tr[style*="display: none"] {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
 
-    /* Ensure table cells maintain consistent height */
-    #productTable td {
-        height: auto;
-        padding: 10px;
-    }
+/* Ensure table cells maintain consistent height */
+#productTable td {
+    height: auto;
+    padding: 10px;
+}
 
-    /* Make the table header sticky */
-    #productTable thead {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        position: sticky;
-        top: 0;
-    }
+/* Make the table header sticky */
+#productTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    position: sticky;
+    top: 0;
+}
 
 /* Apply styles ONLY inside products.html */
 .custom-product-table {
-    height: 90vh !important; /* Allow it to grow dynamically */
+    height: 90vh !important;
     max-height: 90vh !important;
-    overflow-y: auto !important; /* Ensure scrolling */
+    overflow-y: auto !important;
     display: flex;
     flex-direction: column;
 }
@@ -335,18 +309,18 @@ body {
 /* Style text fields */
 .form-control {
     border: 1px solid #000000;
-    border-radius: 6px; /* Rounded corners */
+    border-radius: 6px;
     transition: all 0.3s ease-in-out;
 }
 
 .form-control:focus {
-    border-color: #000000; /* Darker blue on focus */
+    border-color: #000000;
 }
 
 /* Style checkboxes */
 .form-check-input {
     border: 2px solid #000000;
-    border-radius: 4px; /* Slight rounding */
+    border-radius: 4px;
 }
 
 .form-check-input:checked {
@@ -357,13 +331,13 @@ body {
 /* Main Content */
 .main-content {
     flex-grow: 1;
-    max-height: calc(100vh - 60px); /* Adjust header height accordingly */
+    max-height: calc(100vh - 60px);
     overflow-y: auto;
 }
 
 /* Fix Product Catalog Size */
 .product-catalog {
-    max-height: 90vh; /* Allow it to grow dynamically */
+    max-height: 90vh;
     overflow-y: auto;
 }
 

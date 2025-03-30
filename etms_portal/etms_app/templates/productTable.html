@@ -1,44 +1,56 @@
 <style>
     .table-container {
-        max-height: 400px; /* Set maximum height */
-        overflow-y: auto;  /* Enable vertical scrolling when needed */
+        max-height: 90vh;
+        overflow-y: auto;
         border: 1px solid #ddd;
     }
 
-    /* Table Styling */
-    table {
+    #productTable {
         width: 100%;
         border-collapse: collapse;
+        table-layout: fixed;
     }
 
-    /* Sticky Header */
-    thead {
+    #productTable thead tr {
         position: sticky;
         top: 0;
-        background-color: rgb(255, 255, 255);
+        background-color: white;
         z-index: 2;
     }
 
-    th, td {
-        padding: 10px;
+    #productTable th, #productTable td {
+        padding: 8px 12px;
         text-align: center;
         border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+        line-height: 1.4;
     }
 
-    /* Alternating row colors */
-    tbody tr:nth-child(even) {
+    /* Column widths */
+    #productTable th:nth-child(1), #productTable td:nth-child(1) { width: 12%; } /* Brand */
+    #productTable th:nth-child(2), #productTable td:nth-child(2) { 
+        width: 22%; 
+        text-align: left; 
+        white-space: normal; 
+        word-wrap: break-word;
+    } /* Model */
+    #productTable th:nth-child(3), #productTable td:nth-child(3) { width: 8%; } /* Size */
+    #productTable th:nth-child(4), #productTable td:nth-child(4) { width: 10%; } /* Color */
+    #productTable th:nth-child(5), #productTable td:nth-child(5) { width: 12%; } /* Helmet Type */
+    #productTable th:nth-child(6), #productTable td:nth-child(6) { width: 12%; } /* Visor Type */
+    #productTable th:nth-child(7), #productTable td:nth-child(7) { width: 12%; } /* Price */
+    #productTable th:nth-child(8), #productTable td:nth-child(8) { width: 12%; } /* Quantity */
+
+    #productTable tbody tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
-    tbody tr:hover {
-        background-color: #c9c7c7;
+    #productTable tbody tr:hover {
+        background-color: #e9e9e9;
     }
-    
 </style>
 
-<!-- Table Container -->
-
-<div class="table-container custom-product-table">
+<div class="table-container">
     <table id="productTable">
         <thead>
             <tr>
@@ -53,38 +65,12 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Table data will be inserted dynamically -->
+            <!-- Data will be loaded dynamically -->
         </tbody>
     </table>
 </div>
 
 <script>
-function highlightLowQuantity() {
-    let rows = document.querySelectorAll("#productTable tbody tr");
-
-    rows.forEach(row => {
-        let quantityCell = row.querySelector(".quantity");
-        if (quantityCell) {
-            let quantity = parseInt(quantityCell.textContent.trim()) || 0;
-            
-            // Set color based on stock level
-            if (quantity === 0) {
-                quantityCell.style.color = "red";  // Out of stock
-                quantityCell.style.fontWeight = "bold";
-            } else if (quantity > 0 && quantity <= 5) {
-                quantityCell.style.color = "orange";  // Low stock warning
-                quantityCell.style.fontWeight = "bold";
-            } else {
-                quantityCell.style.color = "black"; // Normal stock
-                quantityCell.style.fontWeight = "normal";
-            }
-        }
-    });
-
-    console.log("✅ highlightLowQuantity() applied to table!");
-}
-
-// ✅ Now put `loadProducts()` BELOW this function
 function loadProducts() {
     fetch("/get-products/")
     .then(response => response.json())
@@ -92,15 +78,10 @@ function loadProducts() {
         let tableBody = document.querySelector("#productTable tbody");
         tableBody.innerHTML = "";
 
-        if (!data || !Array.isArray(data)) {
-            console.error("❌ Invalid JSON format:", data);
-            return;
-        }
-
         data.forEach(item => {
             let row = `<tr 
-                data-category="helmet"
                 data-brand="${item.brand.toLowerCase()}"
+                data-model="${item.model.toLowerCase()}"
                 data-color="${item.color ? item.color.toLowerCase() : ''}"
                 data-size="${item.size.toLowerCase()}"
                 data-type="${item.helmet_type.toLowerCase()}"
@@ -113,105 +94,60 @@ function loadProducts() {
                 <td>${item.color || "N/A"}</td>
                 <td>${item.helmet_type}</td>
                 <td>${item.visor_type}</td>
-                <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
+                <td>₱${item.price?.toLocaleString() || "N/A"}</td>
                 <td class="quantity">${item.quantity}</td>
             </tr>`;
             tableBody.innerHTML += row;
         });
 
-        console.log("✅ Products Loaded Successfully!");
-
-        let categoryElement = document.getElementById("category");
-        if (typeof applyFilters === "function" && categoryElement) {
-            console.log("✅ applyFilters() is running inside productTable.html...");
-            applyFilters();
-        } else {
-            console.warn("⚠️ Skipping applyFilters() because filters are missing.");
-        }
-
-        if (typeof highlightLowQuantity === "function") {
-            console.log("🔍 Running highlightLowQuantity() after loading products...");
-            highlightLowQuantity();
-        } else {
-            console.warn("⚠️ highlightLowQuantity() function is missing!");
-        }
+        highlightLowQuantity();
     })
-    .catch(error => console.error("❌ Error loading products:", error));
+    .catch(error => console.error("Error loading products:", error));
 }
 
-// ✅ Load products when the page loads
-window.onload = function() {
-    loadProducts();
-};
-
-
-        // Load products on page load
-        window.onload = loadProducts;
-
-        setInterval(loadProducts, 5000); // Reloads every 5 seconds
-
-
-
-    function applyFilters() {
-    let category = document.getElementById("category").value.toLowerCase();
-    let brandModel = document.getElementById("brand").value.toLowerCase();
-    let color = document.getElementById("color").value.toLowerCase();
-    let inStock = document.getElementById("inStock").checked;
-
-    let minPrice = document.getElementById("minPrice").value.trim();
-    let maxPrice = document.getElementById("maxPrice").value.trim();
-    minPrice = minPrice !== "" ? parseFloat(minPrice) : Number.NEGATIVE_INFINITY;
-    maxPrice = maxPrice !== "" ? parseFloat(maxPrice) : Number.POSITIVE_INFINITY;
-
-    let selectedSizes = Array.from(document.querySelectorAll("input[id^='size']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
-    let selectedTypes = Array.from(document.querySelectorAll("input[id^='type']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
-    let selectedVisors = Array.from(document.querySelectorAll("input[id^='visor']:checked"))
-        .map(checkbox => checkbox.value.toLowerCase());
-
-    let rows = document.querySelectorAll("#productTable tbody tr");
+function applyFilters() {
+    const brandModelInput = document.getElementById("brand").value.toLowerCase();
+    const rows = document.querySelectorAll("#productTable tbody tr");
 
     rows.forEach(row => {
-        let rowCategory = row.getAttribute("data-category") || "";
-        let rowBrand = row.getAttribute("data-brand") || "";
-        let rowModel = row.cells[1].textContent.toLowerCase(); // Get model from the second column
-        let rowColor = row.getAttribute("data-color") || "";
-        let rowSize = row.getAttribute("data-size") || "";
-        let rowType = row.getAttribute("data-type") || "";
-        let rowVisor = row.getAttribute("data-visor") || "";
-        let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
-        let rowInStock = row.getAttribute("data-in-stock") === "true";
-
-        let matchesCategory = category === "" || rowCategory.includes(category);
-        let matchesBrandModel = brandModel === "" || rowBrand.includes(brandModel) || rowModel.includes(brandModel);
-        let matchesColor = color === "" || rowColor.includes(color);
-        let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
-        let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
-        let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
-        let matchesPrice = (minPrice <= rowPrice) && (rowPrice <= maxPrice);
-        let matchesInStock = !inStock || rowInStock;
-
-        let showRow = matchesCategory && matchesBrandModel && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
-
-        // Use 'visibility' instead of 'display' to avoid layout shifts
-        if (showRow) {
+        const brand = row.getAttribute("data-brand");
+        const model = row.getAttribute("data-model");
+        const matchesBrand = brand.includes(brandModelInput);
+        const matchesModel = model.includes(brandModelInput);
+        
+        // Show row if either brand or model matches
+        if (brandModelInput === "" || matchesBrand || matchesModel) {
             row.style.display = "";
-            row.style.visibility = "visible";
         } else {
-            row.style.display = "none"; // We still need display:none to remove from layout flow
-            row.style.visibility = "collapse"; // This helps with table layout
+            row.style.display = "none";
         }
     });
-
-    console.log("Filters applied:", { brandModel, selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
 }
 
-// ✅ Confirm applyFilters() is defined
-console.log("✅ applyFilters() function is now defined in productTable.html.");
+function highlightLowQuantity() {
+    document.querySelectorAll("#productTable .quantity").forEach(cell => {
+        const quantity = parseInt(cell.textContent);
+        if (quantity === 0) {
+            cell.style.color = "red";
+            cell.style.fontWeight = "bold";
+        } else if (quantity <= 5) {
+            cell.style.color = "orange";
+            cell.style.fontWeight = "bold";
+        } else {
+            cell.style.color = "black";
+            cell.style.fontWeight = "normal";
+        }
+    });
+}
 
-
-
+// Initialize and set up event listeners
+window.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+    
+    // Ensure the brand input triggers filtering
+    const brandInput = document.getElementById("brand");
+    if (brandInput) {
+        brandInput.addEventListener("input", applyFilters);
+    }
+});
 </script>
