@@ -152,9 +152,9 @@ window.onload = function() {
 
 
 
-        function applyFilters() {
+    function applyFilters() {
     let category = document.getElementById("category").value.toLowerCase();
-    let brand = document.getElementById("brand").value.toLowerCase();
+    let brandModel = document.getElementById("brand").value.toLowerCase();
     let color = document.getElementById("color").value.toLowerCase();
     let inStock = document.getElementById("inStock").checked;
 
@@ -177,6 +177,7 @@ window.onload = function() {
     rows.forEach(row => {
         let rowCategory = row.getAttribute("data-category") || "";
         let rowBrand = row.getAttribute("data-brand") || "";
+        let rowModel = row.cells[1].textContent.toLowerCase(); // Get model from the second column
         let rowColor = row.getAttribute("data-color") || "";
         let rowSize = row.getAttribute("data-size") || "";
         let rowType = row.getAttribute("data-type") || "";
@@ -184,10 +185,8 @@ window.onload = function() {
         let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
         let rowInStock = row.getAttribute("data-in-stock") === "true";
 
-        console.log(`Row: Size=${rowSize}, Type=${rowType}, Visor=${rowVisor}, Price=${rowPrice}`);
-
         let matchesCategory = category === "" || rowCategory.includes(category);
-        let matchesBrand = brand === "" || rowBrand.includes(brand);
+        let matchesBrandModel = brandModel === "" || rowBrand.includes(brandModel) || rowModel.includes(brandModel);
         let matchesColor = color === "" || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
         let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
@@ -195,12 +194,19 @@ window.onload = function() {
         let matchesPrice = (minPrice <= rowPrice) && (rowPrice <= maxPrice);
         let matchesInStock = !inStock || rowInStock;
 
-        let showRow = matchesCategory && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
+        let showRow = matchesCategory && matchesBrandModel && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
 
-        row.style.display = showRow ? "" : "none";
+        // Use 'visibility' instead of 'display' to avoid layout shifts
+        if (showRow) {
+            row.style.display = "";
+            row.style.visibility = "visible";
+        } else {
+            row.style.display = "none"; // We still need display:none to remove from layout flow
+            row.style.visibility = "collapse"; // This helps with table layout
+        }
     });
 
-    console.log("Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
+    console.log("Filters applied:", { brandModel, selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
 }
 
 // ✅ Confirm applyFilters() is defined

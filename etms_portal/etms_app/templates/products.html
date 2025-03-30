@@ -37,10 +37,10 @@
                                 <input type="number" id="maxPrice" placeholder="₱ MAX" class="form-control ms-2" style="width: 90px;" oninput="applyFilters()">
                             </div>
                         </div>
-                        <!-- Brand -->
+                        <!-- Brand/Model -->
                         <div class="mb-3">
-                            <label for="brand">Brand:</label>
-                            <input type="text" id="brand" class="form-control" placeholder="Type brand" oninput="applyFilters()">
+                            <label for="brand">Brand/Model:</label>
+                            <input type="text" id="brand" class="form-control" placeholder="Type brand or model" oninput="applyFilters()">
                         </div>
 
                         <!-- Color -->
@@ -115,7 +115,7 @@
                     <div class="card-header" style="background-color: #274C77; color: white; border-radius: 8px 8px 0 0;">
                         <h5 class="card-title mb-0">Product Catalog</h5>
                     </div>
-                    <div class="card-body p-0 overflow-auto">
+                    <div class="product-table" style="max-height: 90vh; overflow-y: auto;">
                         <div class="product-table">
                             {% include "productTable.html" %}
                         </div>
@@ -147,12 +147,133 @@ body {
     background: white;
     z-index: 2;
 }
+#productTable td:nth-child(2), /* Model column */
+    #productTable td:nth-child(4) { /* Color column */
+        font-size: 0.9em; /* Slightly smaller font */
+        white-space: nowrap; /* Prevent wrapping */
+        overflow: visible; /* Show full text */
+        text-overflow: clip; /* Disable ellipsis */
+        max-width: 0; /* Allow horizontal expansion */
+    }
+
+    /* Horizontal scrolling for overflow */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    /* Ensure table maintains full width */
+    #productTable {
+        min-width: 100%;
+        width: auto;
+    }
+#productTable td:nth-child(2), /* Model column */
+    #productTable td:nth-child(4) { /* Color column */
+        font-size: 0.9em; /* Slightly smaller font */
+        white-space: nowrap; /* Prevent wrapping */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Show ellipsis for overflow */
+        max-width: 0; /* Help with ellipsis */
+    }
+
+    /* Tooltip for full text on hover */
+    #productTable td:hover {
+        position: relative;
+    }
+    #productTable td:hover::after {
+        content: attr(data-fulltext);
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background: white;
+        border: 1px solid #ddd;
+        padding: 5px;
+        z-index: 100;
+        width: auto;
+        min-width: 150px;
+        font-size: 1em;
+    }
+.table-container {
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    /* Table styling - critical fix */
+    #productTable {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* This enforces equal column distribution */
+    }
+
+    /* Header row styling */
+    #productTable thead tr {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 2;
+        display: table;
+        width: 100%;
+    }
+
+    /* Cell styling - ensures consistent appearance */
+    #productTable th, #productTable td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Force equal width columns */
+    #productTable colgroup {
+        display: table-column-group;
+    }
+    #productTable col {
+        display: table-column;
+        width: 12.5%; /* 100% / 8 columns */
+    }
 
 /* Ensure the table expands fully */
 .product-table {
     width: 100%;
     overflow-x: auto;
 }
+
+#productTable tbody {
+        display: block;
+        overflow-y: auto;
+    }
+
+    #productTable tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        height: auto !important;
+    }
+
+    #productTable tbody tr[style*="display: none"] {
+        display: none !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+
+    /* Ensure table cells maintain consistent height */
+    #productTable td {
+        height: auto;
+        padding: 10px;
+    }
+
+    /* Make the table header sticky */
+    #productTable thead {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        position: sticky;
+        top: 0;
+    }
 
 /* Apply styles ONLY inside products.html */
 .custom-product-table {
@@ -269,26 +390,26 @@ function loadProducts() {
         }
 
         data.forEach(item => {
-            let row = `<tr 
-                data-category="helmet"
-                data-brand="${item.brand.toLowerCase()}"
-                data-color="${item.color ? item.color.toLowerCase() : ''}"
-                data-size="${item.size.toLowerCase()}"
-                data-type="${item.helmet_type.toLowerCase()}"
-                data-visor="${item.visor_type.toLowerCase()}"
-                data-price="${item.price || 0}"
-                data-in-stock="${item.quantity > 0}">
-                <td>${item.brand}</td>
-                <td>${item.model}</td>
-                <td>${item.size}</td>
-                <td>${item.color || "N/A"}</td>
-                <td>${item.helmet_type}</td>
-                <td>${item.visor_type}</td>
-                <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
-                <td class="quantity">${item.quantity}</td>
-            </tr>`;
-            tableBody.innerHTML += row;
-        });
+    let row = `<tr 
+        data-category="helmet"
+        data-brand="${item.brand.toLowerCase()}"
+        data-color="${item.color ? item.color.toLowerCase() : ''}"
+        data-size="${item.size.toLowerCase()}"
+        data-type="${item.helmet_type.toLowerCase()}"
+        data-visor="${item.visor_type.toLowerCase()}"
+        data-price="${item.price || 0}"
+        data-in-stock="${item.quantity > 0}">
+        <td>${item.brand}</td>
+        <td data-fulltext="${item.model}">${item.model}</td>
+        <td>${item.size}</td>
+        <td data-fulltext="${item.color || 'N/A'}">${item.color || "N/A"}</td>
+        <td>${item.helmet_type}</td>
+        <td>${item.visor_type}</td>
+        <td>₱${item.price ? item.price.toLocaleString() : "N/A"}</td>
+        <td class="quantity">${item.quantity}</td>
+    </tr>`;
+    tableBody.innerHTML += row;
+});
 
         console.log("✅ Products Loaded Successfully!");
         
@@ -324,7 +445,7 @@ function applyFilters() {
     }
 
     let category = getElementValue("category");
-    let brand = getElementValue("brand");
+    let brandModel = getElementValue("brand");
     let color = getElementValue("color");
     let minPrice = getElementValue("minPrice", "0");
     let maxPrice = getElementValue("maxPrice", "9999999");
@@ -350,6 +471,7 @@ function applyFilters() {
     rows.forEach(row => {
         let rowCategory = row.getAttribute("data-category") || "";
         let rowBrand = row.getAttribute("data-brand") || "";
+        let rowModel = row.cells[1].textContent.toLowerCase(); // Get model from the second column
         let rowColor = row.getAttribute("data-color") || "";
         let rowSize = row.getAttribute("data-size") || "";
         let rowType = row.getAttribute("data-type") || "";
@@ -358,7 +480,7 @@ function applyFilters() {
         let rowInStock = row.getAttribute("data-in-stock") === "true";
 
         let matchesCategory = category === "" || rowCategory.includes(category);
-        let matchesBrand = brand === "" || rowBrand.includes(brand);
+        let matchesBrandModel = brandModel === "" || rowBrand.includes(brandModel) || rowModel.includes(brandModel);
         let matchesColor = color === "" || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
         let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
@@ -366,12 +488,24 @@ function applyFilters() {
         let matchesPrice = (parseFloat(minPrice) <= rowPrice) && (rowPrice <= parseFloat(maxPrice));
         let matchesInStock = !inStock || rowInStock;
 
-        let showRow = matchesCategory && matchesBrand && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
+        let showRow = matchesCategory && matchesBrandModel && matchesColor && matchesSize && matchesType && matchesVisor && matchesPrice && matchesInStock;
+
+        if (showRow) {
+            row.style.display = "table-row";
+            row.style.height = "auto";
+        } else {
+            row.style.display = "none";
+            row.style.height = "0";
+        }
 
         row.style.display = showRow ? "" : "none";
     });
 
-    console.log("✅ Filters applied:", { selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
+    setTimeout(() => {
+        table.style.tableLayout = 'fixed';
+    }, 0);
+
+    console.log("✅ Filters applied:", { brandModel, selectedSizes, selectedTypes, selectedVisors, minPrice, maxPrice });
 }
 
 
