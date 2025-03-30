@@ -28,7 +28,10 @@ urlpatterns = [
     path("get-products/", get_products, name="get_products"),
     path("process_transaction/", process_transaction, name="process_transaction"),
     path("revenue/", revenue, name="revenue"),
-    path("accounts/", accounts, name="accounts"),
+    path("accounts/", accounts_view, name="accounts"),
+    path('delete_account/', delete_account, name='delete_account'),
+    path('add_account/', add_account, name='add_account'),
+    path('update_account/', update_account, name='update_account'),
     path("login/", login_view, name="login"),  # Entransactionssure this exists
     path("get-logs/", get_logs, name="get_logs"),
 

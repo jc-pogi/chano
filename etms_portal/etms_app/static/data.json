@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
+            "quantity": 9,
             "price": 4500.0
         },
         {
@@ -27,7 +27,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 9,
+            "quantity": 8,
             "price": 4500.0
         },
         {
@@ -57,7 +57,7 @@
             "color": "Black-Blue",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 15,
+            "quantity": 14,
             "price": 4500.0
         },
         {
@@ -107,7 +107,7 @@
             "color": "Red-Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 9,
+            "quantity": 6,
             "price": 3500.0
         },
         {
@@ -197,7 +197,7 @@
             "color": "Pearl White",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 6,
+            "quantity": 5,
             "price": 3400.0
         },
         {
@@ -534,21 +534,24 @@
     "users": [
         {
             "username": "admin",
-            "password": "admin123",
+            "password": "admin",
             "role": "admin",
-            "last_login": "2025-03-24T10:30:00"
+            "lastLogin": "2025-03-30 14:11:59",
+            "status": "Active"
         },
         {
             "username": "cashier1",
-            "password": "cashier123",
+            "password": "cash",
             "role": "user",
-            "last_login": "2025-03-23T08:45:00"
+            "status": "Active",
+            "lastLogin": "2025-03-27 14:08:56"
         },
         {
             "username": "cashier2",
-            "password": "cashier234",
+            "password": "cashier123",
             "role": "user",
-            "last_login": "2025-03-23T07:06:00"
+            "status": "Active",
+            "lastLogin": "2025-03-27 14:12:55"
         }
     ],
     "logs": [
@@ -609,14 +612,14 @@
         },
         {
             "type": "Transaction",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
-            "price": 4500,
-            "date": "2025-03-27"
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-03-28"
         },
         {
             "type": "Transaction",
@@ -628,6 +631,66 @@
             "quantity": 8,
             "price": 4500,
             "date": "2025-03-27"
+
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "color": "Black-Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-03-28"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "NEXUS",
+            "color": "Red-Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 3,
+            "price": 3500,
+            "date": "2025-03-28"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "RX5",
+            "color": "Pearl White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 3400,
+            "date": "2025-03-28"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 8,
+            "price": 4500,
+            "date": "2025-03-27",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-28"
+        },
+        {
+            "type": "Restock",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": null,
+            "date": "2025-03-28"
+
         }
     ]
 }
