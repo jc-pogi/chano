@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 59,
+            "quantity": 15,
             "price": 3100.0
         },
         {
@@ -37,7 +37,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 13,
+            "quantity": 5,
             "price": 4500.0
         },
         {
@@ -47,7 +47,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 12,
+            "quantity": 4,
             "price": 4500.0
         },
         {
@@ -575,50 +575,6 @@
             "date": "2025-01-01"
         },
         {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-27"
-        },
-        {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "RX5",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-27"
-        },
-        {
-            "type": "Restock",
-            "brand": "HNJ",
-            "model": "-",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-27"
-        },
-        {
-            "type": "Restock",
-            "brand": "HNJ",
-            "model": "-",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-27"
-        },
-        {
             "type": "Transaction",
             "brand": "EVO",
             "model": "RX5",
@@ -649,6 +605,28 @@
             "visor_type": "Double",
             "quantity": 3,
             "price": 3600,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 8,
+            "price": 4500,
+            "date": "2025-03-27"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 8,
+            "price": 4500,
             "date": "2025-03-27"
         }
     ]
