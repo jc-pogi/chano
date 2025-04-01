@@ -74,6 +74,7 @@
                             </div>
                         </div>
 
+                        <!-- Helmet Type -->
                         <div class="mb-3">
                             <label>Helmet Type:</label>  
                             <div class="form-check">
@@ -83,6 +84,10 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Full-Face" id="typeFull" onchange="applyFilters()">
                                 <label class="form-check-label" for="typeFull">Full-Face</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Modular" id="typeMod" onchange="applyFilters()">
+                                <label class="form-check-label" for="typeMod">Modular</label>
                             </div>       
                         </div>
                         
@@ -90,11 +95,11 @@
                         <div class="mb-3">
                             <label>Visor Type:</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="visorSingle" value="Single" onchange="applyFilters()">
+                                <input class="form-check-input" type="checkbox" value="Single" id="visorSingle"  onchange="applyFilters()">
                                 <label class="form-check-label" for="visorSingle">Single</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="visorDouble" value="Double" onchange="applyFilters()">
+                                <input class="form-check-input" type="checkbox" value="Double" id="visorDouble" onchange="applyFilters()">
                                 <label class="form-check-label" for="visorDouble">Double</label>
                             </div>
                         </div>
@@ -448,7 +453,7 @@ function applyFilters() {
         let rowModel = row.cells[1].textContent.toLowerCase(); // Get model from the second column
         let rowColor = row.getAttribute("data-color") || "";
         let rowSize = row.getAttribute("data-size") || "";
-        let rowType = row.getAttribute("data-type") || "";
+        let rowType = (row.getAttribute("data-type") || "").toLowerCase();
         let rowVisor = row.getAttribute("data-visor") || "";
         let rowPrice = parseFloat(row.getAttribute("data-price")) || 0;
         let rowInStock = row.getAttribute("data-in-stock") === "true";
@@ -457,7 +462,7 @@ function applyFilters() {
         let matchesBrandModel = brandModel === "" || rowBrand.includes(brandModel) || rowModel.includes(brandModel);
         let matchesColor = color === "" || rowColor.includes(color);
         let matchesSize = selectedSizes.length === 0 || selectedSizes.includes(rowSize);
-        let matchesType = selectedTypes.length === 0 || selectedTypes.includes(rowType);
+        let matchesType = selectedTypes.length === 0 || selectedTypes.some(type => rowType.includes(type.toLowerCase()));
         let matchesVisor = selectedVisors.length === 0 || selectedVisors.includes(rowVisor);
         let matchesPrice = (parseFloat(minPrice) <= rowPrice) && (rowPrice <= parseFloat(maxPrice));
         let matchesInStock = !inStock || rowInStock;
