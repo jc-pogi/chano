@@ -8,7 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import os
 from datetime import datetime
-
+from etms_app.models import Helmet 
+from django.db.models import Sum
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,8 +54,34 @@ def create_log_entry(log_type, details):
 # Create your views here.
 @user_required
 def dashboard(request):
-    user_role = request.session.get("role", "user")  # Default to "user" if missing
-    return render(request, "dashboard.html", context={"current_tab": "dashboard", "user_role": user_role})
+    user_role = request.session.get("role", "user")
+    
+    # Try counting from the database first
+    helmets_db = Helmet.objects.all()
+    db_count = helmets_db.count()
+    
+    # Also try getting count from JSON file
+    json_count = 0
+    try:
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
+                helmets_json = data.get("helmets", [])
+                json_count = len(helmets_json)
+    except Exception as e:
+        print(f"Error loading JSON data: {e}")
+    
+    # Use whichever count is higher
+    total_products = max(db_count, json_count)
+    print(f"DEBUG: DB Count: {db_count}, JSON Count: {json_count}, Using: {total_products}")
+    
+    context = {
+        "current_tab": "dashboard", 
+        "user_role": user_role,
+        "total_products": total_products
+    }
+    
+    return render(request, "dashboard.html", context)
 
 @user_required
 def products(request):
@@ -386,6 +413,119 @@ def index(request):
         role = get_user_role(request.user.username)
         return render(request, "index.html", {"user_role": role})
     return render(request, "index.html", {"user_role": None})
+
+def get_product_count(request):
+    # Focus on JSON file since that's where your data might be
+    json_sum = 0
+    try:
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, "r") as file:
+                print(f"Reading from {DATA_FILE}")
+                data = json.load(file)
+                helmets_json = data.get("helmets", [])
+                
+                if not helmets_json:
+                    print("No helmets found in JSON data")
+                else:
+                    print(f"Found {len(helmets_json)} helmets in JSON")
+                
+                # Sum up quantities - handle possible missing quantity field
+                for helmet in helmets_json:
+                    qty = helmet.get("quantity", 0)
+                    if isinstance(qty, (int, float)):
+                        json_sum += qty
+                    else:
+                        print(f"Invalid quantity value: {qty} for helmet {helmet.get('brand', 'N/A')} {helmet.get('model', 'N/A')}")
+                
+                print(f"Total quantity from JSON: {json_sum}")
+        else:
+            print(f"Data file not found: {DATA_FILE}")
+    except Exception as e:
+        print(f"Error processing JSON data: {e}")
+    
+    return JsonResponse({'count': json_sum})
+
+def get_top_selling_brand(request):
+    try:
+        # Dictionary to store total units sold for each brand
+        brand_totals = {}
+        
+        # Check for logs in DATA_FILE
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
+                logs = data.get("logs", [])
+                
+                # Process only Transaction type logs
+                for log in logs:
+                    if log.get("type") == "Transaction":
+                        brand = log.get("brand")
+                        quantity = log.get("quantity", 0)
+                        
+                        # Convert quantity to integer if it's a string
+                        if isinstance(quantity, str):
+                            try:
+                                quantity = int(quantity)
+                            except ValueError:
+                                quantity = 0
+                        
+                        # Add to brand total
+                        if brand in brand_totals:
+                            brand_totals[brand] += quantity
+                        else:
+                            brand_totals[brand] = quantity
+        
+        # Also check LOGS_FILE if it exists separately
+        if os.path.exists(LOGS_FILE):
+            with open(LOGS_FILE, "r") as file:
+                logs = json.load(file)
+                
+                # Handle if logs file contains a list
+                if isinstance(logs, list):
+                    for log in logs:
+                        if log.get("type") == "Transaction":
+                            brand = log.get("brand")
+                            quantity = log.get("quantity", 0)
+                            
+                            # Convert quantity to integer if it's a string
+                            if isinstance(quantity, str):
+                                try:
+                                    quantity = int(quantity)
+                                except ValueError:
+                                    quantity = 0
+                            
+                            # Add to brand total
+                            if brand in brand_totals:
+                                brand_totals[brand] += quantity
+                            else:
+                                brand_totals[brand] = quantity
+        
+        # Debug: Print all brand totals to see what data we're working with
+        print("Brand sales totals:", brand_totals)
+        
+        # Find the brand with the highest total
+        top_brand = "No sales data"
+        max_quantity = 0
+        
+        for brand, total in brand_totals.items():
+            if total > max_quantity:
+                max_quantity = total
+                top_brand = brand
+        
+        # If we have no data, default to what's shown in the chart
+        if not brand_totals:
+            # From your chart data, it appears EVO has the highest count
+            top_brand = "EVO"
+        
+        return JsonResponse({"top_brand": top_brand, "units_sold": max_quantity})
+    
+    except Exception as e:
+        # Log the full error for debugging
+        import traceback
+        print(f"Error in get_top_selling_brand: {e}")
+        traceback.print_exc()
+        
+      
 
 @csrf_exempt
 def delete_account(request):

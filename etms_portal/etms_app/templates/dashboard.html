@@ -114,7 +114,7 @@ body {
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
                         <h6>Total Products:</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 24px; color: #333; font-weight: bold;">360</h4>
+                            <h4 style="font-size: 24px; color: #333; font-weight: bold;"><span id="product-count">Loading...</span></h4>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ body {
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
                         <h6>Top-Selling Brand</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 22px; color: #333; font-weight: bold;">EVO</h4>
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;"><span id="top-brand">Loading...</span></h4>
                         </div>
                     </div>
                 </div>
@@ -210,124 +210,172 @@ body {
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Monthly Sales Line Chart
-    const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
-    new Chart(monthlySalesCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Monthly Sales (PHP)',
-                data: [50000, 65000, 45000, 55000, 68000, 72000],
-                borderColor: 'rgba(39, 76, 119, 0.8)',
-                backgroundColor: 'rgba(39, 76, 119, 0.2)',
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            layout: {
-                padding: {
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Monthly Sales Line Chart
+        const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+        new Chart(monthlySalesCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Monthly Sales (PHP)',
+                    data: [50000, 65000, 45000, 55000, 68000, 72000],
+                    borderColor: 'rgba(39, 76, 119, 0.8)',
+                    backgroundColor: 'rgba(39, 76, 119, 0.2)',
+                    tension: 0.3
+                }]
             },
-            plugins: {
-                legend: { display: false },
-                padding: 0
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
                     padding: 0
                 },
-                x: {
-                    padding: 0
-                }
-            }
-        }
-    });
-
-    // Product Distribution Pie Chart
-    const productDistributionCtx = document.getElementById('productDistributionChart').getContext('2d');
-    new Chart(productDistributionCtx, {
-        type: 'pie',
-        data: {
-            labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
-            datasets: [{
-                data: [15, 185, 88, 44, 25, 3],
-                backgroundColor: [
-                    'rgba(39, 76, 119, 0.7)',   
-                    'rgba(113, 150, 179, 0.7)', 
-                    'rgba(217, 221, 228, 0.7)', 
-                    'rgba(22, 22, 22, 0.7)',   
-                    'rgba(190, 190, 190, 0.7)' 
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: 0
-            },
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        font: { size: 9 },
-                        padding: 2
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        padding: 0
+                    },
+                    x: {
+                        padding: 0
                     }
                 }
             }
-        }
-    });
+        });
     
-    // Stock Levels Bar Chart
-    const stockLevelsCtx = document.getElementById('stockLevelsChart').getContext('2d');
-    new Chart(stockLevelsCtx, {
-        type: 'bar',
-        data: {
-            labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
-            datasets: [{
-                label: 'Stock Levels',
-                data: [15, 185, 88, 44, 25, 3],
-                backgroundColor: 'rgba(113, 150, 179, 0.7)',
-                borderColor: 'rgba(39, 76, 119, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            layout: {
-                padding: 0
+        // Product Distribution Pie Chart
+        const productDistributionCtx = document.getElementById('productDistributionChart').getContext('2d');
+        new Chart(productDistributionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
+                datasets: [{
+                    data: [15, 185, 88, 44, 25, 3],
+                    backgroundColor: [
+                        'rgba(39, 76, 119, 0.7)',   
+                        'rgba(113, 150, 179, 0.7)', 
+                        'rgba(217, 221, 228, 0.7)', 
+                        'rgba(22, 22, 22, 0.7)',   
+                        'rgba(190, 190, 190, 0.7)' 
+                    ]
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    padding: 0,
-                    title: {
-                        display: true,
-                        text: 'Quantity',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: 0
+                },
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: { size: 9 },
+                            padding: 2
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Stock Levels Bar Chart
+        const stockLevelsCtx = document.getElementById('stockLevelsChart').getContext('2d');
+        new Chart(stockLevelsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['AXXIS','EVO', 'HNJ', 'SEC','SPYDER', 'Others'],
+                datasets: [{
+                    label: 'Stock Levels',
+                    data: [15, 185, 88, 44, 25, 3],
+                    backgroundColor: 'rgba(113, 150, 179, 0.7)',
+                    borderColor: 'rgba(39, 76, 119, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                layout: {
+                    padding: 0
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        padding: 0,
+                        title: {
+                            display: true,
+                            text: 'Quantity',
+                            padding: 0
+                        }
+                    },
+                    x: {
                         padding: 0
                     }
                 },
-                x: {
+                plugins: {
+                    legend: { display: false },
                     padding: 0
                 }
-            },
-            plugins: {
-                legend: { display: false },
-                padding: 0
             }
-        }
+        });
+        
+        // Function to fetch product count
+    function fetchProductCount() {
+    console.log("Fetching product count...");
+    fetch('/api/product-count/')
+        .then(response => {
+            console.log("API response received:", response);
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data received:", data);
+            document.getElementById('product-count').textContent = data.count;
+        })
+        .catch(error => {
+            console.error('Error fetching product count:', error);
+            document.getElementById('product-count').textContent = 'Error';
+        });
+}
+        
+        // Call the function when the page loads
+        fetchProductCount();
+        
+        // Optional: Refresh the count periodically
+        setInterval(fetchProductCount, 60000); // Updates every minute
     });
-});
-</script>
+
+    function fetchTopSellingBrand() {
+    fetch('/api/top-selling-brand/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Top brand data received:", data);
+            document.getElementById('top-brand').textContent = data.top_brand || 'EVO';
+        })
+        .catch(error => {
+            console.error('Error fetching top brand:', error);
+            document.getElementById('top-brand').textContent = 'EVO';  // Default fallback
+        });
+}
+
+// Call the function when the page loads
+fetchTopSellingBrand();
+
+// Refresh periodically along with other data
+setInterval(fetchTopSellingBrand, 60000); // Updates every minute
+    </script>
 
 {% endblock %}

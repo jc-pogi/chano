@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 15,
+            "quantity": 10,
             "price": 3100.0
         },
         {
@@ -28,16 +28,6 @@
             "helmet_type": "Full-Face",
             "visor_type": "Single",
             "quantity": 8,
-            "price": 4500.0
-        },
-        {
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "size": "XL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 5,
             "price": 4500.0
         },
         {
@@ -257,7 +247,7 @@
             "color": "Glossy Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 4,
+            "quantity": 0,
             "price": 1499.0
         },
         {
@@ -277,7 +267,7 @@
             "color": "Glossy Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 4,
+            "quantity": 0,
             "price": 1499.0
         },
         {
@@ -304,6 +294,16 @@
             "brand": "HNJ",
             "model": "902 PRO VENOM",
             "size": "L",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 0,
+            "price": 1499.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "size": "XL",
             "color": "Red-Pink",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
@@ -312,16 +312,6 @@
         },
         {
             "brand": "HNJ",
-            "model": "902 PRO VENOM",
-            "size": "XL",
-            "color": "Red-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 7,
-            "price": 1499.0
-        },
-        {
-            "brand": "HNJ",
             "model": "LIGHTNING",
             "size": "M",
             "color": "Pink-Gray",
@@ -347,7 +337,7 @@
             "color": "Pink-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 9,
+            "quantity": 0,
             "price": 1499.0
         },
         {
@@ -367,7 +357,7 @@
             "color": "Red",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 2,
+            "quantity": 0,
             "price": 1499.0
         },
         {
@@ -536,7 +526,7 @@
             "username": "admin",
             "password": "admin",
             "role": "admin",
-            "lastLogin": "2025-03-30 14:11:59",
+            "lastLogin": "2025-04-08 13:31:21",
             "status": "Active"
         },
         {
@@ -631,7 +621,6 @@
             "quantity": 8,
             "price": 4500,
             "date": "2025-03-27"
-
         },
         {
             "type": "Transaction",
@@ -673,9 +662,6 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
-            "price": 4500,
-            "date": "2025-03-27",
             "quantity": 1,
             "price": null,
             "date": "2025-03-28"
@@ -690,7 +676,94 @@
             "quantity": 1,
             "price": null,
             "date": "2025-03-28"
-
+        },
+        {
+            "type": "Transaction",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 4,
+            "price": 3100,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "LIGHTNING",
+            "color": "Pink-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 9,
+            "price": 1499,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "RACING",
+            "color": "Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 2,
+            "price": 1499,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 4,
+            "price": 1499,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 4,
+            "price": 1499,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 3,
+            "price": 1499,
+            "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 4,
+            "price": 1499,
+            "date": "2025-03-31"
         }
     ]
 }
