@@ -26,8 +26,8 @@ button {
     transition: all 0.3s ease-in-out;
     color: white !important;
     background-color: #274C77 !important;
-    width: 100%; /* Full width on small screens */
-    max-width: 350px; /* Limit width on larger screens */
+    width: 100%; 
+    max-width: 350px; 
 }
 
 button:hover {
@@ -458,27 +458,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    function selectRow(row) {
-        if (selectedRow) {
-            selectedRow.classList.remove("table-active");
-        }
-        selectedRow = row;
-        selectedRow.classList.add("table-active");
-    
-        // Populate form fields with selected row data
-        document.getElementById("brand").value = row.cells[0].innerText;
-        document.getElementById("model").value = row.cells[1].innerText;
-        document.getElementById("size").value = row.cells[2].innerText;
-        document.getElementById("color").value = row.cells[3].innerText;
-        document.getElementById("helmet_type").value = row.cells[4].innerText;
-        document.getElementById("visor_type").value = row.cells[5].innerText;
-    
-        // Convert price to integer (removes commas and symbols)
-        let priceText = row.cells[6].innerText.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-        document.getElementById("price").value = parseInt(priceText) || 0; // Convert to integer, default to 0 if NaN
-    
-        document.getElementById("quantity").value = row.cells[7].innerText;
+function selectRow(row) {
+    if (selectedRow) {
+        selectedRow.classList.remove("table-active");
     }
+    selectedRow = row;
+    selectedRow.classList.add("table-active");
+
+    // Populate form fields with selected row data
+    document.getElementById("brand").value = row.cells[0].innerText;
+    document.getElementById("model").value = row.cells[1].innerText;
+    document.getElementById("size").value = row.cells[2].innerText;
+    document.getElementById("color").value = row.cells[3].innerText;
+    document.getElementById("helmet_type").value = row.cells[4].innerText;
+    document.getElementById("visor_type").value = row.cells[5].innerText;
+
+    // Properly handle price formatting - remove peso sign and commas
+    let priceText = row.cells[6].innerText.replace(/[₱,\s]/g, "");
+    document.getElementById("price").value = parseFloat(priceText) || 0;
+
+    document.getElementById("quantity").value = row.cells[7].innerText;
+}
     
 
 
@@ -550,7 +550,7 @@ function confirmRestock() {
             color: row.cells[3].textContent.trim(),
             helmet_type: row.cells[4].textContent.trim(),
             visor_type: row.cells[5].textContent.trim(),
-            price: parseFloat(row.cells[6].textContent.trim()), // Ensure numeric
+            price: parseFloat(row.cells[6].textContent.replace(/[₱,\s]/g, "")), // Ensure numeric
             quantity: parseInt(row.cells[7].textContent.trim())  // Ensure numeric
         };
         items.push(item);

@@ -196,7 +196,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eceaea; color: rgb(33, 33, 33);">Cancel</button>
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #6c757d; color: white;">Cancel</button>
                 <button type="button" class="btn" onclick="confirmPayment()" style="background-color: #274C77; color: white;">Confirm Payment</button>
             </div>
         </div>
@@ -233,7 +233,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #eceaea; color: rgb(33, 33, 33);">Close</button>
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #6c757d; color: white;">Close</button>
                 <button type="button" class="btn" id="printReceiptBtn" style="background-color: #274C77; color: white;">
                     <i class="fas fa-print me-1"></i> Print Receipt
                 </button>
@@ -279,9 +279,11 @@
     let quantity = parseInt(document.getElementById("quantity").value);
     let brand = document.getElementById("brand").value;
     let model = document.getElementById("model").value;
+    let size = document.getElementById("size").value;
+    let color = document.getElementById("color").value;
     let price = document.getElementById("price").value.trim();
     
-    // 🛠️ Fix: Remove peso sign and commas before converting to a number
+    // Remove peso sign and commas before converting to a number
     price = parseFloat(price.replace(/[₱,]/g, '')) || 0;
 
     if (!quantity || quantity <= 0) {
@@ -297,39 +299,50 @@
     productRows.forEach(row => {
         let rowBrand = row.cells[0]?.textContent.trim() || "";
         let rowModel = row.cells[1]?.textContent.trim() || "";
+        let rowSize = row.cells[2]?.textContent.trim() || "";
+        let rowColor = row.cells[3]?.textContent.trim() || "";
 
-        if (rowBrand === brand && rowModel === model) {
+        // Check match on brand, model, AND size to precisely identify the item
+        if (rowBrand === brand && rowModel === model && rowSize === size && rowColor === color) {
             productFound = true;
             let stockCell = row.cells[row.cells.length - 1]; // Get stock from last column
             availableStock = parseInt(stockCell.textContent.trim()) || 0;
         }
     });
 
-    // 🚀 Prevent adding items if stock is zero
-    if (!productFound || availableStock <= 0) {
-        showToast(`Cannot add ${brand} ${model}. No stock available.`, "danger");
+    // Prevent adding items if stock is zero
+    if (!productFound) {
+        showToast(`Cannot add ${brand} ${model} ${size}. Product not found in inventory.`, "danger");
+        return;
+    }
+    
+    if (availableStock <= 0) {
+        showToast(`Cannot add ${brand} ${model} ${size}. No stock available.`, "danger");
         return;
     }
 
-    // 🚀 Prevent exceeding available stock
+    // Prevent exceeding available stock
     if (quantity > availableStock) {
-        showToast(`Not enough stock available. Only ${availableStock} items in stock.`, "danger");
+        showToast(`Not enough stock available. Only ${availableStock} ${brand} ${model} ${size} in stock.`, "danger");
         return;
     }
 
-    // Check if item is already in transaction table
+    // Check if identical item (same brand, model, size AND color) is already in transaction table
     let currentQuantity = 0;
     let transactionRows = document.querySelectorAll("#addedItemsTable tbody tr");
     transactionRows.forEach(row => {
         let rowBrand = row.cells[0]?.textContent.trim() || "";
         let rowModel = row.cells[1]?.textContent.trim() || "";
+        let rowSize = row.cells[2]?.textContent.trim() || "";
+        let rowColor = row.cells[3]?.textContent.trim() || "";
 
-        if (rowBrand === brand && rowModel === model) {
+        // Match on all identifying attributes
+        if (rowBrand === brand && rowModel === model && rowSize === size && rowColor === color) {
             currentQuantity += parseInt(row.cells[7].textContent.trim()) || 0;
         }
     });
 
-    // 🚀 Prevent exceeding total stock (existing + new)
+    // Prevent exceeding total stock (existing + new)
     if ((currentQuantity + quantity) > availableStock) {
         showToast(`Cannot add ${quantity} more items. You already have ${currentQuantity} in your transaction. Only ${availableStock} available in stock.`, "danger");
         return;
@@ -343,7 +356,7 @@
     fields.forEach(field => {
         let cell = newRow.insertCell();
         
-        // 🛠️ Fix: Ensure price is formatted correctly before inserting into table
+        // Ensure price is formatted correctly before inserting into table
         if (field === "price") {
             let priceText = document.getElementById("price").value.trim();
             priceText = parseFloat(priceText.replace(/[₱,]/g, '')) || 0;
@@ -362,9 +375,8 @@
     // Update summary after adding an item
     updateSummary();
 
-    showToast(`Added ${quantity} ${brand} ${model} to transaction.`, "success");
+    showToast(`Added ${quantity} ${brand} ${model} ${size} to transaction.`, "success");
 }
-
     
     function selectRow(row) {
         if (selectedRow) {
@@ -397,6 +409,8 @@
     function voidTransaction() {
         document.getElementById("addedItemsTable").getElementsByTagName("tbody")[0].innerHTML = "";
         selectedRow = null;
+
+        updateSummary();
     }
 
     function clearFields() {
@@ -406,7 +420,6 @@
     function updateSummary() {
     let totalItems = 0;
     let totalAmount = 0;
-
     // Select all rows in the table body
     document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
         const quantity = parseInt(row.querySelector("td:nth-child(8)")?.textContent) || 0;
@@ -425,7 +438,6 @@
     // 🛠️ Format total amount with commas and Peso sign
     document.getElementById("totalAmountDisplay").textContent = `₱${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
-
 
 
     function updatePaymentModal() {
@@ -464,68 +476,69 @@
     }
 
     function confirmPayment() {
-        let totalPrice = parseFloat(document.getElementById("totalAmount").innerText.replace(/[^0-9.]/g, ""));
-        let cash = parseFloat(document.getElementById("cashAmount").value);
-    
-        if (isNaN(cash) || cash < totalPrice) {
-            alert("Cash amount must be equal to or greater than the total amount.");
+    let totalPrice = parseFloat(document.getElementById("totalAmount").innerText.replace(/[^0-9.]/g, ""));
+    let cash = parseFloat(document.getElementById("cashAmount").value);
+
+    if (isNaN(cash) || cash < totalPrice) {
+        alert("Cash amount must be equal to or greater than the total amount.");
+        return;
+    }
+
+    let change = cash - totalPrice;
+    let items = [];
+
+    document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
+        let item = {
+            brand: row.cells[0].innerText,
+            model: row.cells[1].innerText,
+            size: row.cells[2].innerText,
+            color: row.cells[3].innerText,
+            helmet_type: row.cells[4].innerText,
+            visor_type: row.cells[5].innerText,
+            price: parseFloat(row.cells[6].innerText.replace(/[^0-9.]/g, "")),
+            quantity: parseInt(row.cells[7].innerText),
+        };
+        items.push(item);
+    });
+
+    let transactionData = {
+        total_amount: totalPrice,
+        cash: cash,
+        change: change,
+        items: items
+    };
+
+    console.log("📤 Sending Transaction Data:", JSON.stringify(transactionData, null, 2));
+
+    fetch("/process_transaction/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify(transactionData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error("🚨 Transaction failed:", data.message);
+            alert("Error: " + data.message);
             return;
         }
-    
-        let change = cash - totalPrice;
-        let items = [];
-    
-        document.querySelectorAll("#addedItemsTable tbody tr").forEach(row => {
-            let item = {
-                brand: row.cells[0].innerText,
-                model: row.cells[1].innerText,
-                size: row.cells[2].innerText,
-                color: row.cells[3].innerText,
-                helmet_type: row.cells[4].innerText,
-                visor_type: row.cells[5].innerText,
-                price: parseFloat(row.cells[6].innerText.replace(/[^0-9.]/g, "")),
-                quantity: parseInt(row.cells[7].innerText),
-            };
-            items.push(item);
-        });
-    
-        let transactionData = {
-            total_amount: totalPrice,
+
+        window.receiptData = {
+            transactionDate: document.getElementById("transactionDate").innerText,
+            totalPrice: totalPrice,
             cash: cash,
             change: change,
             items: items
         };
-    
-        console.log("📤 Sending Transaction Data:", JSON.stringify(transactionData, null, 2));
-    
-        fetch("/process_transaction/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken()
-            },
-            body: JSON.stringify(transactionData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("✅ Server Response:", JSON.stringify(data, null, 2));
-            if (!data.success) {
-                console.error("🚨 Transaction failed:", data.message);
-                alert("Error: " + data.message);
-                return;
-            }
-    
-            window.receiptData = {
-                transactionDate: document.getElementById("transactionDate").innerText,
-                totalPrice: totalPrice,
-                cash: cash,
-                change: change,
-                items: items
-            };
-    
-            document.getElementById("receiptTotal").innerText = `PHP ${totalPrice.toFixed(2)}`;
-            document.getElementById("receiptCash").innerText = `PHP ${cash.toFixed(2)}`;
-            document.getElementById("receiptChange").innerText = `PHP ${change.toFixed(2)}`;
+
+        // Format amounts with comma separators
+        document.getElementById("receiptTotal").innerText = `PHP ${totalPrice.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById("receiptCash").innerText = `PHP ${cash.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById("receiptChange").innerText = `PHP ${change.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
     
             // 🚀 Ensure `paymentModal` is hidden correctly
             let paymentModalElement = document.getElementById("paymentModal");
@@ -818,28 +831,28 @@ function getCSRFToken() {
                 <div>`;
     
                     items.forEach(item => {
-        const price = parseFloat(item.price);
-        const quantity = item.quantity;
-        const itemTotal = price * quantity;
-        
-        receiptContent += `
-                    <div class="item">
-                        <div>${item.brand} ${item.model}</div>
-                        <div class="item-detail">
-                            <span>${quantity} x PHP ${price.toFixed(2)}</span>
-                            <span>PHP ${itemTotal.toFixed(2)}</span>
-                        </div>
-                    </div>`;
-    });
+    const price = parseFloat(item.price);
+    const quantity = item.quantity;
+    const itemTotal = price * quantity;
+    
+    receiptContent += `
+        <div class="item">
+            <div>${item.brand} ${item.model}</div>
+            <div class="item-detail">
+                <span>${quantity} x PHP ${price.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>PHP ${itemTotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            </div>
+        </div>`;
+});
 
     receiptContent += `
                 </div>
                 <div class="divider"></div>
                 <div class="amounts">
-                    <div class="total-line">TOTAL: PHP ${totalPrice.toFixed(2)}</div>
-                    <div>CASH: PHP ${cash.toFixed(2)}</div>
-                    <div>CHANGE: PHP ${change.toFixed(2)}</div>
-                </div>
+    <div class="total-line">TOTAL: PHP ${totalPrice.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+    <div>CASH: PHP ${cash.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+    <div>CHANGE: PHP ${change.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+</div>
                 <div class="divider"></div>
                 <div class="footer">
                     <p>Thank you for shopping with us!</p>

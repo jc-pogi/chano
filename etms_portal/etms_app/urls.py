@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import *
 from .views import restock
+from . import views
 
 urlpatterns = [
     path("", login_view, name="login"),
@@ -34,7 +35,8 @@ urlpatterns = [
     path('update_account/', update_account, name='update_account'),
     path("login/", login_view, name="login"),  # Entransactionssure this exists
     path("get-logs/", get_logs, name="get_logs"),
-
+    path('api/product-count/', views.get_product_count, name='product_count'),
+    path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
 ]
 
 
