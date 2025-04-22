@@ -247,7 +247,7 @@
         rows.forEach(row => {
             let logType = row.cells[0].innerText;
             let dateText = row.cells[6].innerText;
-            let logDate = new Date(dateText);
+            let logDate = new Date(row.cells[6].getAttribute("data-date"));
             let showRow = false;
 
             if (typeFilter === "all" || logType === typeFilter) {
@@ -304,6 +304,16 @@
 
             data.logs.forEach(log => {
                 const row = document.createElement("tr");
+
+                const originalDate = log.date;
+                const displayDate = (() => {
+                    const d = new Date(originalDate);
+                    const month = d.toLocaleString("en-US", { month: "long" });
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const year = d.getFullYear();
+                    return `${month}-${day}-${year}`;
+                })();
+
                 row.innerHTML = `
                     <td>${log.type}</td>
                     <td>${log.brand || 'N/A'}</td>
@@ -311,7 +321,7 @@
                     <td>${log.color || 'N/A'}</td>
                     <td>${log.quantity || 'N/A'}</td>
                     <td>Php ${log.price || 'N/A'}</td>
-                    <td>${log.date || 'N/A'}</td>
+                    <td data-date="${originalDate}">${displayDate}</td>
                 `;
                 logTableBody.appendChild(row);
             });
@@ -322,6 +332,7 @@
             console.error("Error fetching logs:", error);
         });
     }
+
 </script>
 
 {% endblock %}
