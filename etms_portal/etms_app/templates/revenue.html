@@ -320,7 +320,11 @@
                     <td>${log.model || 'N/A'}</td>
                     <td>${log.color || 'N/A'}</td>
                     <td>${log.quantity || 'N/A'}</td>
-                    <td>Php ${log.price || 'N/A'}</td>
+                    <td>${
+                        typeof log.price === 'number' && !isNaN(log.price)
+                            ? `₱ ${log.price.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                            : '₱ 0.00'
+                    }</td>
                     <td data-date="${originalDate}">${displayDate}</td>
                 `;
                 logTableBody.appendChild(row);
