@@ -1,0 +1,56 @@
+letters = 'abcdefghijklmnopqrstuvwxyz'
+
+def encrypt(plaintext, key):
+    result = ''
+    for ch in plaintext:
+        if ch.lower() in letters:
+            index = letters.find(ch.lower())
+            new_index = (index + key) % 26
+            if ch.isupper():
+                result += letters[new_index].upper()
+            else:
+                result += letters[new_index]
+        else:
+            result += ch
+    return result
+
+def decrypt(ciphertext, key):
+    result = ''
+    for ch in ciphertext:
+        if ch.lower() in letters:
+            index = letters.find(ch.lower())
+            new_index = (index - key) % 26
+            if ch.isupper():
+                result += letters[new_index].upper()
+            else:
+                result += letters[new_index]
+        else:
+            result += ch
+    return result
+
+# Main program
+print("Select an operation")
+print("1 - Encrypt")
+print("2 - Decrypt")
+user_input = input("Enter 1 or 2: ")
+
+if user_input == '1':
+    key = int(input("Enter the key: "))
+    text = input("Enter the plaintext: ")
+    encrypted = encrypt(text, key)
+    with open('msg.txt', 'w') as f:
+        f.write(encrypted)
+    print("Encrypted message saved to msg.txt")
+
+elif user_input == '2':
+    key = int(input("Enter the key: "))
+    try:
+        with open('msg.txt', 'r') as f:
+            ciphertext = f.read()
+        decrypted = decrypt(ciphertext, key)
+        print("Decrypted message:")
+        print(decrypted)
+    except FileNotFoundError:
+        print("msg.txt not found. Please encrypt a message first.")
+else:
+    print("Invalid option. Please enter 1 or 2.")

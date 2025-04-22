@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 9,
+            "quantity": 8,
             "price": 4500.0
         },
         {
@@ -526,7 +526,7 @@
             "username": "admin",
             "password": "admin",
             "role": "admin",
-            "lastLogin": "2025-04-08 13:31:21",
+            "lastLogin": "2025-04-08 15:01:16",
             "status": "Active"
         },
         {
@@ -534,14 +534,14 @@
             "password": "cash",
             "role": "user",
             "status": "Active",
-            "lastLogin": "2025-03-27 14:08:56"
+            "lastLogin": "2025-04-08 14:57:14"
         },
         {
             "username": "cashier2",
-            "password": "cashier123",
             "role": "user",
             "status": "Active",
-            "lastLogin": "2025-03-27 14:12:55"
+            "lastLogin": "2025-04-08 15:01:08",
+            "password": "cash2"
         }
     ],
     "logs": [
@@ -764,6 +764,17 @@
             "quantity": 4,
             "price": 1499,
             "date": "2025-03-31"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-08"
         }
     ]
 }
