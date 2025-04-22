@@ -296,32 +296,53 @@
     });
 
     function fetchLogs() {
-        fetch("/get-logs/")
-        .then(response => response.json())
-        .then(data => {
-            const logTableBody = document.querySelector("#logTable tbody");
-            logTableBody.innerHTML = ""; // Clear existing rows
+    fetch("/get-logs/")
+    .then(response => response.json())
+    .then(data => {
+        const logTableBody = document.querySelector("#logTable tbody");
+        logTableBody.innerHTML = ""; // Clear existing rows
 
-            data.logs.forEach(log => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${log.type}</td>
-                    <td>${log.brand || 'N/A'}</td>
-                    <td>${log.model || 'N/A'}</td>
-                    <td>${log.color || 'N/A'}</td>
-                    <td>${log.quantity || 'N/A'}</td>
-                    <td>Php ${log.price || 'N/A'}</td>
-                    <td>${log.date || 'N/A'}</td>
-                `;
-                logTableBody.appendChild(row);
-            });
-
-            filterLogs(); // Apply existing filters after loading
-        })
-        .catch(error => {
-            console.error("Error fetching logs:", error);
+        // Add an index to each log entry to preserve original order for same-day entries
+        data.logs.forEach((log, index) => {
+            log.originalIndex = index;
         });
-    }
+
+        // Sort logs by date in descending order (newest first)
+        // For logs with the same date, use the original index (assuming newer entries are at the end)
+        data.logs.sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            
+            // Primary sort by date (descending)
+            if (dateB - dateA !== 0) {
+                return dateB - dateA;
+            }
+            
+            // Secondary sort by original index (descending) 
+            // This assumes newer entries are at the end of the array
+            return b.originalIndex - a.originalIndex;
+        });
+
+        data.logs.forEach(log => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${log.type}</td>
+                <td>${log.brand || 'N/A'}</td>
+                <td>${log.model || 'N/A'}</td>
+                <td>${log.color || 'N/A'}</td>
+                <td>${log.quantity || 'N/A'}</td>
+                <td>Php ${log.price || 'N/A'}</td>
+                <td>${log.date || 'N/A'}</td>
+            `;
+            logTableBody.appendChild(row);
+        });
+
+        filterLogs(); // Apply existing filters after loading
+    })
+    .catch(error => {
+        console.error("Error fetching logs:", error);
+    });
+}
 </script>
 
 {% endblock %}
