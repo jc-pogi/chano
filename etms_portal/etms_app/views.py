@@ -10,6 +10,7 @@ import os
 from datetime import datetime
 from etms_app.models import Helmet 
 from django.db.models import Sum
+from datetime import datetime, timedelta
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -625,3 +626,118 @@ def update_account(request):
             return JsonResponse({"success": False, "error": str(e)}, status=500)
 
     return JsonResponse({"success": False}, status=400)
+
+@csrf_exempt
+def get_total_stocks(request):
+    """Return sum of all product quantities from JSON data"""
+    try:
+        with open(DATA_FILE, 'r') as file:
+            data = json.load(file)
+            helmets = data.get('helmets', [])
+            total_stocks = sum(h.get('quantity', 0) for h in helmets)
+            return JsonResponse({'total_stocks': total_stocks})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def get_low_stock(request):
+    """Return products with quantity <= 5 (max 3 items)"""
+    try:
+        with open(DATA_FILE, 'r') as file:
+            data = json.load(file)
+            helmets = data.get('helmets', [])
+            low_stock = sorted(
+                [h for h in helmets if h.get('quantity', 0) <= 5],
+                key=lambda x: x.get('quantity', 0)  # Sort by quantity (lowest first)
+            )
+            return JsonResponse({
+                'low_stock_items': low_stock  # Return all low stock items
+            })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def get_today_sales(request):
+    """Calculate total sales for today"""
+    try:
+        today = datetime.now().strftime('%Y-%m-%d')
+        total = 0.0  # Initialize as float
+        
+        with open(DATA_FILE, 'r') as file:
+            data = json.load(file)
+            logs = data.get('logs', [])
+            
+            for log in logs:
+                if log.get('type') == 'Transaction' and log.get('date') == today:
+                    price = log.get('price', 0)
+                    quantity = log.get('quantity', 1)
+                    
+                    # Ensure price is numeric
+                    if isinstance(price, str):
+                        # Remove currency symbols and commas
+                        price = float(price.replace('₱', '').replace('Php', '').replace(',', '').strip())
+                    
+                    total += float(price) * int(quantity)
+        
+        return JsonResponse({'total_sales': round(total, 2)})  # Ensure 2 decimal places
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def get_top_accessory(request):
+    """Return the single top selling accessory from JSON data"""
+    try:
+        with open(DATA_FILE, 'r') as file:
+            data = json.load(file)
+            logs = data.get('logs', [])
+            
+            # Filter accessory transactions - adjust this logic as needed
+            accessory_transactions = [
+                log for log in logs 
+                if log.get('type') == 'Transaction' 
+                and log.get('helmet_type') == 'Accessory'  # Or your accessory identifier
+            ]
+            
+            # Count sales by accessory
+            accessory_counts = {}
+            for transaction in accessory_transactions:
+                name = f"{transaction['brand']} {transaction['model']}"
+                accessory_counts[name] = accessory_counts.get(name, 0) + transaction['quantity']
+            
+            # Get single top accessory
+            top_accessory = max(
+                accessory_counts.items(),
+                key=lambda x: x[1],
+                default=None
+            )
+            
+            if top_accessory:
+                return JsonResponse({
+                    'top_accessory': {
+                        'name': top_accessory[0],
+                        'count': top_accessory[1]
+                    }
+                })
+            return JsonResponse({'top_accessory': None})
+            
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def get_helmets_sold_today(request):
+    """Count total helmets sold today"""
+    try:
+        today = datetime.now().strftime('%Y-%m-%d')
+        total = 0
+        
+        with open(DATA_FILE, 'r') as file:
+            data = json.load(file)
+            logs = data.get('logs', [])
+            
+            for log in logs:
+                if log.get('type') == 'Transaction' and log.get('date') == today:
+                    total += log.get('quantity', 1)
+        
+        return JsonResponse({'count': total})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

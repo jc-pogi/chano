@@ -37,6 +37,12 @@ urlpatterns = [
     path("get-logs/", get_logs, name="get_logs"),
     path('api/product-count/', views.get_product_count, name='product_count'),
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
+    path('api/total-stocks/', views.get_total_stocks, name='total_stocks'),
+    path('api/low-stock/', views.get_low_stock, name='low_stock'),
+    path('api/today-sales/', views.get_today_sales, name='today_sales'),
+    path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
+    path('api/top-accessory/', views.get_top_accessory, name='top_accessory'),
+    path('api/helmets-sold-today/', views.get_helmets_sold_today, name='helmets_sold_today'),
 ]
 
 

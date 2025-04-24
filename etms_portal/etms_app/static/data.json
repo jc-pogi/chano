@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
+            "quantity": 7,
             "price": 4500.0
         },
         {
@@ -87,7 +87,7 @@
             "color": "Pink-Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 10,
+            "quantity": 9,
             "price": 3500.0
         },
         {
@@ -467,7 +467,7 @@
             "color": "Glossy White",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 9,
+            "quantity": 8,
             "price": 2900.0
         },
         {
@@ -517,7 +517,7 @@
             "color": "White",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 43,
+            "quantity": 42,
             "price": 3500.0
         }
     ],
@@ -819,6 +819,50 @@
             "quantity": 1,
             "price": 3100,
             "date": "2025-04-22"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-25"
+        },
+        {
+            "type": "Transaction",
+            "brand": "SEC",
+            "model": "REFLUX",
+            "color": "Glossy White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 2900,
+            "date": "2025-04-25"
+        },
+        {
+            "type": "Transaction",
+            "brand": "SPYDER",
+            "model": "RADAR",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3500,
+            "date": "2025-04-25"
+        },
+        {
+            "type": "Transaction",
+            "brand": "EVO",
+            "model": "NEXUS",
+            "color": "Pink-Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 3500,
+            "date": "2025-04-25"
         }
     ]
 }
