@@ -37,173 +37,112 @@
                     <input type="date" id="dateFilter" class="form-control w-auto">
                 </div>
             </div>
-        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+        <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
             
             <div class="table-container">
             <table class="table table-hover" id="logTable">
                 <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 2;">
                     <tr>
                         <th scope="col">Type</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">Items</th>
+                        <th scope="col">Total Qty</th>
+                        <th scope="col">Total Amount</th>
                         <th scope="col">Date</th>
+                        <th scope="col">Details</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>HNJ</td>
-                        <td>Ewan</td>
-                        <td>Black</td>
-                        <td>10</td>
-                        <td>Php 999</td>
-                        <td>2025-01-01</td>
-                    </tr>
-
-                    <tr>
-                        <td>Transaction</td>
-                        <td>EVO</td>
-                        <td>GT PRO</td>
-                        <td>Black</td>
-                        <td>10</td>
-                        <td>Php 999</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Restock</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Restock</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Restock</td>
-                        <td>EVO</td>
-                        <td>GT PRO</td>
-                        <td>Black</td>
-                        <td>10</td>
-                        <td>Php 999</td>
-                        <td>2025-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>RADAR</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-03</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>FURY</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-02-03</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-01-06</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>REBOOT 2</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-02-06</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>FURY</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-02-09</td>
-                    </tr>
-                    <tr>
-                        <td>Restock</td>
-                        <td>EVO</td>
-                        <td>GT PRO</td>
-                        <td>Black</td>
-                        <td>10</td>
-                        <td>Php 999</td>
-                        <td>2025-02-09</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>FUEL</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-03-18</td>
-                    </tr>
-                    <tr>
-                        <td>Transaction</td>
-                        <td>SPYDER</td>
-                        <td>Ewan</td>
-                        <td>Red</td>
-                        <td>10</td>
-                        <td>Php 4,000</td>
-                        <td>2025-03-18</td>
-                    </tr>
+                    <!-- Sample data will be replaced by JavaScript -->
                 </tbody>                
             </table>
         </div>
     </div>
 </div>
 </div>
+</div>
+
+<!-- Transaction Details Modal -->
+<div class="modal fade" id="transactionDetailsModal" tabindex="-1" aria-labelledby="transactionDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #274C77; color: white;">
+                <h5 class="modal-title" id="transactionDetailsModalLabel">Transaction Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="modalTransactionDate"></h6>
+                <h6 id="modalTransactionId"></h6>
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped" id="modalItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Brand</th>
+                                <th>Model</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Total:</th>
+                                <th id="modalTotalQuantity"></th>
+                                <th id="modalTotalPrice"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Restock Details Modal -->
+<div class="modal fade" id="restockDetailsModal" tabindex="-1" aria-labelledby="restockDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #274C77; color: white;">
+                <h5 class="modal-title" id="restockDetailsModalLabel">Restock Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-4 fw-bold">Brand:</div>
+                    <div class="col-8" id="restockBrand"></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 fw-bold">Model:</div>
+                    <div class="col-8" id="restockModel"></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 fw-bold">Color:</div>
+                    <div class="col-8" id="restockColor"></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 fw-bold">Quantity:</div>
+                    <div class="col-8" id="restockQuantity"></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 fw-bold">Price:</div>
+                    <div class="col-8" id="restockPrice"></div>
+                </div>
+                <div class="row">
+                    <div class="col-4 fw-bold">Date:</div>
+                    <div class="col-8" id="restockDate"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -219,8 +158,77 @@
     }
 
     .card-body {
-        max-height: 400px;
+        max-height: 500px;
         overflow-y: auto;
+    }
+    
+    .transaction-row {
+        background-color: rgba(39, 76, 119, 0.05);
+    }
+    
+    .restock-row {
+        background-color: rgba(67, 160, 71, 0.05);
+    }
+    
+    .view-details-btn {
+
+        padding: 2px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .view-details-btn.btn-outline-primary:hover {
+    background-color: #1a3a5f;  /* Darker shade of blue */
+    border-color: #1a3a5f;
+    color: white;
+}
+
+.view-details-btn.btn-outline-success:hover {
+    background-color: #2d6a30;  /* Darker shade of green */
+    border-color: #2d6a30;
+    color: white;
+}
+
+.view-details-btn.btn-outline-primary {
+    border-color: #1d4e8f;  /* Darker blue outline in normal state */
+    color: #1d4e8f;  /* Matching text color */
+}
+
+.view-details-btn.btn-outline-primary:hover {
+    background-color: #1a3a5f;  /* Even darker shade of blue for hover */
+    border-color: #1a3a5f;
+    color: white;
+}
+
+.view-details-btn.btn-outline-success {
+    border-color: #2d7a30;  /* Darker green outline in normal state */
+    color: #2d7a30;  /* Matching text color */
+}
+
+.view-details-btn.btn-outline-success:hover {
+    background-color: #2d6a30;  /* Even darker shade of green for hover */
+    border-color: #2d6a30;
+    color: white;
+}
+
+    .badge-count {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+        border-radius: 50px;
+    }
+    
+    .transaction-badge {
+        background-color: #274C77;
+        color: white;
+    }
+    
+    .restock-badge {
+        background-color: #43A047;
+        color: white;
+    }
+
+    .modal-header,.modal-header {
+        background-color: #274C77; 
+        color: white;
     }
 </style>
 
@@ -246,15 +254,24 @@
 
         rows.forEach(row => {
             let logType = row.cells[0].innerText;
-            let dateText = row.cells[6].innerText;
-            let logDate = new Date(dateText);
+            let dateText = row.cells[5].innerText;
+            
+            // Convert Month-Date-Year format to Date object
+            let dateParts = dateText.split('-');
+            let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            let month = monthNames.indexOf(dateParts[0]);
+            let day = parseInt(dateParts[1], 10);
+            let year = parseInt(dateParts[2], 10);
+            let logDate = new Date(year, month, day);
+            
             let showRow = false;
 
             if (typeFilter === "all" || logType === typeFilter) {
                 if (filter === "all") showRow = true;
                 else if (filter === "day" && logDate.toDateString() === now.toDateString()) showRow = true;
                 else if (filter === "week") {
-                    let startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+                    let startOfWeek = new Date(now);
+                    startOfWeek.setDate(now.getDate() - now.getDay());
                     let endOfWeek = new Date(startOfWeek);
                     endOfWeek.setDate(endOfWeek.getDate() + 6);
                     showRow = logDate >= startOfWeek && logDate <= endOfWeek;
@@ -263,30 +280,100 @@
                 else if (filter === "year" && logDate.getFullYear() === now.getFullYear()) showRow = true;
             }
             
-            if (dateFilter && logDate.toISOString().split('T')[0] !== dateFilter) {
-                showRow = false;
+            if (dateFilter) {
+                let filterDate = new Date(dateFilter);
+                if (logDate.getFullYear() !== filterDate.getFullYear() || 
+                    logDate.getMonth() !== filterDate.getMonth() || 
+                    logDate.getDate() !== filterDate.getDate()) {
+                    showRow = false;
+                }
             }
 
             row.style.display = showRow ? "" : "none";
         });
     }
 
-    function updateSummary() {
-        let rows = document.querySelectorAll("#logTable tbody tr");
-        let transactionCount = 0;
-        let restockCount = 0;
+    function showTransactionDetails(transactionId) {
+        // For demonstration, we'll use our cached transaction data
+        const transactions = window.transactionCache[transactionId];
+        if (!transactions || transactions.length === 0) return;
         
-        rows.forEach(row => {
-            let logType = row.cells[0].innerText;
-            if (logType === "Transaction") transactionCount++;
-            if (logType === "Restock") restockCount++;
+        // Get date from the first item
+        const dateStr = transactions[0].date;
+        // Convert YYYY-MM-DD to Month-DD-YYYY
+        const dateObj = new Date(dateStr);
+        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+        
+        // Update modal header
+        document.getElementById('modalTransactionDate').innerText = `Date: ${formattedDate}`;
+        document.getElementById('modalTransactionId').innerText = `Transaction ID: ${transactionId}`;
+        
+        // Clear and populate items table
+        const tableBody = document.getElementById('modalItemsTable').querySelector('tbody');
+        tableBody.innerHTML = '';
+        
+        let totalQuantity = 0;
+        let totalPrice = 0;
+        
+        transactions.forEach(item => {
+            const brand = item.brand;
+            const model = item.model;
+            const color = item.color;
+            const quantity = parseInt(item.quantity) || 0;
+            const price = parseFloat(item.price.replace(/,/g, '')) || 0;
+            
+            totalQuantity += quantity;
+            totalPrice += price * quantity;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${brand}</td>
+                <td>${model}</td>
+                <td>${color}</td>
+                <td>${quantity}</td>
+                <td>₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            `;
+            tableBody.appendChild(tr);
         });
-
-        document.getElementById("totalTransactions").innerText = transactionCount;
-        document.getElementById("totalRestocks").innerText = restockCount;
+        
+        // Update totals
+        document.getElementById('modalTotalQuantity').innerText = totalQuantity;
+        document.getElementById('modalTotalPrice').innerText = `₱${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('transactionDetailsModal'));
+        modal.show();
+    }
+    
+    function showRestockDetails(restockIndex) {
+        // Get the restock data from our cache
+        const restock = window.restockCache[restockIndex];
+        if (!restock) return;
+        
+        // Convert YYYY-MM-DD to Month-DD-YYYY for display
+        const dateObj = new Date(restock.date);
+        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+        
+        // Format price with peso sign
+        const price = parseFloat(restock.price.replace(/,/g, '')) || 0;
+        const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        // Update modal fields
+        document.getElementById('restockBrand').innerText = restock.brand;
+        document.getElementById('restockModel').innerText = restock.model;
+        document.getElementById('restockColor').innerText = restock.color;
+        document.getElementById('restockQuantity').innerText = restock.quantity;
+        document.getElementById('restockPrice').innerText = formattedPrice;
+        document.getElementById('restockDate').innerText = formattedDate;
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('restockDetailsModal'));
+        modal.show();
     }
 
-   document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
         updateTransactionDate();
         fetchLogs();
 
@@ -296,49 +383,147 @@
     });
 
     function fetchLogs() {
-    fetch("/get-logs/")
-    .then(response => response.json())
-    .then(data => {
+        // In a real application, this would be an API call
+        // For this example, we'll simulate data with transaction IDs
+        
+        const sampleData = {
+            logs: [
+                // Transaction group 1 (today)
+                { type: "Transaction", transaction_id: "TRX-25042501", brand: "HNJ", model: "Ewan", color: "Black", quantity: 10, price: "999", date: "2025-04-24" },
+                { type: "Transaction", transaction_id: "TRX-25042501", brand: "EVO", model: "GT PRO", color: "Black", quantity: 5, price: "899", date: "2025-04-24" },
+                { type: "Transaction", transaction_id: "TRX-25042501", brand: "SPYDER", model: "RADAR", color: "Red", quantity: 2, price: "4,000", date: "2025-04-24" },
+                
+                // Transaction group 2
+                { type: "Transaction", transaction_id: "TRX-25042401", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-04-23" },
+                
+                // Restock entries (no transaction ID)
+                { type: "Restock", brand: "SPYDER", model: "Ewan", color: "Red", quantity: 10, price: "4,000", date: "2025-04-23" },
+                { type: "Restock", brand: "EVO", model: "GT PRO", color: "Black", quantity: 10, price: "999", date: "2025-04-22" },
+                
+                // Transaction group 3
+                { type: "Transaction", transaction_id: "TRX-25041801", brand: "SPYDER", model: "REBOOT 2", color: "Red", quantity: 10, price: "4,000", date: "2025-04-18" },
+                { type: "Transaction", transaction_id: "TRX-25041801", brand: "SPYDER", model: "FURY", color: "Blue", quantity: 5, price: "4,000", date: "2025-04-18" },
+                
+                // Other entries from different dates
+                { type: "Transaction", transaction_id: "TRX-25040901", brand: "SPYDER", model: "FUEL", color: "Red", quantity: 10, price: "4,000", date: "2025-04-09" },
+                { type: "Restock", brand: "EVO", model: "GT PRO", color: "Black", quantity: 10, price: "999", date: "2025-04-09" },
+                { type: "Transaction", transaction_id: "TRX-25040301", brand: "SPYDER", model: "RADAR", color: "Red", quantity: 10, price: "4,000", date: "2025-04-03" },
+                { type: "Transaction", transaction_id: "TRX-25030101", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-03-01" },
+                { type: "Transaction", transaction_id: "TRX-25020601", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-02-06" },
+                { type: "Transaction", transaction_id: "TRX-25020301", brand: "SPYDER", model: "FUEL", color: "Red", quantity: 10, price: "4,000", date: "2025-02-03" },
+                { type: "Transaction", transaction_id: "TRX-25010101", brand: "SPYDER", model: "Ewan", color: "Red", quantity: 10, price: "4,000", date: "2025-01-01" }
+            ]
+        };
+
+        // Store transaction and restock data in window-level caches for later retrieval in modals
+        window.transactionCache = {};
+        window.restockCache = [];
+        
+        // Group logs by transaction ID for transaction entries
+        sampleData.logs.forEach(log => {
+            if (log.type === "Transaction" && log.transaction_id) {
+                if (!window.transactionCache[log.transaction_id]) {
+                    window.transactionCache[log.transaction_id] = [];
+                }
+                window.transactionCache[log.transaction_id].push(log);
+            } else if (log.type === "Restock") {
+                window.restockCache.push(log);
+            }
+        });
+        
+        // Process transactions - calculate totals and prepare for display
+        const processedTransactions = Object.keys(window.transactionCache).map(transactionId => {
+            const items = window.transactionCache[transactionId];
+            let totalQuantity = 0;
+            let totalAmount = 0;
+            
+            items.forEach(item => {
+                totalQuantity += parseInt(item.quantity) || 0;
+                const price = parseFloat(item.price.replace(/,/g, '')) || 0;
+                totalAmount += price * (parseInt(item.quantity) || 0);
+            });
+            
+            return {
+                type: "Transaction",
+                transaction_id: transactionId,
+                itemCount: items.length,
+                totalQuantity: totalQuantity,
+                totalAmount: totalAmount,
+                date: items[0].date // Assume all items in a transaction have the same date
+            };
+        });
+        
+        // Prepare restocks for display
+        const processedRestocks = window.restockCache.map((item, index) => {
+            return {
+                type: "Restock",
+                index: index,
+                brand: item.brand,
+                model: item.model,
+                quantity: item.quantity,
+                price: item.price,
+                date: item.date
+            };
+        });
+        
+        // Combine and sort by date (most recent first)
+        const allLogs = [...processedTransactions, ...processedRestocks];
+        allLogs.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+        
         const logTableBody = document.querySelector("#logTable tbody");
         logTableBody.innerHTML = ""; // Clear existing rows
-
-        // Add an index to each log entry to preserve original order for same-day entries
-        data.logs.forEach((log, index) => {
-            log.originalIndex = index;
-        });
-
-        data.logs.sort((a, b) => {
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
+        
+        // Render all logs
+        allLogs.forEach(log => {
+            const row = document.createElement("tr");
+            row.classList.add(log.type === "Transaction" ? "transaction-row" : "restock-row");
             
-            // Primary sort by date (descending)
-            if (dateB - dateA !== 0) {
-                return dateB - dateA;
+            // Format date
+            const dateObj = new Date(log.date);
+            let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+            
+            if (log.type === "Transaction") {
+                const viewDetailsBtn = `<button class="btn btn-sm btn-outline-primary view-details-btn" onclick="showTransactionDetails('${log.transaction_id}')">View Items</button>`;
+                
+                // Format price
+                const formattedAmount = `₱${log.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                
+                row.innerHTML = `
+                    <td><span class="badge transaction-badge">${log.type}</span></td>
+                    <td>${log.transaction_id}</td>
+                    <td>${log.itemCount} ${log.itemCount > 1 ? 'items' : 'item'}</td>
+                    <td>${log.totalQuantity}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${formattedDate}</td>
+                    <td>${viewDetailsBtn}</td>
+                `;
+            } else {
+                // It's a restock
+                const viewDetailsBtn = `<button class="btn btn-sm btn-outline-success view-details-btn" onclick="showRestockDetails(${log.index})">Details</button>`;
+                
+                // Format price
+                const price = parseFloat(log.price.replace(/,/g, '')) || 0;
+                const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                
+                row.innerHTML = `
+                    <td><span class="badge restock-badge">${log.type}</span></td>
+                    <td>-</td>
+                    <td>1 item</td>
+                    <td>${log.quantity}</td>
+                    <td>${formattedPrice}</td>
+                    <td>${formattedDate}</td>
+                    <td>${viewDetailsBtn}</td>
+                `;
             }
             
-            return b.originalIndex - a.originalIndex;
-        });
-
-        data.logs.forEach(log => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${log.type}</td>
-                <td>${log.brand || 'N/A'}</td>
-                <td>${log.model || 'N/A'}</td>
-                <td>${log.color || 'N/A'}</td>
-                <td>${log.quantity || 'N/A'}</td>
-                <td>Php ${log.price || 'N/A'}</td>
-                <td>${log.date || 'N/A'}</td>
-            `;
             logTableBody.appendChild(row);
         });
 
         filterLogs(); // Apply existing filters after loading
-    })
-    .catch(error => {
-        console.error("Error fetching logs:", error);
-    });
-}
+    }
 </script>
 
 {% endblock %}
