@@ -108,13 +108,17 @@ button:hover {
         <div class="card-body px-3 pt-1">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="mb-0" style="color: #274C77; font-weight: 600; font-size: 3.0rem;">Restock</h1>
-               
+                
                 <div class="d-flex flex-column align-items-end" style="margin-top: 20px;">
-                    <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
-                           placeholder="Search by Brand & Model" style="width: 310px;"> 
-                    <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important;">Date of Transaction: Monday, March 17, 2025</h5>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-search fs-5 me-2"></i> <!-- Added fs-5 for consistent size -->
+                        <input id="searchInput" class="form-control form-control-sm mb-2" type="text" 
+                               placeholder="Search by Brand & Model" style="width: 310px;">
+                    </div>
+                    <h5 id="transactionDate" class="text-muted small mb-0" style="color: #161616 !important;"></h5>
                 </div>
             </div>
+        </div>
 
     <div class="row" >
 <!-- Left Panel: Form -->
