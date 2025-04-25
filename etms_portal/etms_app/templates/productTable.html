@@ -101,12 +101,13 @@ function loadProducts() {
         });
 
         highlightLowQuantity();
+        applyFilters(); // Make sure filters are reapplied after data refresh
     })
     .catch(error => console.error("Error loading products:", error));
 }
 
 function applyFilters() {
-    const brandModelInput = document.getElementById("brand").value.toLowerCase();
+    const brandModelInput = document.getElementById("brand")?.value.toLowerCase() || "";
     const rows = document.querySelectorAll("#productTable tbody tr");
 
     rows.forEach(row => {
@@ -115,12 +116,7 @@ function applyFilters() {
         const matchesBrand = brand.includes(brandModelInput);
         const matchesModel = model.includes(brandModelInput);
         
-        // Show row if either brand or model matches
-        if (brandModelInput === "" || matchesBrand || matchesModel) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
+        row.style.display = (brandModelInput === "" || matchesBrand || matchesModel) ? "" : "none";
     });
 }
 
@@ -140,11 +136,12 @@ function highlightLowQuantity() {
     });
 }
 
-// Initialize and set up event listeners
 window.addEventListener('DOMContentLoaded', () => {
     loadProducts();
-    
-    // Ensure the brand input triggers filtering
+
+    // Auto-refresh every 10 seconds (10000ms)
+    setInterval(loadProducts, 10000);
+
     const brandInput = document.getElementById("brand");
     if (brandInput) {
         brandInput.addEventListener("input", applyFilters);
