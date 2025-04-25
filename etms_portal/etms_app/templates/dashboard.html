@@ -40,7 +40,9 @@ body {
     display: flex;
     flex-direction: column;
 }
-
+.dashboard-card h4 {
+    font-family: Arial, sans-serif; /* Ensures peso symbol displays correctly */
+}
 .dashboard-card h6 {
     margin-bottom: 10px;
     color: #274C77;
@@ -89,14 +91,14 @@ body {
 </style>
 
 <div class="container mt-4">
-    <!-- Introduction Section (Retained) -->
+    <!-- Introduction Section -->
     <div class="row align-items-center">
         <div class="col-md-3">
             <img src="{% static '/db-logo.png' %}" class="rounded float-start" alt="db" height="250px" width="250px">
         </div>
         <div class="col-md-9">
             <h1 class="display-5" style="font-weight: 500;">Hello Riders!</h1>
-            <p style="text-align: justify; font-size: 16px; margin-top: 30px;"> 
+            <p style="text-align: justify; font-size: 16px; margin-top: 30px;">
                 Elytra Technology is developed to address the needs specializing in selling helmets. 
                 We aim to give high-quality services for our clients to ensure coherent integration of important features 
                 that consolidate business operations. Incorporating stocks, transactions, and revenue features in the software 
@@ -105,66 +107,79 @@ body {
         </div>
     </div>
     
-    <!-- Dashboard Section with Slideshow -->
+    <!-- Dashboard Section with New Layout -->
     <div class="row mt-4">
-        <!-- Existing Text Boxes (Left Section) -->
+        <!-- Left Column - Dashboard Tiles -->
         <div class="col-md-8">
+            <!-- First Row of Tiles -->
             <div class="row">
+                <!-- Total Products -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>Total Products:</h6>
+                        <h6>Total Stocks</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 24px; color: #333; font-weight: bold;"><span id="product-count">Loading...</span></h4>
+                            <h4 style="font-size: 24px; color: #333; font-weight: bold;" id="total-products">Loading...</h4>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Low Stock Alerts -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>Products with Low Stock Alert</h6>
-                        <div class="dashboard-card-content">
-                            <h4 style="font-size: 14px; color: #333;">EVO RX5</h4>
-                            <h4 style="font-size: 14px; color: #333;">HNJ Half-Face</h4>
+                        <h6>Low Stock Alerts</h6>
+                        <div class="dashboard-card-content" id="low-stock-container" style="overflow: hidden;">
+                            <!-- Will show max 3 items with "+ more" indicator -->
                         </div>
                     </div>
                 </div>
+                
+                <!-- Today's Sales -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>Today Total Sale</h6>
+                        <h6>Today's Sales</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 22px; color: #333; font-weight: bold;">Php 17,499.00</h4>
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;" id="today-sales">₱0.00</h4>
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Second Row of Tiles -->
+            <div class="row">
+                <!-- Top-Selling Brand -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
                         <h6>Top-Selling Brand</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 22px; color: #333; font-weight: bold;"><span id="top-brand">Loading...</span></h4>
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;" id="top-brand">Loading...</h4>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Top Accessory -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>New Products</h6>
+                        <h6>Top Selling Accessory</h6> 
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 14px; color: #333;">AXXIS Full-Face</h4>
-                            <h4 style="font-size: 14px; color: #333;">EVO NEXUS</h4>
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;" id="top-accessory">Loading...</h4>
+                            <h5 style="font-size: 14px; color: #666;" id="accessory-sales-count"></h5>
                         </div>
                     </div>
                 </div>
+                <!-- Helmets Sold Today -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>No. of Helmets Sold Today</h6>
+                        <h6>Helmets Sold Today</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 24px; color: #333; font-weight: bold;">5</h4>
+                            <h4 style="font-size: 24px; color: #333; font-weight: bold;" id="sold-today">Loading...</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    
-        <!-- Larger Carousel (Slideshow) -->
-        <div class="col-md-4 d-flex align-items-start justify-content-center">
+        
+        <!-- Right Column - Slideshow -->
+        <div class="col-md-4">
             <div id="productCarousel" class="carousel slide w-100" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -181,7 +196,7 @@ body {
         </div>
     </div>
 
-    <!-- Graphs Section with Aligned Graphs -->
+    <!-- Graphs Section -->
     <div class="row mt-4">
         <!-- Monthly Sales Line Chart -->
         <div class="col-md-4">
@@ -331,19 +346,11 @@ body {
         // Function to fetch product count
     function fetchProductCount() {
     console.log("Fetching product count...");
-    fetch('/api/product-count/')
-        .then(response => {
-            console.log("API response received:", response);
-            return response.json();
-        })
-        .then(data => {
-            console.log("Data received:", data);
-            document.getElementById('product-count').textContent = data.count;
-        })
-        .catch(error => {
-            console.error('Error fetching product count:', error);
-            document.getElementById('product-count').textContent = 'Error';
-        });
+    fetch('/api/total-stocks/')  // Changed endpoint
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('total-stocks').textContent = data.total_stocks;
+    });
 }
         
         // Call the function when the page loads
@@ -368,6 +375,93 @@ body {
         .catch(error => {
             console.error('Error fetching top brand:', error);
             document.getElementById('top-brand').textContent = 'EVO';  // Default fallback
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch all dashboard data when page loads
+    fetchDashboardData();
+    
+    // Refresh data every minute
+    setInterval(fetchDashboardData, 60000);
+});
+
+function fetchDashboardData() {
+    // Fetch total product count
+    fetch('/api/product-count/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-products').textContent = data.count;
+        });
+    
+    // Fetch low stock alerts
+    fetch('/api/low-stock/')
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('low-stock-container');
+        container.innerHTML = ''; // Clear previous content
+        
+        // Only show first 3 items
+        data.low_stock_items.slice(0, 3).forEach(item => {
+            const itemElement = document.createElement('h4');
+            itemElement.style.fontSize = '14px';
+            itemElement.style.color = '#333';
+            itemElement.textContent = `${item.brand} ${item.model}`;
+            container.appendChild(itemElement);
+        });
+        
+        // Show "+ more" indicator if there are more than 3
+        if (data.low_stock_items.length > 3) {
+            const moreElement = document.createElement('h4');
+            moreElement.style.fontSize = '12px';
+            moreElement.style.color = '#666';
+            moreElement.style.fontStyle = 'italic';
+            moreElement.textContent = `+${data.low_stock_items.length - 3} more`;
+            container.appendChild(moreElement);
+        }
+    });
+    
+    // Fetch today's sales
+    fetch('/api/today-sales/')
+    .then(response => response.json())
+    .then(data => {
+        // Format with peso sign and 2 decimal places
+        const formattedAmount = `₱${data.total_sales.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+        document.getElementById('today-sales').textContent = formattedAmount;
+    });
+    
+    // Fetch top selling brand
+    fetch('/api/top-selling-brand/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('top-brand').textContent = data.top_brand;
+        });
+    
+    // Fetch top accessory
+    fetch('/api/top-accessory/')  // Changed endpoint to singular
+    .then(response => response.json())
+    .then(data => {
+        const accessoryElement = document.getElementById('top-accessory');
+        const countElement = document.getElementById('accessory-sales-count');
+        
+        if (data.top_accessory) {
+            accessoryElement.textContent = data.top_accessory.name;
+            countElement.textContent = `${data.top_accessory.count} sold`;
+        } else {
+            accessoryElement.textContent = "No data";
+            countElement.textContent = "";
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching top accessory:', error);
+        document.getElementById('top-accessory').textContent = "Error loading data";
+    });
+    
+    // Fetch helmets sold today
+    fetch('/api/helmets-sold-today/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('sold-today').textContent = data.count;
         });
 }
 
