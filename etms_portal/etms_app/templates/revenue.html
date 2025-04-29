@@ -294,84 +294,84 @@
     }
 
     function showTransactionDetails(transactionId) {
-        // For demonstration, we'll use our cached transaction data
-        const transactions = window.transactionCache[transactionId];
-        if (!transactions || transactions.length === 0) return;
-        
-        // Get date from the first item
-        const dateStr = transactions[0].date;
-        // Convert YYYY-MM-DD to Month-DD-YYYY
-        const dateObj = new Date(dateStr);
-        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
-        
-        // Update modal header
-        document.getElementById('modalTransactionDate').innerText = `Date: ${formattedDate}`;
-        document.getElementById('modalTransactionId').innerText = `Transaction ID: ${transactionId}`;
-        
-        // Clear and populate items table
-        const tableBody = document.getElementById('modalItemsTable').querySelector('tbody');
-        tableBody.innerHTML = '';
-        
-        let totalQuantity = 0;
-        let totalPrice = 0;
-        
-        transactions.forEach(item => {
-            const brand = item.brand;
-            const model = item.model;
-            const color = item.color;
-            const quantity = parseInt(item.quantity) || 0;
-            const price = parseFloat(item.price.replace(/,/g, '')) || 0;
-            
-            totalQuantity += quantity;
-            totalPrice += price * quantity;
-            
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${brand}</td>
-                <td>${model}</td>
-                <td>${color}</td>
-                <td>${quantity}</td>
-                <td>₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            `;
-            tableBody.appendChild(tr);
-        });
-        
-        // Update totals
-        document.getElementById('modalTotalQuantity').innerText = totalQuantity;
-        document.getElementById('modalTotalPrice').innerText = `₱${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('transactionDetailsModal'));
-        modal.show();
-    }
+    const transactions = window.transactionCache[transactionId];
+    if (!transactions || transactions.length === 0) return;
     
-    function showRestockDetails(restockIndex) {
-        // Get the restock data from our cache
-        const restock = window.restockCache[restockIndex];
-        if (!restock) return;
+    // Get date from the first item
+    const dateStr = transactions[0].date;
+    // Convert YYYY-MM-DD to Month-DD-YYYY
+    const dateObj = new Date(dateStr);
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+    
+    // Update modal header
+    document.getElementById('modalTransactionDate').innerText = `Date: ${formattedDate}`;
+    document.getElementById('modalTransactionId').innerText = `Transaction ID: ${transactionId}`;
+    
+    // Clear and populate items table
+    const tableBody = document.getElementById('modalItemsTable').querySelector('tbody');
+    tableBody.innerHTML = '';
+    
+    let totalQuantity = 0;
+    let totalPrice = 0;
+    
+    transactions.forEach(item => {
+        const brand = item.brand;
+        const model = item.model;
+        const color = item.color;
+        const quantity = parseInt(item.quantity) || 0;
+        const price = parseFloat(item.price) || 0;
         
-        // Convert YYYY-MM-DD to Month-DD-YYYY for display
-        const dateObj = new Date(restock.date);
-        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+        totalQuantity += quantity;
+        totalPrice += price * quantity;
         
-        // Format price with peso sign
-        const price = parseFloat(restock.price.replace(/,/g, '')) || 0;
-        const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        
-        // Update modal fields
-        document.getElementById('restockBrand').innerText = restock.brand;
-        document.getElementById('restockModel').innerText = restock.model;
-        document.getElementById('restockColor').innerText = restock.color;
-        document.getElementById('restockQuantity').innerText = restock.quantity;
-        document.getElementById('restockPrice').innerText = formattedPrice;
-        document.getElementById('restockDate').innerText = formattedDate;
-        
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('restockDetailsModal'));
-        modal.show();
-    }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${brand}</td>
+            <td>${model}</td>
+            <td>${color}</td>
+            <td>${quantity}</td>
+            <td>₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+    
+    // Update totals
+    document.getElementById('modalTotalQuantity').innerText = totalQuantity;
+    document.getElementById('modalTotalPrice').innerText = `₱${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('transactionDetailsModal'));
+    modal.show();
+}
+
+function showRestockDetails(restockIndex) {
+    // Get the restock data from our cache
+    const restock = window.restockCache[restockIndex];
+    if (!restock) return;
+    
+    // Convert YYYY-MM-DD to Month-DD-YYYY for display
+    const dateObj = new Date(restock.date);
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+    
+    // Format price with peso sign
+    const price = parseFloat(restock.price) || 0;
+    const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    
+    // Update modal fields
+    document.getElementById('restockBrand').innerText = restock.brand;
+    document.getElementById('restockModel').innerText = restock.model;
+    document.getElementById('restockColor').innerText = restock.color;
+    document.getElementById('restockQuantity').innerText = restock.quantity;
+    document.getElementById('restockPrice').innerText = formattedPrice;
+    document.getElementById('restockDate').innerText = formattedDate;
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('restockDetailsModal'));
+    modal.show();
+}
+    
 
     document.addEventListener("DOMContentLoaded", function() {
         updateTransactionDate();
@@ -383,147 +383,128 @@
     });
 
     function fetchLogs() {
-        // In a real application, this would be an API call
-        // For this example, we'll simulate data with transaction IDs
-        
-        const sampleData = {
-            logs: [
-                // Transaction group 1 (today)
-                { type: "Transaction", transaction_id: "TRX-25042501", brand: "HNJ", model: "Ewan", color: "Black", quantity: 10, price: "999", date: "2025-04-24" },
-                { type: "Transaction", transaction_id: "TRX-25042501", brand: "EVO", model: "GT PRO", color: "Black", quantity: 5, price: "899", date: "2025-04-24" },
-                { type: "Transaction", transaction_id: "TRX-25042501", brand: "SPYDER", model: "RADAR", color: "Red", quantity: 2, price: "4,000", date: "2025-04-24" },
-                
-                // Transaction group 2
-                { type: "Transaction", transaction_id: "TRX-25042401", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-04-23" },
-                
-                // Restock entries (no transaction ID)
-                { type: "Restock", brand: "SPYDER", model: "Ewan", color: "Red", quantity: 10, price: "4,000", date: "2025-04-23" },
-                { type: "Restock", brand: "EVO", model: "GT PRO", color: "Black", quantity: 10, price: "999", date: "2025-04-22" },
-                
-                // Transaction group 3
-                { type: "Transaction", transaction_id: "TRX-25041801", brand: "SPYDER", model: "REBOOT 2", color: "Red", quantity: 10, price: "4,000", date: "2025-04-18" },
-                { type: "Transaction", transaction_id: "TRX-25041801", brand: "SPYDER", model: "FURY", color: "Blue", quantity: 5, price: "4,000", date: "2025-04-18" },
-                
-                // Other entries from different dates
-                { type: "Transaction", transaction_id: "TRX-25040901", brand: "SPYDER", model: "FUEL", color: "Red", quantity: 10, price: "4,000", date: "2025-04-09" },
-                { type: "Restock", brand: "EVO", model: "GT PRO", color: "Black", quantity: 10, price: "999", date: "2025-04-09" },
-                { type: "Transaction", transaction_id: "TRX-25040301", brand: "SPYDER", model: "RADAR", color: "Red", quantity: 10, price: "4,000", date: "2025-04-03" },
-                { type: "Transaction", transaction_id: "TRX-25030101", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-03-01" },
-                { type: "Transaction", transaction_id: "TRX-25020601", brand: "SPYDER", model: "FURY", color: "Red", quantity: 10, price: "4,000", date: "2025-02-06" },
-                { type: "Transaction", transaction_id: "TRX-25020301", brand: "SPYDER", model: "FUEL", color: "Red", quantity: 10, price: "4,000", date: "2025-02-03" },
-                { type: "Transaction", transaction_id: "TRX-25010101", brand: "SPYDER", model: "Ewan", color: "Red", quantity: 10, price: "4,000", date: "2025-01-01" }
-            ]
-        };
-
-        // Store transaction and restock data in window-level caches for later retrieval in modals
-        window.transactionCache = {};
-        window.restockCache = [];
-        
-        // Group logs by transaction ID for transaction entries
-        sampleData.logs.forEach(log => {
-            if (log.type === "Transaction" && log.transaction_id) {
-                if (!window.transactionCache[log.transaction_id]) {
-                    window.transactionCache[log.transaction_id] = [];
-                }
-                window.transactionCache[log.transaction_id].push(log);
-            } else if (log.type === "Restock") {
-                window.restockCache.push(log);
-            }
-        });
-        
-        // Process transactions - calculate totals and prepare for display
-        const processedTransactions = Object.keys(window.transactionCache).map(transactionId => {
-            const items = window.transactionCache[transactionId];
-            let totalQuantity = 0;
-            let totalAmount = 0;
+    fetch("/get_logs/")  // This endpoint should return logs from your JSON database
+        .then(response => response.json())
+        .then(data => {
+            const logs = data.logs || [];
             
-            items.forEach(item => {
-                totalQuantity += parseInt(item.quantity) || 0;
-                const price = parseFloat(item.price.replace(/,/g, '')) || 0;
-                totalAmount += price * (parseInt(item.quantity) || 0);
+            // Store transaction and restock data in window-level caches for later retrieval in modals
+            window.transactionCache = {};
+            window.restockCache = [];
+            
+            // Group logs by transaction ID for transaction entries
+            logs.forEach(log => {
+                if (log.type === "Transaction" && log.TransactionId) {
+                    if (!window.transactionCache[log.TransactionId]) {
+                        window.transactionCache[log.TransactionId] = [];
+                    }
+                    window.transactionCache[log.TransactionId].push(log);
+                } else if (log.type === "Restock") {
+                    window.restockCache.push(log);
+                }
             });
             
-            return {
-                type: "Transaction",
-                transaction_id: transactionId,
-                itemCount: items.length,
-                totalQuantity: totalQuantity,
-                totalAmount: totalAmount,
-                date: items[0].date // Assume all items in a transaction have the same date
-            };
-        });
-        
-        // Prepare restocks for display
-        const processedRestocks = window.restockCache.map((item, index) => {
-            return {
-                type: "Restock",
-                index: index,
-                brand: item.brand,
-                model: item.model,
-                quantity: item.quantity,
-                price: item.price,
-                date: item.date
-            };
-        });
-        
-        // Combine and sort by date (most recent first)
-        const allLogs = [...processedTransactions, ...processedRestocks];
-        allLogs.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-        
-        const logTableBody = document.querySelector("#logTable tbody");
-        logTableBody.innerHTML = ""; // Clear existing rows
-        
-        // Render all logs
-        allLogs.forEach(log => {
-            const row = document.createElement("tr");
-            row.classList.add(log.type === "Transaction" ? "transaction-row" : "restock-row");
+            // Process transactions - calculate totals and prepare for display
+            const processedTransactions = Object.keys(window.transactionCache).map(transactionId => {
+                const items = window.transactionCache[transactionId];
+                let totalQuantity = 0;
+                let totalAmount = 0;
+                
+                items.forEach(item => {
+                    totalQuantity += parseInt(item.quantity) || 0;
+                    const price = parseFloat(item.price) || 0;
+                    totalAmount += price * (parseInt(item.quantity) || 0);
+                });
+                
+                return {
+                    type: "Transaction",
+                    transaction_id: transactionId,
+                    itemCount: items.length,
+                    totalQuantity: totalQuantity,
+                    totalAmount: totalAmount,
+                    date: items[0].date // Assume all items in a transaction have the same date
+                };
+            });
             
-            // Format date
-            const dateObj = new Date(log.date);
-            let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+            // Prepare restocks for display
+            const processedRestocks = window.restockCache.map((item, index) => {
+                return {
+                    type: "Restock",
+                    index: index,
+                    brand: item.brand,
+                    model: item.model,
+                    quantity: item.quantity,
+                    price: item.price,
+                    date: item.date,
+                    RestockId: item.RestockId
+                };
+            });
             
-            if (log.type === "Transaction") {
-                const viewDetailsBtn = `<button class="btn btn-sm btn-outline-primary view-details-btn" onclick="showTransactionDetails('${log.transaction_id}')">View Items</button>`;
-                
-                // Format price
-                const formattedAmount = `₱${log.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                
-                row.innerHTML = `
-                    <td><span class="badge transaction-badge">${log.type}</span></td>
-                    <td>${log.transaction_id}</td>
-                    <td>${log.itemCount} ${log.itemCount > 1 ? 'items' : 'item'}</td>
-                    <td>${log.totalQuantity}</td>
-                    <td>${formattedAmount}</td>
-                    <td>${formattedDate}</td>
-                    <td>${viewDetailsBtn}</td>
-                `;
-            } else {
-                // It's a restock
-                const viewDetailsBtn = `<button class="btn btn-sm btn-outline-success view-details-btn" onclick="showRestockDetails(${log.index})">Details</button>`;
-                
-                // Format price
-                const price = parseFloat(log.price.replace(/,/g, '')) || 0;
-                const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                
-                row.innerHTML = `
-                    <td><span class="badge restock-badge">${log.type}</span></td>
-                    <td>-</td>
-                    <td>1 item</td>
-                    <td>${log.quantity}</td>
-                    <td>${formattedPrice}</td>
-                    <td>${formattedDate}</td>
-                    <td>${viewDetailsBtn}</td>
-                `;
-            }
+            // Combine and sort by date (most recent first)
+            const allLogs = [...processedTransactions, ...processedRestocks];
+            allLogs.sort((a, b) => {
+                return new Date(b.date) - new Date(a.date);
+            });
             
-            logTableBody.appendChild(row);
-        });
+            const logTableBody = document.querySelector("#logTable tbody");
+            logTableBody.innerHTML = ""; // Clear existing rows
+            
+            // Render all logs
+            allLogs.forEach(log => {
+                const row = document.createElement("tr");
+                row.classList.add(log.type === "Transaction" ? "transaction-row" : "restock-row");
+                
+                // Format date
+                const dateObj = new Date(log.date);
+                let monthNames = ["January", "February", "March", "April", "May", "June", 
+                                 "July", "August", "September", "October", "November", "December"];
+                const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+                
+                if (log.type === "Transaction") {
+                    const viewDetailsBtn = `<button class="btn btn-sm btn-outline-primary view-details-btn" onclick="showTransactionDetails('${log.transaction_id}')">View Items</button>`;
+                    
+                    // Format price
+                    const formattedAmount = `₱${log.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    
+                    row.innerHTML = `
+                        <td><span class="badge transaction-badge">${log.type}</span></td>
+                        <td>${log.transaction_id}</td>
+                        <td>${log.itemCount} ${log.itemCount > 1 ? 'items' : 'item'}</td>
+                        <td>${log.totalQuantity}</td>
+                        <td>${formattedAmount}</td>
+                        <td>${formattedDate}</td>
+                        <td>${viewDetailsBtn}</td>
+                    `;
+                } else {
+                    // It's a restock
+                    const viewDetailsBtn = `<button class="btn btn-sm btn-outline-success view-details-btn" onclick="showRestockDetails(${log.index})">Details</button>`;
+                    
+                    // Format price
+                    const price = parseFloat(log.price) || 0;
+                    const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    
+                    row.innerHTML = `
+                        <td><span class="badge restock-badge">${log.type}</span></td>
+                        <td>${log.RestockId || '-'}</td>
+                        <td>1 item</td>
+                        <td>${log.quantity}</td>
+                        <td>${formattedPrice}</td>
+                        <td>${formattedDate}</td>
+                        <td>${viewDetailsBtn}</td>
+                    `;
+                }
+                
+                logTableBody.appendChild(row);
+            });
 
-        filterLogs(); // Apply existing filters after loading
-    }
+            filterLogs(); // Apply existing filters after loading
+        })
+        .catch(error => {
+            console.error("Error fetching logs:", error);
+            showToast("Failed to load logs. Please try again.", "danger");
+        });
+}
+
 </script>
 
 {% endblock %}

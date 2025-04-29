@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 57,
+            "quantity": 58,
             "price": 3100.0
         },
         {
@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 7,
+            "quantity": 5,
             "price": 4500.0
         },
         {
@@ -27,7 +27,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 10,
+            "quantity": 9,
             "price": 4500.0
         },
         {
@@ -67,7 +67,7 @@
             "color": "Black-Blue",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 5,
+            "quantity": 6,
             "price": 4500.0
         },
         {
@@ -526,7 +526,7 @@
             "username": "admin",
             "password": "admin",
             "role": "admin",
-            "lastLogin": "2025-04-29 18:58:53",
+            "lastLogin": "2025-04-29 22:45:47",
             "status": "Active"
         },
         {
@@ -547,61 +547,55 @@
     "logs": [
         {
             "type": "Transaction",
-            "brand": "HNJ",
+            "TransactionId": "TRX-25042501",
+            "brand": "AXXIS",
             "model": "-",
-            "color": "Black",
-            "helmet_type": "Full Face",
-            "visor_type": "Clear",
-            "quantity": 10,
-            "price": "Php 999",
-            "date": "2025-01-01"
-        },
-        {
-            "type": "Restock",
-            "brand": "SPYDER",
-            "model": "-",
-            "color": "Red",
-            "helmet_type": "Modular",
-            "visor_type": "Tinted",
-            "quantity": 10,
-            "price": "Php 4,000",
-            "date": "2025-01-01"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "RX5",
-            "color": "Matte Black",
+            "color": "Pink-Black",
             "helmet_type": "Half-Face",
             "visor_type": "Double",
             "quantity": 1,
-            "price": 3400,
-            "date": "2025-03-27"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "RX5",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 3400,
-            "date": "2025-03-27"
+            "price": 3500,
+            "date": "2025-04-25"
         },
         {
             "type": "Restock",
-            "brand": "SEC",
-            "model": "WHIRLWIND",
-            "color": "Black-White",
-            "helmet_type": "Modular",
+            "RestockId": "RSK-25042501",
+            "brand": "EVO",
+            "model": "NEXUS",
+            "color": "Pink-Black",
+            "helmet_type": "Half-Face",
             "visor_type": "Double",
-            "quantity": 3,
-            "price": 3600,
-            "date": "2025-03-27"
+            "quantity": 1,
+            "price": 3500,
+            "date": "2025-04-25"
         },
         {
             "type": "Transaction",
+            "TransactionId": "TRX-25042901",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042902",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25042901",
             "brand": "AXXIS",
             "model": "-",
             "color": "Green-Orange",
@@ -609,21 +603,47 @@
             "visor_type": "Single",
             "quantity": 1,
             "price": 3100,
-            "date": "2025-03-28"
+            "date": "2025-04-29"
         },
         {
             "type": "Transaction",
+            "TransactionId": "TRX-25042903",
             "brand": "EVO",
             "model": "GT RPO ARCHANGEL",
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
+            "quantity": 1,
             "price": 4500,
-            "date": "2025-03-27"
+            "date": "2025-04-29"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25042902",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
         },
         {
             "type": "Transaction",
+            "TransactionId": "TRX-25042904",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25042903",
             "brand": "EVO",
             "model": "GT PRO ASSAULT",
             "color": "Black-Blue",
@@ -631,238 +651,7 @@
             "visor_type": "Single",
             "quantity": 1,
             "price": 4500,
-            "date": "2025-03-28"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "NEXUS",
-            "color": "Red-Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 3,
-            "price": 3500,
-            "date": "2025-03-28"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "RX5",
-            "color": "Pearl White",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 3400,
-            "date": "2025-03-28"
-        },
-        {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-28"
-        },
-        {
-            "type": "Restock",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": null,
-            "date": "2025-03-28"
-        },
-        {
-            "type": "Transaction",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 3100,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 3100,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "LIGHTNING",
-            "color": "Pink-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 9,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "RACING",
-            "color": "Red",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 2,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "-",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 4,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "-",
-            "color": "Glossy Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 4,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "902 PRO VENOM",
-            "color": "Red-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 3,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "902 PRO VENOM",
-            "color": "Red-Pink",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 4,
-            "price": 1499,
-            "date": "2025-03-31"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 4500,
-            "date": "2025-04-22"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "NEXUS",
-            "color": "Pink-Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 3500,
-            "date": "2025-04-22"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "TRX",
-            "color": "Black-Gray",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 3500,
-            "date": "2025-04-22"
-        },
-        {
-            "type": "Transaction",
-            "brand": "HNJ",
-            "model": "-",
-            "color": "Glossy Gray",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 1499,
-            "date": "2025-04-22"
-        },
-        {
-            "type": "Transaction",
-            "brand": "AXXIS",
-            "model": "-",
-            "color": "Green-Orange",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 3100,
-            "date": "2025-04-22"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "GT RPO ARCHANGEL",
-            "color": "Black-Gray",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 4500,
-            "date": "2025-04-25"
-        },
-        {
-            "type": "Transaction",
-            "brand": "SEC",
-            "model": "REFLUX",
-            "color": "Glossy White",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 2900,
-            "date": "2025-04-25"
-        },
-        {
-            "type": "Transaction",
-            "brand": "SPYDER",
-            "model": "RADAR",
-            "color": "White",
-            "helmet_type": "Full-Face",
-            "visor_type": "Single",
-            "quantity": 1,
-            "price": 3500,
-            "date": "2025-04-25"
-        },
-        {
-            "type": "Transaction",
-            "brand": "EVO",
-            "model": "NEXUS",
-            "color": "Pink-Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 1,
-            "price": 3500,
-            "date": "2025-04-25"
+            "date": "2025-04-29"
         }
     ]
 }
