@@ -128,7 +128,7 @@ body {
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
                         <h6>Low Stock Alerts</h6>
                         <div class="dashboard-card-content" id="low-stock-container" style="overflow: hidden;">
-                            <!-- Will show max 3 items with "+ more" indicator -->
+                            <!-- Low stock items will be dynamically added here -->
                         </div>
                     </div>
                 </div>
@@ -378,90 +378,81 @@ body {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Fetch all dashboard data when page loads
+document.addEventListener('DOMContentLoaded', function () {
+    // Fetch all dashboard data when the page loads
     fetchDashboardData();
-    
+
     // Refresh data every minute
-    setInterval(fetchDashboardData, 60000);
+    setInterval(fetchDashboardData, 60000); // Updates every minute
 });
 
 function fetchDashboardData() {
-    // Fetch total product count
-    fetch('/api/product-count/')
+    // Fetch total stocks
+    fetch('/api/total-stocks/')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('total-products').textContent = data.count;
+            document.getElementById('total-products').textContent = data.total_stocks || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching total stocks:', error);
+            document.getElementById('total-products').textContent = 'Error';
         });
-    
+
     // Fetch low stock alerts
-    fetch('/api/low-stock/')
-    .then(response => response.json())
-    .then(data => {
-        const container = document.getElementById('low-stock-container');
-        container.innerHTML = ''; // Clear previous content
-        
-        // Only show first 3 items
-        data.low_stock_items.slice(0, 3).forEach(item => {
-            const itemElement = document.createElement('h4');
-            itemElement.style.fontSize = '14px';
-            itemElement.style.color = '#333';
-            itemElement.textContent = `${item.brand} ${item.model}`;
-            container.appendChild(itemElement);
-        });
-        
-        // Show "+ more" indicator if there are more than 3
-        if (data.low_stock_items.length > 3) {
-            const moreElement = document.createElement('h4');
-            moreElement.style.fontSize = '12px';
-            moreElement.style.color = '#666';
-            moreElement.style.fontStyle = 'italic';
-            moreElement.textContent = `+${data.low_stock_items.length - 3} more`;
-            container.appendChild(moreElement);
-        }
-    });
-    
+    fetchLowStockAlerts();
+
     // Fetch today's sales
     fetch('/api/today-sales/')
-    .then(response => response.json())
-    .then(data => {
-        // Format with peso sign and 2 decimal places
-        const formattedAmount = `₱${data.total_sales.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-        document.getElementById('today-sales').textContent = formattedAmount;
-    });
-    
+        .then(response => response.json())
+        .then(data => {
+            const formattedAmount = `₱${data.total_sales.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+            document.getElementById('today-sales').textContent = formattedAmount;
+        })
+        .catch(error => {
+            console.error('Error fetching today\'s sales:', error);
+            document.getElementById('today-sales').textContent = '₱0.00';
+        });
+
     // Fetch top selling brand
     fetch('/api/top-selling-brand/')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('top-brand').textContent = data.top_brand;
+            document.getElementById('top-brand').textContent = data.top_brand || 'N/A';
+        })
+        .catch(error => {
+            console.error('Error fetching top selling brand:', error);
+            document.getElementById('top-brand').textContent = 'N/A';
         });
-    
+
     // Fetch top accessory
-    fetch('/api/top-accessory/')  // Changed endpoint to singular
-    .then(response => response.json())
-    .then(data => {
-        const accessoryElement = document.getElementById('top-accessory');
-        const countElement = document.getElementById('accessory-sales-count');
-        
-        if (data.top_accessory) {
-            accessoryElement.textContent = data.top_accessory.name;
-            countElement.textContent = `${data.top_accessory.count} sold`;
-        } else {
-            accessoryElement.textContent = "No data";
-            countElement.textContent = "";
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching top accessory:', error);
-        document.getElementById('top-accessory').textContent = "Error loading data";
-    });
-    
+    fetch('/api/top-accessory/')
+        .then(response => response.json())
+        .then(data => {
+            const accessoryElement = document.getElementById('top-accessory');
+            const countElement = document.getElementById('accessory-sales-count');
+
+            if (data.top_accessory) {
+                accessoryElement.textContent = data.top_accessory.name;
+                countElement.textContent = `${data.top_accessory.count} sold`;
+            } else {
+                accessoryElement.textContent = 'No data';
+                countElement.textContent = '';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching top accessory:', error);
+            document.getElementById('top-accessory').textContent = 'Error';
+        });
+
     // Fetch helmets sold today
     fetch('/api/helmets-sold-today/')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('sold-today').textContent = data.count;
+            document.getElementById('sold-today').textContent = data.count || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching helmets sold today:', error);
+            document.getElementById('sold-today').textContent = '0';
         });
 }
 
@@ -470,6 +461,69 @@ fetchTopSellingBrand();
 
 // Refresh periodically along with other data
 setInterval(fetchTopSellingBrand, 60000); // Updates every minute
+
+function fetchLowStockAlerts() {
+    fetch('/api/low-stock-alerts/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById('low-stock-container');
+            if (!container) {
+                console.error('Low stock container element not found in the DOM.');
+                return;
+            }
+
+            container.innerHTML = ''; // Clear previous content
+
+            // Check if there are any low stock items
+            if (data.low_stock_items.length === 0) {
+                const noItemsElement = document.createElement('h4');
+                noItemsElement.style.fontSize = '14px';
+                noItemsElement.style.color = '#666';
+                noItemsElement.textContent = 'No low stock items.';
+                container.appendChild(noItemsElement);
+                return;
+            }
+
+            // Display up to 3 low stock items
+            data.low_stock_items.slice(0, 3).forEach(item => {
+                const itemElement = document.createElement('h4');
+                itemElement.style.fontSize = '14px';
+                itemElement.style.color = '#333';
+                itemElement.textContent = `${item.brand} ${item.name} (${item.stock})`;
+                container.appendChild(itemElement);
+            });
+
+            // Show "+ more" indicator if there are more than 3 items
+            if (data.low_stock_items.length > 3) {
+                const moreElement = document.createElement('h4');
+                moreElement.style.fontSize = '12px';
+                moreElement.style.color = '#666';
+                moreElement.style.fontStyle = 'italic';
+                moreElement.textContent = `+${data.low_stock_items.length - 3} more`;
+                container.appendChild(moreElement);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching low stock alerts:', error);
+            const container = document.getElementById('low-stock-container');
+            if (container) {
+                container.innerHTML = '<h4 style="font-size: 14px; color: #666;">Error loading low stock alerts.</h4>';
+            }
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Fetch low stock alerts when the page loads
+    fetchLowStockAlerts();
+
+    // Refresh low stock alerts every minute
+    setInterval(fetchLowStockAlerts, 60000); // Updates every minute
+});
     </script>
 
 {% endblock %}
