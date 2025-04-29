@@ -33,7 +33,7 @@ urlpatterns = [
     path('delete_account/', delete_account, name='delete_account'),
     path('add_account/', add_account, name='add_account'),
     path('update_account/', update_account, name='update_account'),
-    path("login/", login_view, name="login"),  # Entransactionssure this exists
+    path("login/", login_view, name="login"),  # Ensure this exists
     path("get-logs/", get_logs, name="get_logs"),
     path('api/product-count/', views.get_product_count, name='product_count'),
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
@@ -43,6 +43,8 @@ urlpatterns = [
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
     path('api/top-accessory/', views.get_top_accessory, name='top_accessory'),
     path('api/helmets-sold-today/', views.get_helmets_sold_today, name='helmets_sold_today'),
+    path('get_logs/', views.get_logs, name='get_logs'),
+    path('api/low-stock-alerts/', views.low_stock_alerts, name='low_stock_alerts'),
 ]
 
 

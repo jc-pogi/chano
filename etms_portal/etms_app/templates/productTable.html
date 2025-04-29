@@ -72,54 +72,57 @@
 
 <script>
 function loadProducts() {
+    const searchInput = document.getElementById("searchInput"); // Assuming you have a search input field
+    const currentFilter = searchInput ? searchInput.value.toLowerCase() : ""; // Store the current filter value
+
     fetch("/get-products/")
-    .then(response => response.json())
-    .then(data => {
-        let tableBody = document.querySelector("#productTable tbody");
-        tableBody.innerHTML = "";
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.querySelector("#productTable tbody");
+            tableBody.innerHTML = "";
 
-        data.forEach(item => {
-            let row = `<tr 
-                data-brand="${item.brand.toLowerCase()}"
-                data-model="${item.model.toLowerCase()}"
-                data-color="${item.color ? item.color.toLowerCase() : ''}"
-                data-size="${item.size.toLowerCase()}"
-                data-type="${item.helmet_type.toLowerCase()}"
-                data-visor="${item.visor_type.toLowerCase()}"
-                data-price="${item.price || 0}"
-                data-in-stock="${item.quantity > 0}">
-                <td>${item.brand}</td>
-                <td>${item.model}</td>
-                <td>${item.size}</td>
-                <td>${item.color || "N/A"}</td>
-                <td>${item.helmet_type}</td>
-                <td>${item.visor_type}</td>
-                <td>₱${item.price ? item.price.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : "N/A"}</td>
-                <td class="quantity">${item.quantity}</td>
-            </tr>`;
-            tableBody.innerHTML += row;
-        });
+            data.forEach(item => {
+                let row = `<tr 
+                    data-brand="${item.brand.toLowerCase()}"
+                    data-model="${item.model.toLowerCase()}"
+                    data-color="${item.color ? item.color.toLowerCase() : ''}"
+                    data-size="${item.size.toLowerCase()}"
+                    data-type="${item.helmet_type.toLowerCase()}"
+                    data-visor="${item.visor_type.toLowerCase()}"
+                    data-price="${item.price || 0}"
+                    data-in-stock="${item.quantity > 0}">
+                    <td>${item.brand}</td>
+                    <td>${item.model}</td>
+                    <td>${item.size}</td>
+                    <td>${item.color || "N/A"}</td>
+                    <td>${item.helmet_type}</td>
+                    <td>${item.visor_type}</td>
+                    <td>₱${item.price ? item.price.toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : "N/A"}</td>
+                    <td class="quantity">${item.quantity}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
 
-        highlightLowQuantity();
-        applyFilters(); // Make sure filters are reapplied after data refresh
-    })
-    .catch(error => console.error("Error loading products:", error));
+            highlightLowQuantity();
+            applyFilter(currentFilter); // Reapply the filter after data refresh
+        })
+        .catch(error => console.error("Error loading products:", error));
 }
 
-function applyFilters() {
-    const brandModelInput = document.getElementById("brand")?.value.toLowerCase() || "";
-    const rows = document.querySelectorAll("#productTable tbody tr");
+// Function to apply the filter
+function applyFilter(filter) {
+    let rows = document.querySelectorAll("#productTable tbody tr");
 
     rows.forEach(row => {
-        const brand = row.getAttribute("data-brand");
-        const model = row.getAttribute("data-model");
-        const matchesBrand = brand.includes(brandModelInput);
-        const matchesModel = model.includes(brandModelInput);
-        
-        row.style.display = (brandModelInput === "" || matchesBrand || matchesModel) ? "" : "none";
+        let brand = row.dataset.brand || "";
+        let model = row.dataset.model || "";
+
+        // Show rows that match the filter, hide others
+        row.style.display = (brand.includes(filter) || model.includes(filter)) ? "" : "none";
     });
 }
 
+// Highlight low quantity items
 function highlightLowQuantity() {
     document.querySelectorAll("#productTable .quantity").forEach(cell => {
         const quantity = parseInt(cell.textContent);
@@ -136,15 +139,16 @@ function highlightLowQuantity() {
     });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+// Event listener for search input
+document.getElementById("searchInput").addEventListener("input", function () {
+    applyFilter(this.value.toLowerCase());
+});
+
+// Load products on page load and auto-refresh every 10 seconds
+window.addEventListener("DOMContentLoaded", () => {
     loadProducts();
 
     // Auto-refresh every 10 seconds (10000ms)
     setInterval(loadProducts, 10000);
-
-    const brandInput = document.getElementById("brand");
-    if (brandInput) {
-        brandInput.addEventListener("input", applyFilters);
-    }
 });
 </script>

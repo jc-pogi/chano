@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .decorators import admin_required, user_required
-from .models import Helmet
+from .models import Helmet as Product, Sale
 from django.shortcuts import render,redirect
 import json
 from django.http import JsonResponse
@@ -12,6 +12,7 @@ from etms_app.models import Helmet
 from django.db.models import Sum
 from datetime import datetime, timedelta
 import uuid
+
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -516,7 +517,7 @@ def get_product_count(request):
     # Focus on JSON file since that's where your data might be
     json_sum = 0
     try:
-        if os.path.exists(DATA_FILE):
+        if (os.path.exists(DATA_FILE)):
             with open(DATA_FILE, "r") as file:
                 print(f"Reading from {DATA_FILE}")
                 data = json.load(file)
@@ -620,6 +621,7 @@ def get_top_selling_brand(request):
     except Exception as e:
         # Log the full error for debugging
         import traceback
+        from django.utils import timezone
         print(f"Error in get_top_selling_brand: {e}")
         traceback.print_exc()
         
@@ -772,7 +774,7 @@ def get_today_sales(request):
                     # Ensure price is numeric
                     if isinstance(price, str):
                         # Remove currency symbols and commas
-                        price = float(price.replace('₱', '').replace('Php', '').replace(',', '').strip())
+                        price = float(price.replace('₱', '').replace('Php', '').strip())
                     
                     total += float(price) * int(quantity)
         
@@ -838,3 +840,58 @@ def get_helmets_sold_today(request):
         return JsonResponse({'count': total})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def get_logs(request):
+    try:
+        with open(DATA_FILE, 'r') as f:
+            data = json.load(f)
+            logs = data.get("logs", [])
+            return JsonResponse({"logs": logs})
+    except FileNotFoundError:
+        return JsonResponse({"error": "data.json not found"}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "data.json is invalid"}, status=500)
+    
+def total_stocks(request):
+    total_stocks = Product.objects.aggregate(total=Sum('stock'))['total'] or 0
+    return JsonResponse({'total_stocks': total_stocks})
+
+def low_stock_alerts(request):
+    # Fetch products with stock <= 5
+    low_stock_items = Product.objects.filter(stock__lte=5).values('brand', 'name', 'stock')
+    return JsonResponse({'low_stock_items': list(low_stock_items)})
+
+def today_sales(request):
+    today = timezone.now().date()
+    total_sales = Sale.objects.filter(date__date=today).aggregate(total=Sum('amount'))['total'] or 0
+    return JsonResponse({'total_sales': total_sales})
+
+def top_selling_brand(request):
+    top_brand = (
+        Product.objects.values('brand')
+        .annotate(total_sold=Sum('sales__quantity'))
+        .order_by('-total_sold')
+        .first()
+    )
+    return JsonResponse({'top_brand': top_brand['brand'] if top_brand else 'N/A'})
+
+def top_accessory(request):
+    top_accessory = (
+        Product.objects.filter(category='Accessory')
+        .annotate(total_sold=Sum('sales__quantity'))
+        .order_by('-total_sold')
+        .first()
+    )
+    return JsonResponse({
+        'top_accessory': {
+            'name': top_accessory.name if top_accessory else 'N/A',
+            'count': top_accessory.total_sold if top_accessory else 0
+        }
+    })
+
+def helmets_sold_today(request):
+    today = timezone.now().date()
+    helmets_sold = Sale.objects.filter(date__date=today, product__category='Helmet').aggregate(total=Sum('quantity'))['total'] or 0
+    return JsonResponse({'count': helmets_sold})

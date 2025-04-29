@@ -25,14 +25,16 @@ table {
 button {
     transition: all 0.3s ease-in-out;
     color: white !important;
-    background-color: #274C77 !important;
+    background-color: #274C77 ;
     width: 100%; 
     max-width: 350px; 
+    outline: transparent;
 }
+
 
 button:hover {
     transform: scale(1.05);
-    background-color:  rgb(1, 45, 95) !important; /* Slightly darker hover effect */
+    background-color:  rgb(1, 45, 95); /* Slightly darker hover effect */
 }
 
 .btn-close:hover{
@@ -175,7 +177,7 @@ button:hover {
                 </div>
                 <div class="row g-2 justify-content-center">
                     <div class="col-12 col-md-6 text-center">
-                        <button type="button" class="btn mb-3 w-100" onclick="clearFields()" >
+                        <button type="button" class="btn mb-3 w-100" onclick="clearFields()" style="background-color: #274C77; color: white;">
                             <i class="fas fa-eraser me-1"></i> Clear Fields
                         </button>
                     </div>
@@ -187,12 +189,12 @@ button:hover {
 
             <div class="row g-2">
                 <div class="col-6">
-                    <button type="button" class="btn w-100" onclick="addItem()" >
+                    <button type="button" class="btn w-100" onclick="addItem()" style="background-color: #274C77; color: white;">
                         <i class="fas fa-plus me-1"></i> Add
                     </button>
                 </div>
                 <div class="col-6">
-                    <button type="button" class="btn w-100" onclick="removeItem()" >
+                    <button type="button" class="btn w-100" onclick="removeItem()" style="background-color: #274C77; color: white;">
                         <i class="fas fa-minus me-1"></i> Remove
                     </button>
                 </div>
@@ -200,12 +202,12 @@ button:hover {
 
             <div class="row g-2 mt-2">
                 <div class="col-6">
-                    <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#restockModal">
+                    <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#restockModal" style="background-color: #274C77; color: white;">
                         <i class="fas fa-boxes me-1"></i> Restock
                     </button>
                 </div>
              <div class="col-6">
-                <button type="button" class="btn w-100" onclick="voidTransaction()" >
+                <button type="button" class="btn w-100" onclick="voidTransaction()" style="background-color: #274C77; color: white;">
                     <i class="fas fa-ban me-1"></i> Void
                 </button>
             </div>   
@@ -215,7 +217,7 @@ button:hover {
             <div class="row g-2 mt-2">
                 
              <div class="col-12">
-                <button type="button" class="btn w-100" onclick="printInventory()">
+                <button type="button" class="btn w-100" onclick="printInventory()" style="background-color: #274C77; color: white;">
                     <i class="fas fa-print me-1"></i> Print Inventory
                 </button>
                 </div>   
@@ -236,8 +238,8 @@ button:hover {
                 <p>Are you sure you want to restock these items?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="confirmRestock()">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #6c757d; color: white; ">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmRestock()" style="background-color: #274C77; color: white; outline: none;">Confirm</button>
             </div>
         </div>
     </div>
@@ -577,13 +579,9 @@ function confirmRestock() {
     })
     .then(data => {
         console.log("✅ Server Response:", data);
-        
-        if (data.RestockId) {
-            alert("Restock successful! ID: " + data.RestockId);
-        }
          
         if (data.message) {
-            showToast("Restock confirmed!", "success");
+            showToast("Restock successful! ID: " + data.RestockId, "success");
 
             // Hide modal properly
             let modal = document.querySelector("#restockModal");
@@ -690,63 +688,6 @@ document.getElementById("price").addEventListener("input", function() {
     this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     this.value = this.value.replace(/[^\d.]/g, ""); // Allow only numbers and decimal points
 
-});
-
-   
-
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔍 Checking if productTable.html is loaded...");
-
-    let productTableCheck = setInterval(() => {
-        let productTable = document.getElementById("productTable");
-
-        if (productTable) {
-            clearInterval(productTableCheck); // ✅ Stop checking once table is found
-            console.log("✅ Product table is now available inside restock.html!");
-
-            // Ensure the table has a tbody before adding the event listener
-            let tableBody = productTable.querySelector("tbody");
-            if (tableBody) {
-                if (!productTable.dataset.listenerAdded) { 
-                    tableBody.addEventListener("click", function (e) {
-                        let targetRow = e.target.closest("tr");
-                        if (!targetRow || targetRow.parentElement.tagName !== "TBODY") return;
-
-                        selectRow(targetRow);
-
-                        document.getElementById("brand").value = targetRow.cells[0].textContent;
-                        document.getElementById("model").value = targetRow.cells[1].textContent;
-                        document.getElementById("size").value = targetRow.cells[2].textContent;
-                        document.getElementById("color").value = targetRow.cells[3].textContent;
-                        document.getElementById("helmet_type").value = targetRow.cells[4].textContent;
-                        document.getElementById("visor_type").value = targetRow.cells[5].textContent;
-                        document.getElementById("price").value = targetRow.cells[6].textContent;
-                        document.getElementById("quantity").value = 1;
-                    });
-
-                    productTable.dataset.listenerAdded = "true"; // ✅ Prevent duplicate listeners
-                    console.log("✅ Product table event listener added!");
-                }
-            } else {
-                console.error("❌ Table body (`<tbody>`) is missing in `productTable`!");
-            }
-
-            // ✅ Ensure applyFilters() runs only after loadProducts()
-            let productsLoadedCheck = setInterval(() => {
-                
-            }, 500);
-            
-        } else {
-            console.warn("⚠️ Waiting for productTable to load...");
-        }
-    }, 500); // Check every 500ms until table is loaded
-
-    // Stop checking after 10 seconds to prevent infinite loop
-    setTimeout(() => {
-        if (!document.getElementById("productTable")) {
-            console.error("❌ productTable still never became available. Ensure productTable.html is included correctly.");
-        }
-    }, 10000);
 });
 
 </script>
