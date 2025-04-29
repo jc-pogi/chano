@@ -520,7 +520,9 @@
     })
     .then(response => response.json())
     .then(data => {
-        if (!data.success) {
+        if (data.success) {
+            alert("Transaction successful! ID: " + data.TransactionId);
+        elif (!data.success) 
             console.error("🚨 Transaction failed:", data.message);
             alert("Error: " + data.message);
             return;
