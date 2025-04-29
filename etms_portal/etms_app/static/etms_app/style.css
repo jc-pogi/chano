@@ -78,8 +78,8 @@ a:hover {
 button {
   position: relative;
   border-radius: 20px;
-  border: 1px solid #4bb6b7;
-  background-color: #4bb6b7;
+  border: 1px solid #274c77;
+  background-color: #274c77;
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -92,6 +92,7 @@ button {
 
 button:hover {
   letter-spacing: 3px;
+  background-color: #1f3d63;
 }
 
 button:active {
@@ -104,7 +105,7 @@ button:focus {
 
 button.ghost {
   background-color: rgba(225, 225, 225, 0.2);
-  border: 2px solid #fff;
+  border: 2px solid #a3bcd6; /* lighter version of #274c77 */
   color: #fff;
 }
 
@@ -224,10 +225,6 @@ input {
 }
 
 .overlay {
-  background-image: url('/static/background-img.gif');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0 0;
   color: #fff;
   position: relative;
   left: -100%;
@@ -237,18 +234,24 @@ input {
   transition: transform 0.6s ease-in-out;
 }
 
-.overlay::before {
+.overlay-panel {
+  background-image: url('/static/background-img.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+.overlay-panel::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(46, 94, 109, 0.4) 40%,
-    rgba(46, 94, 109, 0)
-  );
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3); /* dark overlay */
+  z-index: 0;
+}
+.overlay-panel * {
+  position: relative;
+  z-index: 1;
 }
 
 .container.right-panel-active .overlay {
