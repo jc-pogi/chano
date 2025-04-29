@@ -838,3 +838,16 @@ def get_helmets_sold_today(request):
         return JsonResponse({'count': total})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def get_logs(request):
+    try:
+        with open(DATA_FILE, 'r') as f:
+            data = json.load(f)
+            logs = data.get("logs", [])
+            return JsonResponse({"logs": logs})
+    except FileNotFoundError:
+        return JsonResponse({"error": "data.json not found"}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "data.json is invalid"}, status=500)

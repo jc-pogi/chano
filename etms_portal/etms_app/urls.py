@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
     path('api/top-accessory/', views.get_top_accessory, name='top_accessory'),
     path('api/helmets-sold-today/', views.get_helmets_sold_today, name='helmets_sold_today'),
+    path('get_logs/', views.get_logs, name='get_logs'),
 ]
 
 

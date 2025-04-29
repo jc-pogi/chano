@@ -40,22 +40,22 @@
         <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
             
             <div class="table-container">
-            <table class="table table-hover" id="logTable">
-                <thead class="table-light" style="position: sticky; top: 0; background: white; z-index: 2;">
-                    <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Transaction ID</th>
-                        <th scope="col">Items</th>
-                        <th scope="col">Total Qty</th>
-                        <th scope="col">Total Amount</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Sample data will be replaced by JavaScript -->
-                </tbody>                
-            </table>
+            <table id="logTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>ID</th>
+            <th>Items</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Rows will be dynamically added here -->
+    </tbody>
+</table>
         </div>
     </div>
 </div>
@@ -255,7 +255,7 @@
         rows.forEach(row => {
             let logType = row.cells[0].innerText;
             let dateText = row.cells[5].innerText;
-            
+
             // Convert Month-Date-Year format to Date object
             let dateParts = dateText.split('-');
             let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -263,7 +263,7 @@
             let day = parseInt(dateParts[1], 10);
             let year = parseInt(dateParts[2], 10);
             let logDate = new Date(year, month, day);
-            
+
             let showRow = false;
 
             if (typeFilter === "all" || logType === typeFilter) {
@@ -279,7 +279,7 @@
                 else if (filter === "month" && logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear()) showRow = true;
                 else if (filter === "year" && logDate.getFullYear() === now.getFullYear()) showRow = true;
             }
-            
+
             if (dateFilter) {
                 let filterDate = new Date(dateFilter);
                 if (logDate.getFullYear() !== filterDate.getFullYear() || 
@@ -373,137 +373,135 @@ function showRestockDetails(restockIndex) {
 }
     
 
-    document.addEventListener("DOMContentLoaded", function() {
-        updateTransactionDate();
-        fetchLogs();
+document.addEventListener("DOMContentLoaded", function () {
+    updateTransactionDate();
+    fetchLogs();
 
-        document.getElementById("logTypeFilter").addEventListener("change", filterLogs);
-        document.getElementById("logFilter").addEventListener("change", filterLogs);
-        document.getElementById("dateFilter").addEventListener("input", filterLogs);
-    });
+    // Set up periodic polling to refresh the table every 10 seconds
+    setInterval(fetchLogs, 5000); // 5,000 ms = 5 seconds
+
+    document.getElementById("logTypeFilter").addEventListener("change", filterLogs);
+    document.getElementById("logFilter").addEventListener("change", filterLogs);
+    document.getElementById("dateFilter").addEventListener("input", filterLogs);
+});
 
     function fetchLogs() {
-    fetch("/get_logs/")  // This endpoint should return logs from your JSON database
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    fetch("/static/data.json") // Adjust the path if necessary
         .then(response => response.json())
         .then(data => {
+            console.log("Fetched logs:", data.logs); // Debug log
             const logs = data.logs || [];
-            
-            // Store transaction and restock data in window-level caches for later retrieval in modals
-            window.transactionCache = {};
-            window.restockCache = [];
-            
-            // Group logs by transaction ID for transaction entries
+            const combinedLogs = [];
+
+            // Group transactions by TransactionId
+            const transactionCache = {};
             logs.forEach(log => {
                 if (log.type === "Transaction" && log.TransactionId) {
-                    if (!window.transactionCache[log.TransactionId]) {
-                        window.transactionCache[log.TransactionId] = [];
+                    if (!transactionCache[log.TransactionId]) {
+                        transactionCache[log.TransactionId] = [];
                     }
-                    window.transactionCache[log.TransactionId].push(log);
+                    transactionCache[log.TransactionId].push(log);
                 } else if (log.type === "Restock") {
-                    window.restockCache.push(log);
+                    combinedLogs.push({
+                        type: "Restock",
+                        id: log.RestockId || "-",
+                        items: 1,
+                        quantity: log.quantity,
+                        totalPrice: parseFloat(log.price) || 0,
+                        date: log.date,
+                        details: log
+                    });
                 }
-            });
-            
-            // Process transactions - calculate totals and prepare for display
-            const processedTransactions = Object.keys(window.transactionCache).map(transactionId => {
-                const items = window.transactionCache[transactionId];
-                let totalQuantity = 0;
-                let totalAmount = 0;
-                
-                items.forEach(item => {
-                    totalQuantity += parseInt(item.quantity) || 0;
-                    const price = parseFloat(item.price) || 0;
-                    totalAmount += price * (parseInt(item.quantity) || 0);
-                });
-                
-                return {
-                    type: "Transaction",
-                    transaction_id: transactionId,
-                    itemCount: items.length,
-                    totalQuantity: totalQuantity,
-                    totalAmount: totalAmount,
-                    date: items[0].date // Assume all items in a transaction have the same date
-                };
-            });
-            
-            // Prepare restocks for display
-            const processedRestocks = window.restockCache.map((item, index) => {
-                return {
-                    type: "Restock",
-                    index: index,
-                    brand: item.brand,
-                    model: item.model,
-                    quantity: item.quantity,
-                    price: item.price,
-                    date: item.date,
-                    RestockId: item.RestockId
-                };
-            });
-            
-            // Combine and sort by date (most recent first)
-            const allLogs = [...processedTransactions, ...processedRestocks];
-            allLogs.sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
-            });
-            
-            const logTableBody = document.querySelector("#logTable tbody");
-            logTableBody.innerHTML = ""; // Clear existing rows
-            
-            // Render all logs
-            allLogs.forEach(log => {
-                const row = document.createElement("tr");
-                row.classList.add(log.type === "Transaction" ? "transaction-row" : "restock-row");
-                
-                // Format date
-                const dateObj = new Date(log.date);
-                let monthNames = ["January", "February", "March", "April", "May", "June", 
-                                 "July", "August", "September", "October", "November", "December"];
-                const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
-                
-                if (log.type === "Transaction") {
-                    const viewDetailsBtn = `<button class="btn btn-sm btn-outline-primary view-details-btn" onclick="showTransactionDetails('${log.transaction_id}')">View Items</button>`;
-                    
-                    // Format price
-                    const formattedAmount = `₱${log.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                    
-                    row.innerHTML = `
-                        <td><span class="badge transaction-badge">${log.type}</span></td>
-                        <td>${log.transaction_id}</td>
-                        <td>${log.itemCount} ${log.itemCount > 1 ? 'items' : 'item'}</td>
-                        <td>${log.totalQuantity}</td>
-                        <td>${formattedAmount}</td>
-                        <td>${formattedDate}</td>
-                        <td>${viewDetailsBtn}</td>
-                    `;
-                } else {
-                    // It's a restock
-                    const viewDetailsBtn = `<button class="btn btn-sm btn-outline-success view-details-btn" onclick="showRestockDetails(${log.index})">Details</button>`;
-                    
-                    // Format price
-                    const price = parseFloat(log.price) || 0;
-                    const formattedPrice = `₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                    
-                    row.innerHTML = `
-                        <td><span class="badge restock-badge">${log.type}</span></td>
-                        <td>${log.RestockId || '-'}</td>
-                        <td>1 item</td>
-                        <td>${log.quantity}</td>
-                        <td>${formattedPrice}</td>
-                        <td>${formattedDate}</td>
-                        <td>${viewDetailsBtn}</td>
-                    `;
-                }
-                
-                logTableBody.appendChild(row);
             });
 
-            filterLogs(); // Apply existing filters after loading
+            // Add grouped transactions to combinedLogs
+            Object.entries(transactionCache).forEach(([transactionId, items]) => {
+                const firstItem = items[0];
+                const date = firstItem.date;
+
+                let totalQuantity = 0;
+                let totalPrice = 0;
+
+                items.forEach(item => {
+                    const qty = parseInt(item.quantity) || 0;
+                    const price = parseFloat(item.price) || 0;
+                    totalQuantity += qty;
+                    totalPrice += qty * price;
+                });
+
+                combinedLogs.push({
+                    type: "Transaction",
+                    id: transactionId,
+                    items: items.length,
+                    quantity: totalQuantity,
+                    totalPrice: totalPrice,
+                    date: date,
+                    details: items
+                });
+            });
+
+            // Sort combinedLogs by date (latest first)
+            combinedLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Render the table
+            const logTableBody = document.querySelector("#logTable tbody");
+            logTableBody.innerHTML = "";
+
+            combinedLogs.forEach((log, index) => {
+                const dateObj = new Date(log.date);
+                const formattedDate = `${monthNames[dateObj.getMonth()]}-${String(dateObj.getDate()).padStart(2, '0')}-${dateObj.getFullYear()}`;
+
+                const row = document.createElement("tr");
+                row.classList.add(log.type === "Transaction" ? "transaction-row" : "restock-row");
+
+                row.innerHTML = `
+                    <td><span class="badge ${log.type === "Transaction" ? "transaction-badge" : "restock-badge"}">${log.type}</span></td>
+                    <td>${log.id}</td>
+                    <td>${log.items} item(s)</td>
+                    <td>${log.quantity}</td>
+                    <td>₱${log.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-${log.type === "Transaction" ? "primary" : "success"} view-details-btn">
+                            ${log.type === "Transaction" ? "View Items" : "Details"}
+                        </button>
+                    </td>
+                `;
+
+                logTableBody.appendChild(row);
+
+                // Add event listener to the button
+                const button = row.querySelector(".view-details-btn");
+                if (log.type === "Transaction") {
+                    button.addEventListener("click", () => showTransactionDetails(log.id));
+                } else if (log.type === "Restock") {
+                    button.addEventListener("click", () => showRestockDetails(index));
+                }
+            });
+
+            filterLogs();
         })
         .catch(error => {
             console.error("Error fetching logs:", error);
             showToast("Failed to load logs. Please try again.", "danger");
         });
 }
+
+    function showToast(message) {
+        // Example of how to show a toast message
+        let toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+    
+        // Optional: Set a timeout to remove the toast after a few seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+    
 
 </script>
 
