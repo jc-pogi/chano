@@ -578,6 +578,10 @@ function confirmRestock() {
     .then(data => {
         console.log("✅ Server Response:", data);
         
+        if (data.RestockId) {
+            alert("Restock successful! ID: " + data.RestockId);
+        }
+         
         if (data.message) {
             showToast("Restock confirmed!", "success");
 
