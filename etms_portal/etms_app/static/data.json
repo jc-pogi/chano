@@ -7,7 +7,7 @@
             "color": "Green-Orange",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 53,
+            "quantity": 54,
             "price": 3100.0
         },
         {
@@ -17,7 +17,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 8,
+            "quantity": 7,
             "price": 4500.0
         },
         {
@@ -37,7 +37,7 @@
             "color": "Black-Gray",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 10,
+            "quantity": 9,
             "price": 4500.0
         },
         {
@@ -47,7 +47,7 @@
             "color": "Black-Blue",
             "helmet_type": "Full-Face",
             "visor_type": "Single",
-            "quantity": 14,
+            "quantity": 13,
             "price": 4500.0
         },
         {
@@ -519,6 +519,26 @@
             "visor_type": "Single",
             "quantity": 41,
             "price": 3500.0
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "Std",
+            "color": "White",
+            "helmet_type": "Half-Face",
+            "visor_type": "Single",
+            "price": 999,
+            "quantity": 5
+        },
+        {
+            "brand": "HNJ",
+            "model": "-",
+            "size": "K",
+            "color": "Light Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "price": 750,
+            "quantity": 5
         }
     ],
     "users": [
@@ -526,7 +546,7 @@
             "username": "admin",
             "password": "admin",
             "role": "admin",
-            "lastLogin": "2025-04-30 03:11:26",
+            "lastLogin": "2025-04-30 22:15:19",
             "status": "Active"
         },
         {
@@ -987,6 +1007,78 @@
             "visor_type": "Single",
             "quantity": 1,
             "price": 3100,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25043009",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "color": "Black-Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25043010",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "White",
+            "helmet_type": "Half-face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 999,
+            "date": "2025-04-30"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25043011",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Light Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 750,
             "date": "2025-04-30"
         }
     ]
