@@ -388,24 +388,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchDashboardData() {
     // Fetch total stocks
-    fetch('/api/total-stocks/')
+    fetch('/api/get_product_count/')  // Using endpoint that checks JSON data
         .then(response => response.json())
         .then(data => {
-            document.getElementById('total-products').textContent = data.total_stocks || 0;
+            document.getElementById('total-products').textContent = data.count || 0;
         })
         .catch(error => {
             console.error('Error fetching total stocks:', error);
             document.getElementById('total-products').textContent = 'Error';
         });
 
-    // Fetch low stock alerts
+    // Fetch low stock alerts - this will now call our updated function
     fetchLowStockAlerts();
 
     // Fetch today's sales
-    fetch('/api/today-sales/')
+    fetch('/api/get_today_sales/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
-            const formattedAmount = `₱${data.total_sales.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+            const formattedAmount = `₱${parseFloat(data.total_sales || 0).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
             document.getElementById('today-sales').textContent = formattedAmount;
         })
         .catch(error => {
@@ -414,7 +414,7 @@ function fetchDashboardData() {
         });
 
     // Fetch top selling brand
-    fetch('/api/top-selling-brand/')
+    fetch('/api/get_top_selling_brand/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
             document.getElementById('top-brand').textContent = data.top_brand || 'N/A';
@@ -425,7 +425,7 @@ function fetchDashboardData() {
         });
 
     // Fetch top accessory
-    fetch('/api/top-accessory/')
+    fetch('/api/get_top_accessory/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
             const accessoryElement = document.getElementById('top-accessory');
@@ -445,7 +445,7 @@ function fetchDashboardData() {
         });
 
     // Fetch helmets sold today
-    fetch('/api/helmets-sold-today/')
+    fetch('/api/get_helmets_sold_today/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
             document.getElementById('sold-today').textContent = data.count || 0;
@@ -463,7 +463,7 @@ fetchTopSellingBrand();
 setInterval(fetchTopSellingBrand, 60000); // Updates every minute
 
 function fetchLowStockAlerts() {
-    fetch('/api/low-stock-alerts/')
+    fetch('/api/low-stock/')  // Use the JSON file-based endpoint instead of '/api/low-stock-alerts/'
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -480,7 +480,7 @@ function fetchLowStockAlerts() {
             container.innerHTML = ''; // Clear previous content
 
             // Check if there are any low stock items
-            if (data.low_stock_items.length === 0) {
+            if (!data.low_stock_items || data.low_stock_items.length === 0) {
                 const noItemsElement = document.createElement('h4');
                 noItemsElement.style.fontSize = '14px';
                 noItemsElement.style.color = '#666';
@@ -494,7 +494,7 @@ function fetchLowStockAlerts() {
                 const itemElement = document.createElement('h4');
                 itemElement.style.fontSize = '14px';
                 itemElement.style.color = '#333';
-                itemElement.textContent = `${item.brand} ${item.name} (${item.stock})`;
+                itemElement.textContent = `${item.brand} ${item.model} (${item.quantity})`;
                 container.appendChild(itemElement);
             });
 

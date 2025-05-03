@@ -742,18 +742,37 @@ def get_total_stocks(request):
 def get_low_stock(request):
     """Return products with quantity <= 5 (max 3 items)"""
     try:
+        if not os.path.exists(DATA_FILE):
+            print(f"Data file not found: {DATA_FILE}")
+            return JsonResponse({'low_stock_items': []})
+            
         with open(DATA_FILE, 'r') as file:
             data = json.load(file)
             helmets = data.get('helmets', [])
-            low_stock = sorted(
-                [h for h in helmets if h.get('quantity', 0) <= 5],
-                key=lambda x: x.get('quantity', 0)  # Sort by quantity (lowest first)
-            )
-            return JsonResponse({
-                'low_stock_items': low_stock  # Return all low stock items
-            })
+            
+            # Filter items with quantity <= 5
+            low_stock = [
+                h for h in helmets 
+                if isinstance(h, dict) and 
+                isinstance(h.get('quantity', 0), (int, float)) and 
+                h.get('quantity', 0) <= 5
+            ]
+            
+            # Sort by quantity (lowest first)
+            low_stock = sorted(low_stock, key=lambda x: x.get('quantity', 0))
+            
+            # Debug output
+            print(f"Low stock items found: {len(low_stock)}")
+            for item in low_stock[:3]:  # Print first 3 items for debugging
+                print(f"  - {item.get('brand', 'N/A')} {item.get('model', 'N/A')}: {item.get('quantity', 0)}")
+                
+            return JsonResponse({'low_stock_items': low_stock})
+            
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        import traceback
+        print(f"Error in get_low_stock: {str(e)}")
+        traceback.print_exc()
+        return JsonResponse({'error': str(e), 'low_stock_items': []}, status=500)
 
 @csrf_exempt
 def get_today_sales(request):
@@ -859,9 +878,14 @@ def total_stocks(request):
     return JsonResponse({'total_stocks': total_stocks})
 
 def low_stock_alerts(request):
-    # Fetch products with stock <= 5
-    low_stock_items = Product.objects.filter(stock__lte=5).values('brand', 'name', 'stock')
-    return JsonResponse({'low_stock_items': list(low_stock_items)})
+    low_stock_items = Product.objects.filter(stock__lte=4).values('brand', 'model', 'stock')
+    
+    items = [
+        {"brand": item['brand'], "name": item['model'], "stock": item['stock']}
+        for item in low_stock_items
+    ]
+
+    return JsonResponse({"low_stock_items": items})
 
 def today_sales(request):
     today = timezone.now().date()

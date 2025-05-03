@@ -610,5 +610,107 @@
             "price": 3100,
             "date": "2025-04-30"
         }
+    },
+    {
+        "id": 37,
+        "timestamp": "2025-04-30T21:32:07.864315",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043009",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 38,
+        "timestamp": "2025-04-30T21:32:31.150250",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 39,
+        "timestamp": "2025-04-30T21:32:31.164738",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "color": "Black-Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 40,
+        "timestamp": "2025-04-30T21:32:31.180242",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 41,
+        "timestamp": "2025-04-30T21:35:05.796559",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043010",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "White",
+            "helmet_type": "Half-face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 999,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 42,
+        "timestamp": "2025-04-30T21:37:23.024584",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043011",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Light Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 750,
+            "date": "2025-04-30"
+        }
     }
 ]
