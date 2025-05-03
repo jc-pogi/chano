@@ -163,16 +163,6 @@
         {
             "brand": "EVO",
             "model": "RX5",
-            "size": "XL",
-            "color": "Matte Black",
-            "helmet_type": "Half-Face",
-            "visor_type": "Double",
-            "quantity": 5,
-            "price": 3400.0
-        },
-        {
-            "brand": "EVO",
-            "model": "RX5",
             "size": "M",
             "color": "Pearl White",
             "helmet_type": "Half-Face",
