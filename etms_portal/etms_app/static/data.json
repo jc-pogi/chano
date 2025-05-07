@@ -529,6 +529,126 @@
             "visor_type": "Single",
             "price": 750,
             "quantity": 5
+        },
+        {
+            "brand": "HNJ",
+            "model": "TOP BOX",
+            "size": "45L",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 2500,
+            "quantity": 7
+        },
+        {
+            "brand": "NIWRA",
+            "model": "TOP BOX",
+            "size": "45L",
+            "color": "WHITE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 4500,
+            "quantity": 10
+        },
+        {
+            "brand": "DUHAN",
+            "model": "TOP BOX",
+            "size": "45L",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 4500,
+            "quantity": 5
+        },
+        {
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "size": "28L",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 4500,
+            "quantity": 1
+        },
+        {
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "size": "45L",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 5500,
+            "quantity": 5
+        },
+        {
+            "brand": "NB",
+            "model": "BALACLAVA",
+            "size": "FS",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 100,
+            "quantity": 22
+        },
+        {
+            "brand": "KOBY",
+            "model": "HELMET DEODORANT",
+            "size": "M",
+            "color": "NONE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 140,
+            "quantity": 15
+        },
+        {
+            "brand": "VS1",
+            "model": "WAX",
+            "size": "S",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 150,
+            "quantity": 20
+        },
+        {
+            "brand": "VS1",
+            "model": "WAX",
+            "size": "B",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 250,
+            "quantity": 15
+        },
+        {
+            "brand": "YAMAHA",
+            "model": "YAMALUBE OIL",
+            "size": "1L",
+            "color": "BLUE CORE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 340,
+            "quantity": 10
+        },
+        {
+            "brand": "TOP1",
+            "model": "MOTOR OIL",
+            "size": "1L",
+            "color": "GREEN",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 295,
+            "quantity": 20
+        },
+        {
+            "brand": "SHELL",
+            "model": "ADVANCE OIL",
+            "size": "1L",
+            "color": "RED",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "price": 200,
+            "quantity": 20
         }
     ],
     "users": [
@@ -536,7 +656,7 @@
             "username": "admin",
             "password": "admin",
             "role": "admin",
-            "lastLogin": "2025-04-30 22:15:19",
+            "lastLogin": "2025-05-07 15:27:12",
             "status": "Active"
         },
         {
@@ -1070,6 +1190,210 @@
             "quantity": 5,
             "price": 750,
             "date": "2025-04-30"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "HNJ",
+            "model": "TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 7,
+            "price": 2500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "NIWRA",
+            "model": "TOP BOX",
+            "color": "WHITE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 10,
+            "price": 4500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "DUHAN",
+            "model": "TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 4500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 4500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 5500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "NB",
+            "model": "BALACLAVA",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 25,
+            "price": 100,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "KOBY",
+            "model": "HELMET DEODORANT",
+            "color": "NONE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 15,
+            "price": 140,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "VS1",
+            "model": "WAX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 150,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "VS1",
+            "model": "WAX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 15,
+            "price": 250,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "YAMAHA",
+            "model": "YAMALUBE OIL",
+            "color": "BLUE CORE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 10,
+            "price": 340,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "TOP1",
+            "model": "MOTOR OIL",
+            "color": "GREEN",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 295,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SHELL",
+            "model": "ADVANCE OIL",
+            "color": "RED",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 200,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050701",
+            "brand": "NB",
+            "model": "BALACLAVA",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 3,
+            "price": 100,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050702",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050703",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 3,
+            "price": 4500,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Restock",
+            "RestockId": "RSK-25050702",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 100,
+            "price": 3100,
+            "date": "2025-05-07"
+        },
+        {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050704",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 100,
+            "price": 3100,
+            "date": "2025-05-07"
         }
     ]
 }
