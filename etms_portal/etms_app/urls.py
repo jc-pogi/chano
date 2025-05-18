@@ -33,8 +33,14 @@ urlpatterns = [
     path('delete_account/', delete_account, name='delete_account'),
     path('add_account/', add_account, name='add_account'),
     path('update_account/', update_account, name='update_account'),
-    path("login/", login_view, name="login"),  # Entransactionssure this exists
+    path("login/", login_view, name="login"),  # Ensure this exists
     path("get-logs/", get_logs, name="get_logs"),
+    path('api/get_product_count/', views.get_product_count, name='get_product_count'),
+    path('api/get_low_stock/', views.get_low_stock, name='get_low_stock'),
+    path('api/get_today_sales/', views.get_today_sales, name='get_today_sales'),
+    path('api/get_top_selling_brand/', views.get_top_selling_brand, name='get_top_selling_brand'),
+    path('api/get_top_accessory/', views.get_top_accessory, name='get_top_accessory'),
+    path('api/get_helmets_sold_today/', views.get_helmets_sold_today, name='get_helmets_sold_today'),
     path('api/product-count/', views.get_product_count, name='product_count'),
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
     path('api/total-stocks/', views.get_total_stocks, name='total_stocks'),
@@ -43,6 +49,8 @@ urlpatterns = [
     path('api/top-selling-brand/', views.get_top_selling_brand, name='top_selling_brand'),
     path('api/top-accessory/', views.get_top_accessory, name='top_accessory'),
     path('api/helmets-sold-today/', views.get_helmets_sold_today, name='helmets_sold_today'),
+    path('get_logs/', views.get_logs, name='get_logs'),
+    path('api/low-stock-alerts/', views.low_stock_alerts, name='low_stock_alerts'),
 ]
 
 

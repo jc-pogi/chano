@@ -128,7 +128,7 @@ body {
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
                         <h6>Low Stock Alerts</h6>
                         <div class="dashboard-card-content" id="low-stock-container" style="overflow: hidden;">
-                            <!-- Will show max 3 items with "+ more" indicator -->
+                            <!-- Low stock items will be dynamically added here -->
                         </div>
                     </div>
                 </div>
@@ -159,19 +159,20 @@ body {
                 <!-- Top Accessory -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>Top Selling Accessory</h6> 
+                        <h6>Top Selling Accessory</h6>
                         <div class="dashboard-card-content">
                             <h4 style="font-size: 22px; color: #333; font-weight: bold;" id="top-accessory">Loading...</h4>
                             <h5 style="font-size: 14px; color: #666;" id="accessory-sales-count"></h5>
                         </div>
                     </div>
                 </div>
+                
                 <!-- Helmets Sold Today -->
                 <div class="col-md-4 mb-3">
                     <div class="card p-2 shadow-sm h-100 dashboard-card">
-                        <h6>Helmets Sold Today</h6>
+                        <h6>Helmets & Accessories Sold Today</h6>
                         <div class="dashboard-card-content">
-                            <h4 style="font-size: 24px; color: #333; font-weight: bold;" id="sold-today">Loading...</h4>
+                            <h4 style="font-size: 22px; color: #333; font-weight: bold;" id="sold-today">Loading...</h4>
                         </div>
                     </div>
                 </div>
@@ -361,107 +362,130 @@ body {
     });
 
     function fetchTopSellingBrand() {
-    fetch('/api/top-selling-brand/')
+    fetch('/static/data.json') // Adjust the path if necessary
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Failed to fetch data.json');
             }
             return response.json();
         })
         .then(data => {
-            console.log("Top brand data received:", data);
-            document.getElementById('top-brand').textContent = data.top_brand || 'EVO';
+            // Filter transaction logs for "Transaction" type
+            const transactionLogs = data.logs.filter(log => log.type === "Transaction");
+
+            // Aggregate sales by brand
+            const brandSales = {};
+            transactionLogs.forEach(log => {
+                const brand = log.brand;
+                if (!brandSales[brand]) {
+                    brandSales[brand] = 0;
+                }
+                brandSales[brand] += log.quantity || 0;
+            });
+
+            // Find the top-selling brand
+            const topBrand = Object.entries(brandSales).reduce((top, current) => {
+                return current[1] > top[1] ? current : top;
+            }, ['', 0]);
+
+            // Update the DOM
+            const brandElement = document.getElementById('top-brand');
+            if (topBrand[0]) {
+                brandElement.textContent = `${topBrand[0]} (${topBrand[1]} sold)`;
+            } else {
+                brandElement.textContent = 'No data';
+            }
         })
         .catch(error => {
-            console.error('Error fetching top brand:', error);
-            document.getElementById('top-brand').textContent = 'EVO';  // Default fallback
+            console.error('Error fetching top-selling brand:', error);
+            const brandElement = document.getElementById('top-brand');
+            brandElement.textContent = 'Error';
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Fetch all dashboard data when page loads
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    fetchTopSellingBrand();
+
+    // Refresh the top-selling brand every minute
+    setInterval(fetchTopSellingBrand, 60000); // Updates every minute
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Fetch all dashboard data when the page loads
     fetchDashboardData();
-    
+
     // Refresh data every minute
-    setInterval(fetchDashboardData, 60000);
+    setInterval(fetchDashboardData, 60000); // Updates every minute
 });
 
 function fetchDashboardData() {
-    // Fetch total product count
-    fetch('/api/product-count/')
+    // Fetch total stocks
+    fetch('/api/get_product_count/')  // Using endpoint that checks JSON data
         .then(response => response.json())
         .then(data => {
-            document.getElementById('total-products').textContent = data.count;
+            document.getElementById('total-products').textContent = data.count || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching total stocks:', error);
+            document.getElementById('total-products').textContent = 'Error';
         });
-    
-    // Fetch low stock alerts
-    fetch('/api/low-stock/')
-    .then(response => response.json())
-    .then(data => {
-        const container = document.getElementById('low-stock-container');
-        container.innerHTML = ''; // Clear previous content
-        
-        // Only show first 3 items
-        data.low_stock_items.slice(0, 3).forEach(item => {
-            const itemElement = document.createElement('h4');
-            itemElement.style.fontSize = '14px';
-            itemElement.style.color = '#333';
-            itemElement.textContent = `${item.brand} ${item.model}`;
-            container.appendChild(itemElement);
-        });
-        
-        // Show "+ more" indicator if there are more than 3
-        if (data.low_stock_items.length > 3) {
-            const moreElement = document.createElement('h4');
-            moreElement.style.fontSize = '12px';
-            moreElement.style.color = '#666';
-            moreElement.style.fontStyle = 'italic';
-            moreElement.textContent = `+${data.low_stock_items.length - 3} more`;
-            container.appendChild(moreElement);
-        }
-    });
-    
+
+    // Fetch low stock alerts - this will now call our updated function
+    fetchLowStockAlerts();
+
     // Fetch today's sales
-    fetch('/api/today-sales/')
-    .then(response => response.json())
-    .then(data => {
-        // Format with peso sign and 2 decimal places
-        const formattedAmount = `₱${data.total_sales.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-        document.getElementById('today-sales').textContent = formattedAmount;
-    });
-    
-    // Fetch top selling brand
-    fetch('/api/top-selling-brand/')
+    fetch('/api/get_today_sales/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
-            document.getElementById('top-brand').textContent = data.top_brand;
+            const formattedAmount = `₱${parseFloat(data.total_sales || 0).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+            document.getElementById('today-sales').textContent = formattedAmount;
+        })
+        .catch(error => {
+            console.error('Error fetching today\'s sales:', error);
+            document.getElementById('today-sales').textContent = '₱0.00';
         });
-    
-    // Fetch top accessory
-    fetch('/api/top-accessory/')  // Changed endpoint to singular
-    .then(response => response.json())
-    .then(data => {
-        const accessoryElement = document.getElementById('top-accessory');
-        const countElement = document.getElementById('accessory-sales-count');
-        
-        if (data.top_accessory) {
-            accessoryElement.textContent = data.top_accessory.name;
-            countElement.textContent = `${data.top_accessory.count} sold`;
-        } else {
-            accessoryElement.textContent = "No data";
-            countElement.textContent = "";
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching top accessory:', error);
-        document.getElementById('top-accessory').textContent = "Error loading data";
-    });
-    
-    // Fetch helmets sold today
-    fetch('/api/helmets-sold-today/')
+
+    // Fetch top selling brand
+    fetch('/api/get_top_selling_brand/')  // JSON-based endpoint
         .then(response => response.json())
         .then(data => {
-            document.getElementById('sold-today').textContent = data.count;
+            document.getElementById('top-brand').textContent = data.top_brand || 'N/A';
+        })
+        .catch(error => {
+            console.error('Error fetching top selling brand:', error);
+            document.getElementById('top-brand').textContent = 'N/A';
+        });
+
+    // Fetch top accessory
+    fetch('/api/get_top_accessory/')  // JSON-based endpoint
+        .then(response => response.json())
+        .then(data => {
+            const accessoryElement = document.getElementById('top-accessory');
+            const countElement = document.getElementById('accessory-sales-count');
+
+            if (data.top_accessory) {
+                accessoryElement.textContent = data.top_accessory.name;
+                countElement.textContent = `${data.top_accessory.count} sold`;
+            } else {
+                accessoryElement.textContent = 'No data';
+                countElement.textContent = '';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching top accessory:', error);
+            document.getElementById('top-accessory').textContent = 'Error';
+        });
+
+    // Fetch helmets sold today
+    fetch('/api/get_helmets_sold_today/')  // JSON-based endpoint
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('sold-today').textContent = data.count || 0;
+        })
+        .catch(error => {
+            console.error('Error fetching helmets sold today:', error);
+            document.getElementById('sold-today').textContent = '0';
         });
 }
 
@@ -470,6 +494,135 @@ fetchTopSellingBrand();
 
 // Refresh periodically along with other data
 setInterval(fetchTopSellingBrand, 60000); // Updates every minute
+
+function fetchLowStockAlerts() {
+    fetch('/api/low-stock/')  // Use the JSON file-based endpoint instead of '/api/low-stock-alerts/'
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById('low-stock-container');
+            if (!container) {
+                console.error('Low stock container element not found in the DOM.');
+                return;
+            }
+
+            container.innerHTML = ''; // Clear previous content
+
+            // Check if there are any low stock items
+            if (!data.low_stock_items || data.low_stock_items.length === 0) {
+                const noItemsElement = document.createElement('h4');
+                noItemsElement.style.fontSize = '14px';
+                noItemsElement.style.color = '#666';
+                noItemsElement.textContent = 'No low stock items.';
+                container.appendChild(noItemsElement);
+                return;
+            }
+
+            // Display up to 3 low stock items
+            data.low_stock_items.slice(0, 3).forEach(item => {
+                const itemElement = document.createElement('h4');
+                itemElement.style.fontSize = '14px';
+                itemElement.style.color = '#333';
+                itemElement.textContent = `${item.brand} ${item.model} (${item.quantity})`;
+                container.appendChild(itemElement);
+            });
+
+            // Show "+ more" indicator if there are more than 3 items
+            if (data.low_stock_items.length > 3) {
+                const moreElement = document.createElement('h4');
+                moreElement.style.fontSize = '12px';
+                moreElement.style.color = '#666';
+                moreElement.style.fontStyle = 'italic';
+                moreElement.textContent = `+${data.low_stock_items.length - 3} more`;
+                container.appendChild(moreElement);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching low stock alerts:', error);
+            const container = document.getElementById('low-stock-container');
+            if (container) {
+                container.innerHTML = '<h4 style="font-size: 14px; color: #666;">Error loading low stock alerts.</h4>';
+            }
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Fetch low stock alerts when the page loads
+    fetchLowStockAlerts();
+
+    // Refresh low stock alerts every minute
+    setInterval(fetchLowStockAlerts, 60000); // Updates every minute
+});
+
+function fetchTopSellingAccessory() {
+    fetch('/static/data.json') // Adjust the path if necessary
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch data.json');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Filter accessories with helmet_type and visor_type as "NA"
+            const accessories = data.helmets.filter(item => item.helmet_type === "NA" && item.visor_type === "NA");
+
+            // Check if there are any accessories
+            if (accessories.length === 0) {
+                console.warn('No accessories found with helmet_type and visor_type as "NA".');
+                updateAccessoryDOM('No data');
+                return;
+            }
+
+            // Filter transaction logs for "Transaction" type
+            const transactionLogs = data.logs.filter(log => log.type === "Transaction");
+
+            // Calculate total sales for each accessory
+            const accessorySales = {};
+            transactionLogs.forEach(log => {
+                const accessory = accessories.find(item => item.brand === log.brand && item.model === log.model);
+                if (accessory) {
+                    if (!accessorySales[accessory.model]) {
+                        accessorySales[accessory.model] = {
+                            name: accessory.model,
+                            brand: accessory.brand
+                        };
+                    }
+                }
+            });
+
+            // Find the top-selling accessory
+            const topAccessory = Object.values(accessorySales)[0]; // Get the first accessory (or modify logic if needed)
+
+            // Update the DOM
+            if (topAccessory && topAccessory.name) {
+                updateAccessoryDOM(`${topAccessory.brand} ${topAccessory.name}`);
+            } else {
+                updateAccessoryDOM('No data');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching top-selling accessory:', error);
+            updateAccessoryDOM('No data'); // Display "No data" if an error occurs
+        });
+}
+
+// Helper function to update the DOM
+function updateAccessoryDOM(name) {
+    const accessoryElement = document.getElementById('top-accessory');
+    if (accessoryElement) accessoryElement.textContent = name;
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    fetchTopSellingAccessory();
+
+    // Refresh the top-selling accessory every 10 seconds
+    setInterval(fetchTopSellingAccessory, 10000); // Updates every 10 seconds
+});
     </script>
 
 {% endblock %}

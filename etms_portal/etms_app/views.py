@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .decorators import admin_required, user_required
-from .models import Helmet
+from .models import Helmet as Product, Sale
 from django.shortcuts import render,redirect
 import json
 from django.http import JsonResponse
@@ -11,6 +11,8 @@ from datetime import datetime
 from etms_app.models import Helmet 
 from django.db.models import Sum
 from datetime import datetime, timedelta
+import uuid
+
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -107,69 +109,126 @@ def transactions(request):
     }
     return render(request, "transactions.html", context)
 
+# Generate a transaction ID with format TRX-YYMMDDHH
+def generate_transaction_id():
+    now = datetime.now()
+    date_part = now.strftime("%y%m%d")
+    
+    # Try to get the latest transaction from today
+    try:
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+            logs = data.get("logs", [])
+            
+            # Filter transactions from today
+            today_transactions = [
+                l for l in logs 
+                if l.get("type") == "Transaction" and 
+                l.get("date") == now.strftime("%Y-%m-%d") and
+                l.get("TransactionId", "").startswith(f"TRX-{date_part}")
+            ]
+            
+            # Sort by ID to get the latest
+            today_transactions.sort(key=lambda x: x.get("TransactionId", ""), reverse=True)
+            
+            if today_transactions:
+                # Extract and increment the counter
+                latest_id = today_transactions[0]["TransactionId"]
+                counter = int(latest_id[-2:]) + 1
+            else:
+                counter = 1
+    except Exception as e:
+        print(f"Error generating transaction ID: {e}")
+        counter = 1
+    
+    # Format with leading zero for counter
+    return f"TRX-{date_part}{counter:02d}"
+
+# Generate a restock ID with format RSK-YYMMDDHH
+def generate_restock_id():
+    now = datetime.now()
+    date_part = now.strftime("%y%m%d")
+    
+    # Try to get the latest restock from today
+    try:
+        with open(DATA_FILE, "r") as file:
+            data = json.load(file)
+            logs = data.get("logs", [])
+            
+            # Filter restocks from today
+            today_restocks = [
+                l for l in logs 
+                if l.get("type") == "Restock" and 
+                l.get("date") == now.strftime("%Y-%m-%d") and
+                l.get("RestockId", "").startswith(f"RSK-{date_part}")
+            ]
+            
+            # Sort by ID to get the latest
+            today_restocks.sort(key=lambda x: x.get("RestockId", ""), reverse=True)
+            
+            if today_restocks:
+                # Extract and increment the counter
+                latest_id = today_restocks[0]["RestockId"]
+                counter = int(latest_id[-2:]) + 1
+            else:
+                counter = 1
+    except Exception as e:
+        print(f"Error generating restock ID: {e}")
+        counter = 1
+    
+    # Format with leading zero for counter
+    return f"RSK-{date_part}{counter:02d}"
+
 @admin_required
 @csrf_exempt
 def restock(request):
     if request.method == "POST":
         try:
             raw_body = request.body.decode("utf-8")
-            print("🔍 Received JSON (Raw):", raw_body)
-
             if not raw_body.strip():
-                print("🚨 Empty request body received!")
                 return JsonResponse({"error": "Empty request body"}, status=400)
 
-            # Attempt to parse JSON
-            try:
-                body = json.loads(raw_body)
-            except json.JSONDecodeError:
-                print("🚨 JSON Decode Error!")
-                return JsonResponse({"error": "Invalid JSON format"}, status=400)
-
+            body = json.loads(raw_body)
             new_items = body.get("items", [])
             if not new_items:
-                print("🚨 No items provided in request!")
                 return JsonResponse({"error": "No items provided"}, status=400)
 
-            # Load existing data
             if not os.path.exists(DATA_FILE):
-                print("⚠️ Data file not found. Creating a new one.")
                 with open(DATA_FILE, "w") as file:
                     json.dump({"helmets": [], "logs": []}, file)
 
             with open(DATA_FILE, "r") as file:
                 data = json.load(file)
 
-            # Ensure data has "helmets" and "logs" lists
             if "helmets" not in data:
                 data["helmets"] = []
             if "logs" not in data:
                 data["logs"] = []
 
-            # Process each new item
+            restock_id = generate_restock_id()
+            print("✅ Generated Restock ID:", restock_id)
+
             for new_item in new_items:
-                # Try to find matching existing product
                 matching_product = next((
                     helmet for helmet in data["helmets"]
-                    if (helmet["brand"] == new_item["brand"] and
-                        helmet["model"] == new_item["model"] and
-                        helmet["size"] == new_item["size"] and
-                        helmet["color"] == new_item["color"] and
-                        helmet["helmet_type"] == new_item["helmet_type"] and
-                        helmet["visor_type"] == new_item["visor_type"])
+                    if (
+                        helmet["brand"] == new_item["brand"]
+                        and helmet["model"] == new_item["model"]
+                        and helmet["size"] == new_item["size"]
+                        and helmet["color"] == new_item["color"]
+                        and helmet["helmet_type"] == new_item["helmet_type"]
+                        and helmet["visor_type"] == new_item["visor_type"]
+                    )
                 ), None)
 
                 if matching_product:
-                    # Update quantity of existing product
-                    old_quantity = matching_product["quantity"]
                     matching_product["quantity"] += new_item["quantity"]
                 else:
-                    # Add new product if no match found
                     data["helmets"].append(new_item)
 
-                # Create log entry for restock
                 log_entry = {
                     "type": "Restock",
+                    "RestockId": restock_id,
                     "brand": new_item["brand"],
                     "model": new_item["model"],
                     "color": new_item["color"],
@@ -179,33 +238,37 @@ def restock(request):
                     "price": new_item.get("price", "N/A"),
                     "date": datetime.now().strftime("%Y-%m-%d")
                 }
-                data["logs"].append(log_entry)
 
-            # Save updated data
+                # ✅ Log to both data.json and logs.json
+                data["logs"].append(log_entry)
+                create_log_entry("Restock", log_entry)
+
             with open(DATA_FILE, "w") as file:
                 json.dump(data, file, indent=4)
 
-            print("✅ Products Restocked Successfully!")
             return JsonResponse({
-                "message": "Products restocked successfully!"
+                "message": "Products restocked successfully!",
+                "RestockId": restock_id
             })
+        
 
         except Exception as e:
-            print("⚠️ Unexpected Error:", str(e))
             return JsonResponse({"error": str(e)}, status=500)
 
     elif request.method == "GET":
-        user_role = request.session.get("role", "user")  # Default to "user" if missing
-        return render(request, "restock.html", context={"current_tab": "restock", "user_role":user_role})
+        user_role = request.session.get("role", "user")
+        return render(request, "restock.html", context={"current_tab": "restock", "user_role": user_role})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
 
 @user_required
 @csrf_exempt
 def process_transaction(request):
     if request.method == "POST":
         try:
-            # Load existing data
             if not os.path.exists(DATA_FILE):
                 return JsonResponse({"success": False, "message": "Data file not found."})
 
@@ -215,7 +278,10 @@ def process_transaction(request):
             transaction = json.loads(request.body)
             items = transaction["items"]
 
-            # Update helmet stock and create logs
+            # ✅ Generate transaction ID once for all items
+            transaction_id = generate_transaction_id()
+            print("✅ Generated Transaction ID:", transaction_id)
+
             for transaction_item in items:
                 for helmet in data["helmets"]:
                     if (
@@ -228,10 +294,10 @@ def process_transaction(request):
                     ):
                         if helmet["quantity"] >= transaction_item["quantity"]:
                             helmet["quantity"] -= transaction_item["quantity"]
-                            
-                            # Create log entry for transaction
+
                             log_entry = {
                                 "type": "Transaction",
+                                "TransactionId": transaction_id,
                                 "brand": transaction_item["brand"],
                                 "model": transaction_item["model"],
                                 "color": transaction_item["color"],
@@ -241,26 +307,31 @@ def process_transaction(request):
                                 "price": transaction_item.get("price", "N/A"),
                                 "date": datetime.now().strftime("%Y-%m-%d")
                             }
-                            data["logs"].append(log_entry)
-                        else:
-                            return JsonResponse(
-                                {"success": False, "message": f"Not enough stock for {transaction_item['brand']} {transaction_item['model']}!"}
-                            )
 
-            # Save updated stock back to data.json
+                            # ✅ Log to data.json and logs.json
+                            data["logs"].append(log_entry)
+                            create_log_entry("Transaction", log_entry)
+                        else:
+                            return JsonResponse({
+                                "success": False,
+                                "message": f"Not enough stock for {transaction_item['brand']} {transaction_item['model']}!"
+                            })
+
             with open(DATA_FILE, "w") as file:
                 json.dump(data, file, indent=4)
 
-            return JsonResponse({"success": True})
+            return JsonResponse({"success": True, "TransactionId": transaction_id})
 
         except Exception as e:
             return JsonResponse({"success": False, "message": str(e)})
 
     elif request.method == "GET":
-        user_role = request.session.get("role", "user")  # Default to "user" if missing
-        return render(request, "transaction.html", context={"current_tab": "transction", "user_role":user_role})
+        user_role = request.session.get("role", "user")
+        return render(request, "transaction.html", context={"current_tab": "transction", "user_role": user_role})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
 
 @admin_required
 def revenue(request):
@@ -373,26 +444,53 @@ def update_product(request):
 # New view to retrieve logs
 def get_logs(request):
     try:
-        # First, check if logs exist in DATA_FILE (previous implementation)
+        logs = []
+        
+        # First, check if logs exist in DATA_FILE (primary source)
         if os.path.exists(DATA_FILE):
             with open(DATA_FILE, "r") as file:
                 data = json.load(file)
                 logs = data.get("logs", [])
+                
+                # Debug: print logs from DATA_FILE
+                print(f"Found {len(logs)} logs in DATA_FILE")
         
-        # Then, check if logs exist in LOGS_FILE (new implementation)
+        # Then, check if logs exist in LOGS_FILE (secondary source)
         elif os.path.exists(LOGS_FILE):
             with open(LOGS_FILE, "r") as file:
-                logs = json.load(file)
+                logs_from_file = json.load(file)
+                
+                # Handle different possible formats
+                if isinstance(logs_from_file, list):
+                    logs = logs_from_file
+                elif isinstance(logs_from_file, dict) and "logs" in logs_from_file:
+                    logs = logs_from_file["logs"]
+                    
+                # Debug: print logs from LOGS_FILE
+                print(f"Found {len(logs)} logs in LOGS_FILE")
         
-        else:
+        # If no logs were found in either file
+        if not logs:
+            print("No logs found in either file")
             return JsonResponse({"logs": []})
         
         # Sort logs by date in descending order (most recent first)
         logs = sorted(logs, key=lambda x: x.get('date', ''), reverse=True)
         
+        # Ensure each log has a TransactionId or RestockId if missing
+        for i, log in enumerate(logs):
+            if log["type"] == "Transaction" and "TransactionId" not in log:
+                logs[i]["TransactionId"] = f"TRX-LEGACY{i:04d}"
+            elif log["type"] == "Restock" and "RestockId" not in log:
+                logs[i]["RestockId"] = f"RSK-LEGACY{i:04d}"
+        
+        # Debug: print total logs after processing
+        print(f"Returning {len(logs)} logs to frontend")
+        
         return JsonResponse({"logs": logs})
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+        print(f"Error in get_logs: {str(e)}")
+        return JsonResponse({"error": str(e), "logs": []}, status=500)
 
 def get_user_role(username, password):
     """Fetch user role from JSON database, validating username and password."""
@@ -419,7 +517,7 @@ def get_product_count(request):
     # Focus on JSON file since that's where your data might be
     json_sum = 0
     try:
-        if os.path.exists(DATA_FILE):
+        if (os.path.exists(DATA_FILE)):
             with open(DATA_FILE, "r") as file:
                 print(f"Reading from {DATA_FILE}")
                 data = json.load(file)
@@ -523,6 +621,7 @@ def get_top_selling_brand(request):
     except Exception as e:
         # Log the full error for debugging
         import traceback
+        from django.utils import timezone
         print(f"Error in get_top_selling_brand: {e}")
         traceback.print_exc()
         
@@ -643,18 +742,37 @@ def get_total_stocks(request):
 def get_low_stock(request):
     """Return products with quantity <= 5 (max 3 items)"""
     try:
+        if not os.path.exists(DATA_FILE):
+            print(f"Data file not found: {DATA_FILE}")
+            return JsonResponse({'low_stock_items': []})
+            
         with open(DATA_FILE, 'r') as file:
             data = json.load(file)
             helmets = data.get('helmets', [])
-            low_stock = sorted(
-                [h for h in helmets if h.get('quantity', 0) <= 5],
-                key=lambda x: x.get('quantity', 0)  # Sort by quantity (lowest first)
-            )
-            return JsonResponse({
-                'low_stock_items': low_stock  # Return all low stock items
-            })
+            
+            # Filter items with quantity <= 5
+            low_stock = [
+                h for h in helmets 
+                if isinstance(h, dict) and 
+                isinstance(h.get('quantity', 0), (int, float)) and 
+                h.get('quantity', 0) <= 5
+            ]
+            
+            # Sort by quantity (lowest first)
+            low_stock = sorted(low_stock, key=lambda x: x.get('quantity', 0))
+            
+            # Debug output
+            print(f"Low stock items found: {len(low_stock)}")
+            for item in low_stock[:3]:  # Print first 3 items for debugging
+                print(f"  - {item.get('brand', 'N/A')} {item.get('model', 'N/A')}: {item.get('quantity', 0)}")
+                
+            return JsonResponse({'low_stock_items': low_stock})
+            
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        import traceback
+        print(f"Error in get_low_stock: {str(e)}")
+        traceback.print_exc()
+        return JsonResponse({'error': str(e), 'low_stock_items': []}, status=500)
 
 @csrf_exempt
 def get_today_sales(request):
@@ -675,7 +793,7 @@ def get_today_sales(request):
                     # Ensure price is numeric
                     if isinstance(price, str):
                         # Remove currency symbols and commas
-                        price = float(price.replace('₱', '').replace('Php', '').replace(',', '').strip())
+                        price = float(price.replace('₱', '').replace('Php', '').strip())
                     
                     total += float(price) * int(quantity)
         
@@ -741,3 +859,63 @@ def get_helmets_sold_today(request):
         return JsonResponse({'count': total})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def get_logs(request):
+    try:
+        with open(DATA_FILE, 'r') as f:
+            data = json.load(f)
+            logs = data.get("logs", [])
+            return JsonResponse({"logs": logs})
+    except FileNotFoundError:
+        return JsonResponse({"error": "data.json not found"}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "data.json is invalid"}, status=500)
+    
+def total_stocks(request):
+    total_stocks = Product.objects.aggregate(total=Sum('stock'))['total'] or 0
+    return JsonResponse({'total_stocks': total_stocks})
+
+def low_stock_alerts(request):
+    low_stock_items = Product.objects.filter(stock__lte=4).values('brand', 'model', 'stock')
+    
+    items = [
+        {"brand": item['brand'], "name": item['model'], "stock": item['stock']}
+        for item in low_stock_items
+    ]
+
+    return JsonResponse({"low_stock_items": items})
+
+def today_sales(request):
+    today = timezone.now().date()
+    total_sales = Sale.objects.filter(date__date=today).aggregate(total=Sum('amount'))['total'] or 0
+    return JsonResponse({'total_sales': total_sales})
+
+def top_selling_brand(request):
+    top_brand = (
+        Product.objects.values('brand')
+        .annotate(total_sold=Sum('sales__quantity'))
+        .order_by('-total_sold')
+        .first()
+    )
+    return JsonResponse({'top_brand': top_brand['brand'] if top_brand else 'N/A'})
+
+def top_accessory(request):
+    top_accessory = (
+        Product.objects.filter(category='Accessory')
+        .annotate(total_sold=Sum('sales__quantity'))
+        .order_by('-total_sold')
+        .first()
+    )
+    return JsonResponse({
+        'top_accessory': {
+            'name': top_accessory.name if top_accessory else 'N/A',
+            'count': top_accessory.total_sold if top_accessory else 0
+        }
+    })
+
+def helmets_sold_today(request):
+    today = timezone.now().date()
+    helmets_sold = Sale.objects.filter(date__date=today, product__category='Helmet').aggregate(total=Sum('quantity'))['total'] or 0
+    return JsonResponse({'count': helmets_sold})

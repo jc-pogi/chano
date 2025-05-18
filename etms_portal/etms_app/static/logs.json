@@ -1,0 +1,1005 @@
+[
+    {
+        "id": 1,
+        "timestamp": "2025-04-29T21:33:39.618444",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042901",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 2,
+        "timestamp": "2025-04-29T22:17:15.852641",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042901",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 3,
+        "timestamp": "2025-04-29T22:17:21.136696",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042902",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 4,
+        "timestamp": "2025-04-29T22:23:00.721118",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25042901",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 5,
+        "timestamp": "2025-04-29T22:23:10.169015",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042903",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 6,
+        "timestamp": "2025-04-29T22:24:00.566807",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25042902",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 7,
+        "timestamp": "2025-04-29T22:46:19.014599",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042904",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 8,
+        "timestamp": "2025-04-29T22:49:10.077793",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25042903",
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "color": "Black-Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 9,
+        "timestamp": "2025-04-29T23:05:08.247532",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25042904",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 10,
+        "timestamp": "2025-04-29T23:05:30.936247",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042905",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 11,
+        "timestamp": "2025-04-29T23:10:10.631797",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25042906",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-29"
+        }
+    },
+    {
+        "id": 12,
+        "timestamp": "2025-04-30T00:25:07.928459",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043001",
+            "brand": "EVO",
+            "model": "NEXUS",
+            "color": "Pink-Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 3500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 13,
+        "timestamp": "2025-04-30T00:25:07.942117",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043001",
+            "brand": "EVO",
+            "model": "TRX",
+            "color": "Black-Gray",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 5,
+            "price": 3500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 14,
+        "timestamp": "2025-04-30T00:25:37.051835",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043002",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 3,
+            "price": 1499,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 15,
+        "timestamp": "2025-04-30T00:27:11.315714",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043001",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 2,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 16,
+        "timestamp": "2025-04-30T00:27:11.330476",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043001",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 2,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 17,
+        "timestamp": "2025-04-30T00:39:45.870206",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043002",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 18,
+        "timestamp": "2025-04-30T00:41:29.792719",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043003",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 19,
+        "timestamp": "2025-04-30T00:41:56.841988",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043004",
+            "brand": "SEC",
+            "model": "REFLUX",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 2900,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 20,
+        "timestamp": "2025-04-30T00:48:07.811800",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043003",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 21,
+        "timestamp": "2025-04-30T00:58:43.433577",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043005",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 3,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 22,
+        "timestamp": "2025-04-30T01:20:16.937960",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043004",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 23,
+        "timestamp": "2025-04-30T01:39:13.056201",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 24,
+        "timestamp": "2025-04-30T01:39:13.065096",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 25,
+        "timestamp": "2025-04-30T01:39:13.083149",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "HNJ",
+            "model": "902 PRO VENOM",
+            "color": "Red-Pink",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 1499,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 26,
+        "timestamp": "2025-04-30T01:39:13.097641",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "HNJ",
+            "model": "RACING",
+            "color": "Red",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 1499,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 27,
+        "timestamp": "2025-04-30T01:39:13.108142",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "SEC",
+            "model": "REFLUX",
+            "color": "Matte Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 1,
+            "price": 2900,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 28,
+        "timestamp": "2025-04-30T01:39:13.121583",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043006",
+            "brand": "SPYDER",
+            "model": "RADAR",
+            "color": "White",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 29,
+        "timestamp": "2025-04-30T01:46:30.197149",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043005",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Glossy Black",
+            "helmet_type": "Half-Face",
+            "visor_type": "Double",
+            "quantity": 3,
+            "price": 1499,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 30,
+        "timestamp": "2025-04-30T01:52:18.009018",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043006",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 3,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 31,
+        "timestamp": "2025-04-30T02:25:09.186061",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043007",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 32,
+        "timestamp": "2025-04-30T02:30:04.833313",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043007",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 33,
+        "timestamp": "2025-04-30T02:32:13.773242",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043008",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 34,
+        "timestamp": "2025-04-30T02:32:58.676827",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043008",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 35,
+        "timestamp": "2025-04-30T02:40:17.871106",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043009",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 36,
+        "timestamp": "2025-04-30T03:00:16.481826",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043010",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 37,
+        "timestamp": "2025-04-30T21:32:07.864315",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043009",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 3100,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 38,
+        "timestamp": "2025-04-30T21:32:31.150250",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 39,
+        "timestamp": "2025-04-30T21:32:31.164738",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT PRO ASSAULT",
+            "color": "Black-Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 40,
+        "timestamp": "2025-04-30T21:32:31.180242",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25043011",
+            "brand": "EVO",
+            "model": "GT RPO ARCHANGEL",
+            "color": "Black-Gray",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 41,
+        "timestamp": "2025-04-30T21:35:05.796559",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043010",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "White",
+            "helmet_type": "Half-face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 999,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 42,
+        "timestamp": "2025-04-30T21:37:23.024584",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25043011",
+            "brand": "HNJ",
+            "model": "-",
+            "color": "Light Blue",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 5,
+            "price": 750,
+            "date": "2025-04-30"
+        }
+    },
+    {
+        "id": 43,
+        "timestamp": "2025-05-07T15:43:05.231234",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "HNJ",
+            "model": "TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 7,
+            "price": 2500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 44,
+        "timestamp": "2025-05-07T15:43:05.244679",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "NIWRA",
+            "model": "TOP BOX",
+            "color": "WHITE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 10,
+            "price": 4500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 45,
+        "timestamp": "2025-05-07T15:43:05.257117",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "DUHAN",
+            "model": "TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 4500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 46,
+        "timestamp": "2025-05-07T15:43:05.267800",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 4500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 47,
+        "timestamp": "2025-05-07T15:43:05.281116",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 5,
+            "price": 5500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 48,
+        "timestamp": "2025-05-07T15:43:05.290992",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "NB",
+            "model": "BALACLAVA",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 25,
+            "price": 100,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 49,
+        "timestamp": "2025-05-07T15:43:05.306130",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "KOBY",
+            "model": "HELMET DEODORANT",
+            "color": "NONE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 15,
+            "price": 140,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 50,
+        "timestamp": "2025-05-07T15:43:05.318321",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "VS1",
+            "model": "WAX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 150,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 51,
+        "timestamp": "2025-05-07T15:43:05.329972",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "VS1",
+            "model": "WAX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 15,
+            "price": 250,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 52,
+        "timestamp": "2025-05-07T15:43:05.342384",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "YAMAHA",
+            "model": "YAMALUBE OIL",
+            "color": "BLUE CORE",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 10,
+            "price": 340,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 53,
+        "timestamp": "2025-05-07T15:43:05.353920",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "TOP1",
+            "model": "MOTOR OIL",
+            "color": "GREEN",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 295,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 54,
+        "timestamp": "2025-05-07T15:43:05.365854",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050701",
+            "brand": "SHELL",
+            "model": "ADVANCE OIL",
+            "color": "RED",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 20,
+            "price": 200,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 55,
+        "timestamp": "2025-05-07T15:58:26.654739",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050701",
+            "brand": "NB",
+            "model": "BALACLAVA",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 3,
+            "price": 100,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 56,
+        "timestamp": "2025-05-07T16:05:43.885726",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050702",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 1,
+            "price": 4500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 57,
+        "timestamp": "2025-05-07T16:06:15.872598",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050703",
+            "brand": "SEC",
+            "model": "ALLOY TOP BOX",
+            "color": "BLACK",
+            "helmet_type": "NA",
+            "visor_type": "NA",
+            "quantity": 3,
+            "price": 4500,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 58,
+        "timestamp": "2025-05-07T16:20:01.258950",
+        "type": "Restock",
+        "details": {
+            "type": "Restock",
+            "RestockId": "RSK-25050702",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 100,
+            "price": 3100,
+            "date": "2025-05-07"
+        }
+    },
+    {
+        "id": 59,
+        "timestamp": "2025-05-07T16:20:16.540638",
+        "type": "Transaction",
+        "details": {
+            "type": "Transaction",
+            "TransactionId": "TRX-25050704",
+            "brand": "AXXIS",
+            "model": "-",
+            "color": "Green-Orange",
+            "helmet_type": "Full-Face",
+            "visor_type": "Single",
+            "quantity": 100,
+            "price": 3100,
+            "date": "2025-05-07"
+        }
+    }
+]
